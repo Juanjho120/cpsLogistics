@@ -1,0 +1,25 @@
+<div>
+    <form [formGroup]="form" #frmProveedor="ngForm" (ngSubmit)="operar()">
+        <mat-form-field>
+            <textarea matInput placeholder="Nombre del proveedor" required formControlName="nombre"></textarea>
+            <small *ngIf="f().nombre.errors?.required && f().nombre.touched" class="invalido">Nombre es requerido</small>
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Direccion del proveedor" required formControlName="direccion" dynamicHeight></textarea>
+            <small *ngIf="f().direccion.errors?.required && f().direccion.touched" class="invalido">Direccion es requerido</small>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Telefono del proveedor" required formControlName="telefono" type="number">
+            <small *ngIf="f().telefono.errors?.required && f().telefono.touched" class="invalido">Telefono es requerido</small>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Nit del proveedor" formControlName="nit">
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="frmProveedor.invalid">Guardar</button>
+        <button mat-raised-button color="warn" (click)="cerrar()" type="button">Cancelar</button>
+    </form>
+</div>

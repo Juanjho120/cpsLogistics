@@ -1,0 +1,59 @@
+<router-outlet></router-outlet>
+<div class="container" fxLayout="row" fxLayoutAlign="space-around start">
+    <div class="repuestos-tabla-card-container">
+        <mat-card class="repuestos-tabla-card">
+            <mat-card-header>
+                <mat-card-title>Cardex de Repuestos</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="header-table-container">
+                    <mat-form-field color="warn">
+                        <input matInput (keyup)="filter($event.target.value)" placeholder="Buscar repuesto">
+                    </mat-form-field>
+                </div>
+                <div class="card-table-container">
+                    <mat-table [dataSource]="dataSource" matSort>
+                        <ng-container matColumnDef='codigo'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Codigo</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.codigo}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='codigoBarra'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Codigo de Barra</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.codigoBarra}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='descripcion'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.descripcion}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='existencia'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Existencia</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.existencia}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='acciones'>
+                            <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <button mat-button color="primary" (click)="abrirDialogoEdicion(row)">
+                                    <mat-icon>ballot</mat-icon>
+                                </button>
+                                <button mat-button color="warn" (click)="abrirDialogoEliminar(row)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+    
+                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky : true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                    <button mat-fab color="primary" style="float: left; margin: 5px" routerLink="/cardex/nuevo">
+                        <mat-icon>create</mat-icon>
+                    </button>
+                    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10,25,100]"></mat-paginator>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

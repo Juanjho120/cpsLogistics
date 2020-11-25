@@ -1,0 +1,132 @@
+<mat-card dynamicHeight>
+    <mat-card-content>
+        <div class="mat-card-content-nit-busqueda">
+            <form [formGroup]="form" #frmSegmentoCredito="ngForm" (ngSubmit)="buscar()">
+                <mat-form-field class="mat-form-field-nit">
+                    <input type="text" placeholder="Nit" matInput [matAutocomplete]="autoSegmentoCredito" 
+                        [formControl]="myControlNit" required formControlName="nit">
+                </mat-form-field>
+    
+                <mat-autocomplete #autoSegmentoCredito="matAutocomplete" [displayWith]="mostrarSegmentoCredito" (optionSelected)="seleccionarSegmentoCredito($event)">
+                    <mat-option *ngFor="let sc of segmentoCreditoFiltrados$ | async" [value]="sc">
+                        {{ sc.segmento.nit }}
+                    </mat-option>
+                </mat-autocomplete>
+    
+                <button mat-flat-button color="primary" type="submit" [disabled]="frmSegmentoCredito.invalid">Buscar</button>
+            </form>
+        </div>
+        <mat-divider></mat-divider><br>
+        <div class="mat-card-content-segmento-credito" id="div-segmento">
+            <section class="section-segmento">
+                <div class="segmento-nit-container">
+                    <h1 class="h1-nombre">{{segmentoCreditoSeleccionado.segmento.nombre}}</h1>
+                    <h3 class="h3-nit">{{segmentoCreditoSeleccionado.segmento.nit}}</h3>
+                </div>
+                <div class="segmento-credito-container">
+                    Q {{segmentoCreditoSeleccionado.credito}}
+                </div>
+            </section>
+            <p><b>Última transacción: </b> {{segmentoCreditoSeleccionado.ultimaTransaccion}}</p>
+            <mat-checkbox [checked]="segmentoCreditoSeleccionado.sobreFinanciamiento" [disabled]="true">Sobre Financiamiento</mat-checkbox>
+            <br><br>
+            <mat-divider></mat-divider>
+            <div class="segmento-credito-detalle-container">
+                <b>Detalle de créditos</b>
+                <div class="mat-table-filter-detalle">
+                    <mat-form-field color="warn" class="mat-form-field-filter-detalle">
+                        <input matInput (keyup)="filterDetalle($event.target.value)" placeholder="Buscar detalle">
+                    </mat-form-field>
+                </div>
+                <div class="mat-table-credito-detalle">
+                    <mat-table [dataSource]="dataSourceDetalleDTO" matSort>
+                        <ng-container matColumnDef='fechaEmision'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Emisión</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.fechaEmision}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='servicio'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Servicio</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.idServicio}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='placa'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Placa</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.placaNumero}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='totalFacturado'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Total Facturado</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.totalFacturado}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='totalPagado'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Total Pagado</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.totalPagado}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='totalRestante'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Total Restante</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.totalRestante}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='accion'>
+                            <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <button mat-button color="primary" (click)="abrirDialogoPago(row)">
+                                    <mat-icon>request_page</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+    
+                        <mat-header-row *matHeaderRowDef="displayedColumnsDetalle; sticky : true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumnsDetalle;"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+            <div class="segmento-pago-container">
+                <b>Pagos realizados</b>
+                <div class="mat-table-filter-pago">
+                    <mat-form-field color="warn" class="mat-form-field-filter-pago">
+                        <input matInput (keyup)="filterPago($event.target.value)" placeholder="Buscar pago">
+                    </mat-form-field>
+                </div>
+                <div class="mat-table-segmento-pago">
+                    <mat-table [dataSource]="dataSourcePagoDTO" matSort>
+                        <ng-container matColumnDef='fechaPago'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Pago</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.fechaPago}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='servicio'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Servicio</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.idServicio}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='placa'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Placa</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.placaNumero}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='monto'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Monto</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.monto}}</mat-cell>
+                        </ng-container>
+    
+                        <ng-container matColumnDef='acciones'>
+                            <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <button mat-button color="warn" (click)="abrirDialogoPagoEliminar(row)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+    
+                        <mat-header-row *matHeaderRowDef="displayedColumnsPago; sticky : true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumnsPago;"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

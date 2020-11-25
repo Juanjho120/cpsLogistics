@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="container-header">
+        <h1>Proveedores</h1>
+        <button mat-fab color="primary" class="button-crear-proveedor" (click)="abrirProveedorDialogo(null)">
+            <mat-icon>create</mat-icon>
+        </button>
+    </div>
+    <div class="card-proveedores-container" fxLayout="row" fxLayoutAlign="space-around start">
+        <mat-card dynamicHeight *ngFor="let p of proveedores">
+            <mat-card-content>
+                <h3 class="h3-nombre-proveedor"><b>{{p.proveedor.nombre}}</b></h3>
+                <h5 class="h5-direccion-proveedor">{{p.proveedor.direccionFiscal}}</h5>
+                <h5 class="h5-telefono-proveedor"><b>Teléfono:</b> {{p.proveedor.telefono}}</h5>
+                <h5 class="h5-telefono-proveedor"><b>Nit:</b> {{p.proveedor.nit}}</h5>
+                <button mat-button color="basic" class="mat-button-agregar-asesor" (click)="abrirAsesorDialogo(null, p)">
+                    <mat-icon>person_add</mat-icon>
+                </button>
+
+                <div class="asesores-container">
+                    <h4 class="h4-asesores">ASESORES:</h4>
+                
+                    <mat-list>
+                        <mat-list-item *ngFor="let pa of p.proveedorAsesor">
+                            <mat-icon mat-list-icon>person</mat-icon>
+                            <div mat-line>{{pa.nombre}}</div>
+                            <div mat-line>{{pa.telefono}}</div>
+                            <button mat-button color="primary" (click)="abrirAsesorDialogo(pa, null)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-button color="warn" (click)="abrirAsesorDialogoEliminar(pa)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+                <button mat-raised-button color="primary" (click)="abrirProveedorDialogo(p.proveedor)">
+                    <span>Modificar</span>
+                </button>
+                <button mat-raised-button color="warn" (click)="abrirProveedorDialogoEliminar(p.proveedor)">
+                    <span>Eliminar</span>
+                </button>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div>
+    <form [formGroup]="form" #frmSegmento="ngForm" (ngSubmit)="operar()">
+        <mat-form-field>
+            <input matInput placeholder="Nombre" required formControlName="nombre">
+            <small *ngIf="f().nombre.errors?.required && f().nombre.touched" class="invalido">Nombre es requerido</small>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Nit" required formControlName="nit">
+            <small *ngIf="f().nit.errors?.required && f().nit.touched" class="invalido">Nit es requerido</small>
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Direccion Fiscal" required formControlName="direccionFiscal"></textarea>
+            <small *ngIf="f().direccionFiscal.errors?.required && f().direccionFiscal.touched" class="invalido">Direccion es requerido</small>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="frmSegmento.invalid">Guardar</button>
+        <button mat-raised-button color="warn" (click)="cerrar()" type="button">Cancelar</button>
+    </form>
+</div>

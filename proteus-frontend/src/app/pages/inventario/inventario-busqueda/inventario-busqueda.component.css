@@ -1,0 +1,47 @@
+.mat-card {
+    min-height: 300px;
+}
+
+.section-checkbox {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.mat-checkbox {
+    margin: 15px;
+}
+
+.mat-form-field-repuesto {
+    width: 350px;
+}
+
+.mat-form-field-concepto {
+    margin-right: 50px;
+    width: 150px;
+}
+
+.mat-form-field-fecha-inicio {
+    margin-right: 25px;
+    width: 120px;
+}
+
+.mat-form-field-fecha-fin {
+    margin-right: 25px;
+    width: 120px;
+}
+
+.mat-form-field-usuario {
+    margin-right: 20px;
+    width: 220px;
+}
+
+.section-panel {
+    margin: 15px;
+}
+
+.mat-expansion-panel-header-description {
+    display: flex;
+    justify-content: flex-start;
+  }

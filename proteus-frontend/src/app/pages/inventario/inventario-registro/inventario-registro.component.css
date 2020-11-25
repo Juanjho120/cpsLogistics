@@ -1,0 +1,28 @@
+.inventario-nuevo-card-container {
+    margin: 15px;
+    width: 43%;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-top: 10px;
+    margin-left: 90px;
+    margin-bottom: 30px;
+}
+
+.mat-form-field-cantidad {
+    margin-right: 20px;
+    width: 55px;
+}
+
+.mat-form-field-repuesto {
+    margin-right: 20px;
+    width: 300px;
+}
+
+.button-guardar-inventario {
+    margin-left: 50px;
+}
+
+.button-limpiar-inventario {
+    margin-left: 10px;
+}

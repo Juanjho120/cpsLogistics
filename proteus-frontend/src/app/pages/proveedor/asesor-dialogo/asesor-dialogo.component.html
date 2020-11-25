@@ -1,0 +1,16 @@
+<div>
+    <form [formGroup]="form" #frmProveedorAsesor="ngForm" (ngSubmit)="operar()">
+        <mat-form-field>
+            <input matInput placeholder="Nombre del asesor" required formControlName="nombre">
+            <small *ngIf="f().nombre.errors?.required && f().nombre.touched" class="invalido">Nombre es requerido</small>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Telefono del asesor" required formControlName="telefono" type="number">
+            <small *ngIf="f().telefono.errors?.required && f().telefono.touched" class="invalido">Telefono es requerido</small>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="frmProveedorAsesor.invalid">Guardar</button>
+        <button mat-raised-button color="warn" (click)="cerrar()" type="button">Cancelar</button>
+    </form>
+</div>

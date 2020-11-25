@@ -1,0 +1,54 @@
+<mat-card dynamicHeight>
+    <mat-card-content>
+        <section class="section-form-fecha">
+            <form [formGroup]="form" #frmInventarioBusqueda="ngForm" (ngSubmit)="buscar()">
+                <mat-form-field class="mat-form-field-fecha-inicio">
+                    <input matInput [matDatepicker]="pickerInicio" placeholder="Inicio" [max]="maxFecha"
+                        value="fechaInicioSeleccionada" (dateChange)="cambiarFechaInicio($event)" formControlName="fechaInicio" required>
+                    <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerInicio></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="mat-form-field-fecha-fin">
+                    <input matInput [matDatepicker]="pickerFin" placeholder="Fin" [max]="maxFecha"
+                        value="fechaFinSeleccionada" (dateChange)="cambiarFechaFin($event)" formControlName="fechaFin" required>
+                    <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFin></mat-datepicker>
+                </mat-form-field>
+
+                <button mat-flat-button color="primary" type="submit" [disabled]="frmInventarioBusqueda.invalid">Buscar</button>
+            </form>
+        </section>
+        <div class="card-table-container">
+            <mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef='codigo'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Codigo</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.codigo}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='descripcion'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.descripcion}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='entrada'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Entradas</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.entrada}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='salida'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Salidas</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.salida}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='existencia'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Existencia</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.existencia}}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+    </mat-card-content>
+</mat-card>

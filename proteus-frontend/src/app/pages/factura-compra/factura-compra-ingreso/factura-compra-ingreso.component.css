@@ -1,0 +1,65 @@
+.mat-form-field-proveedor {
+    width: 250px;
+    margin-right: 140px;
+}
+
+.mat-form-field-codigo {
+    width: 200px;
+    margin-right: 50px;
+}
+
+.mat-form-field-fecha {
+    margin-right: 30px;
+    width: 150px;
+}
+
+.mat-form-field-cantidad {
+    margin-right: 20px;
+    width: 55px;
+}
+
+.mat-form-field-repuesto {
+    margin-right: 20px;
+    width: 300px;
+}
+
+.mat-form-field-marca {
+    width: 165px;
+    margin-right: 30px;
+}
+
+.mat-form-field-costo {
+    width: 100px;
+    margin-right: 80px;
+}
+
+.mat-column-costoTotal {
+    flex : 0 0 10%;
+}
+
+.mat-column-costoUnitario {
+    flex : 0 0 10%;
+}
+
+.mat-column-cantidad {
+    flex : 0 0 8%;
+}
+
+.mat-column-marca {
+    flex : 0 0 20%;
+}
+
+.mat-column-accion {
+    flex : 0 0 10%;
+}
+
+.mat-header-cell {
+    font-size: 13px;
+}
+
+.factura-header {
+    display: flex;
+}
+.total-factura-label {
+    font-size: 30px;
+}

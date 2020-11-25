@@ -1,0 +1,19 @@
+.container {
+    margin: 20px;
+    border-style: ridge;
+    border-width: 1px;
+}
+
+.factura-compra-container {
+    display: flex;
+}
+
+.factura-compra-ingreso-container {
+    margin: 15px;
+    width: 50%;
+}
+
+.factura-compra-busqueda-container {
+    margin: 15px;
+    width: 50%;
+}

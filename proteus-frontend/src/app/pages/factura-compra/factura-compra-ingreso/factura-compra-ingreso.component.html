@@ -1,0 +1,111 @@
+<mat-card dynamicHeight>
+    <mat-card-header>
+        <mat-card-title>Ingreso de facturas</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <span><b>Datos de factura</b></span>
+        <form [formGroup]="formFacturaCompra" #frmFacturaCompra="ngForm">
+            <div class="factura-header">
+                <mat-form-field appearance="fill" class="mat-form-field-proveedor">
+                    <mat-label>Proveedor</mat-label>
+                    <mat-select [(value)]="idProveedor" formControlName="proveedor" required>
+                        <mat-option *ngFor="let p of (proveedores$ | async)" [value]="p.idProveedor">
+                            {{p.nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class=".total-factura-label">
+                    <p class="total-factura-label">Q. {{totalFactura}}</p>
+                </div>
+            </div>
+
+            <mat-form-field class="mat-form-field-codigo">
+                <input matInput placeholder="Codigo" required formControlName="codigo">
+            </mat-form-field>
+
+            <mat-form-field class="mat-form-field-fecha">
+                <input matInput [matDatepicker]="picker" placeholder="Fecha" [max]="maxFecha"
+                    value="fechaSeleccionada" (dateChange)="cambiarFecha($event)" formControlName="fecha">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" type="button" [disabled]="evaluarAgregarFactura()" (click)="agregarFacturaCompra()">Crear Factura</button>
+        </form>
+        <mat-divider></mat-divider>
+        <br>
+        <span><b>Detalles</b></span>
+        <form [formGroup]="formFacturaCompraDetalle" #frmFacturaCompraDetalle="ngForm" (ngSubmit)="agregarFacturaCompraDetalle()">
+            <mat-form-field class="mat-form-field-cantidad">
+                <input matInput placeholder="Cant" required formControlName="cantidad" type="number" min="0">
+            </mat-form-field>
+
+            <mat-form-field class="mat-form-field-repuesto">
+                <input type="text" placeholder="Seleccione el repuesto" matInput [matAutocomplete]="autoRepuesto" 
+                    [formControl]="myControlRepuesto" required formControlName="repuesto">
+            </mat-form-field>
+
+            <mat-autocomplete #autoRepuesto="matAutocomplete" [displayWith]="mostrarRepuesto" (optionSelected)="seleccionarRepuesto($event)">
+                <mat-option *ngFor="let r of repuestosFiltrados$ | async" [value]="r">
+                    {{ r.descripcion }}
+                </mat-option>
+            </mat-autocomplete>
+            
+            <mat-form-field appearance="fill" class="mat-form-field-marca">
+                <mat-label>Marca de repuesto</mat-label>
+                <mat-select [(value)]="marcaRepuestoSeleccionado" formControlName="marca" required>
+                    <mat-option *ngFor="let m of (marcas$ | async)" [value]="m">
+                        {{m.nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            Q. 
+            <mat-form-field class="mat-form-field-costo">
+                <input matInput placeholder="Precio unitario" required formControlName="costoUnitario" type="number" min="0" step="0.5">
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" type="submit" [disabled]="frmFacturaCompraDetalle.invalid">Agregar Detalle</button>
+            
+        </form>
+        <mat-divider></mat-divider>
+        <mat-table [dataSource]="dataSourceFacturaCompraDetalle">
+            <ng-container matColumnDef='repuesto'>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Repuesto</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.repuesto.descripcion}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef='marca'>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Marca</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.marcaRepuesto.nombre}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef='cantidad'>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Cant</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.cantidad}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef='costoUnitario'>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Costo</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.costoUnitario}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef='costoTotal'>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Subtotal</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.costoTotal}}</mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef='accion'>
+                <mat-header-cell *matHeaderCellDef>Accion</mat-header-cell>
+                <mat-cell *matCellDef="let row; let i=index">
+                    <button mat-button color="warn" (click)="removerFacturaCompraDetalle(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </mat-card-content>
+</mat-card>

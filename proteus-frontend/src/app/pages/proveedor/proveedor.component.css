@@ -1,0 +1,49 @@
+.container {
+    margin : 20px;
+    padding: 20px;
+    border-style: ridge;
+    border-width: 1px;
+}
+
+.container-header {
+    display: flex;
+}
+
+.button-crear-proveedor {
+    margin-left: 300px;
+}
+
+.card-proveedores-container {
+    flex-wrap: wrap;
+    display: flex;
+}
+
+.mat-card {
+    width: 30%;
+    margin: 10px;
+    height: 450px;
+}
+
+.asesores-container {
+    height: 250px;
+}
+
+.h3-nombre-proveedor {
+    margin: 0px;
+}
+
+.h5-direccion-proveedor {
+    margin: 0px;
+}
+
+.h5-telefono-proveedor {
+    margin: 0px;
+}
+
+.h4-asesores {
+    margin-bottom: 0px;
+}
+
+.mat-button-agregar-asesor {
+    margin-left: 220px;
+}

@@ -1,0 +1,32 @@
+<div class="container" fxLayout="row" fxLayoutAlign="space-around start">
+    <div class="repuesto-nuevo-card-container">
+        <mat-card class="repuesto-nuevo-card">
+            <mat-card-content>
+                <div fxLayout="row" fxLayoutAlign="end start">
+                    <button mat-raised-button color="warn" class="button-cerrar" routerLink="/cardex" type="button">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <form [formGroup]="form" #frmRepuesto="ngForm" (ngSubmit)="operar()">
+                    <mat-form-field class="mat-form-field-codigo">
+                        <input matInput placeholder="Codigo" required formControlName="codigo">
+                    </mat-form-field>
+
+                    <mat-form-field class="mat-form-field-codigoBarra">
+                        <input matInput placeholder="Codigo de barra" formControlName="codigoBarra" type="number">
+                    </mat-form-field>
+            
+                    <mat-form-field class="mat-form-field-existencia">
+                        <input matInput placeholder="Existencia" required formControlName="existencia" type="number">
+                    </mat-form-field>
+                    
+                    <mat-form-field class="mat-form-field-descripcion">
+                        <input matInput placeholder="Descripcion" minLength="3" required formControlName="descripcion">
+                    </mat-form-field>
+            
+                    <button mat-flat-button color="primary" type="submit" [disabled]="frmRepuesto.invalid">Guardar</button>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

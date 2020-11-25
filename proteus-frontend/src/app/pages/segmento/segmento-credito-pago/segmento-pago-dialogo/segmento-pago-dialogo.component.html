@@ -1,0 +1,11 @@
+<div>
+    <form [formGroup]="form" #frmSegmentoPago="ngForm" (ngSubmit)="operar()">
+        <mat-form-field>
+            <input matInput placeholder="Ingresar monto de pago" required formControlName="monto" type="number">
+            <small *ngIf="f().monto.errors?.required && f().monto.touched" class="invalido">Monto es requerido</small>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="frmSegmentoPago.invalid">Guardar</button>
+        <button mat-raised-button color="warn" (click)="cerrar()" type="button">Cancelar</button>
+    </form>
+</div>

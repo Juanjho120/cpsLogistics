@@ -1,0 +1,27 @@
+.container {
+    margin: 20px;
+}
+
+.repuesto-nuevo-card-container {
+    width : 580px;
+}
+
+.mat-form-field-codigo {
+    width: 150px;
+    margin-right: 55px;
+}
+
+.mat-form-field-codigoBarra {
+    width: 150px;
+    margin-right: 55px;
+}
+
+.mat-form-field-existencia {
+    width: 80px;
+    margin-right : 50px;
+}
+
+.mat-form-field-descripcion {
+    width: 500px;
+    margin-right: 40px;
+}
