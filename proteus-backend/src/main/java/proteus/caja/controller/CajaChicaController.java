@@ -42,6 +42,23 @@ public class CajaChicaController {
 	}
 	
 	/**
+	 * Obtiene todas las cajas chicas por fecha de ingreso de la base de datos
+	 * @param fechaDesde
+	 * @param fechaHasta
+	 * @return Listado de cajas chicas
+	 * @throws Exception
+	 */
+	@GetMapping("/fecha-ingreso/{fechaDesde}/{fechaHasta}")
+	public ResponseEntity<List<CajaChica>> getByFechaIngreso(@PathVariable("fechaDesde") String fechaDesde, 
+			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
+		List<CajaChica> cajaChicaList = cajaChicaService.getByFechaIngreso(fechaDesde, fechaHasta);
+		if(cajaChicaList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran cajas chicas dentro de las fechas "+fechaDesde+" / "+fechaHasta+" en la base de datos");
+		}
+		return new ResponseEntity<List<CajaChica>>(cajaChicaList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Obtiene todas las cajas chicas por servicio de la base de datos
 	 * @param idServicio
 	 * @return Listado de cajas chicas
@@ -57,16 +74,16 @@ public class CajaChicaController {
 	}
 	
 	/**
-	 * Obtiene todas las cajas chicas por proveedor de la base de datos
-	 * @param idProveedor
+	 * Obtiene todas las cajas chicas por placa de la base de datos
+	 * @param idPlaca
 	 * @return Listado de cajas chicas
 	 * @throws Exception
 	 */
-	@GetMapping("/proveedor/{idProveedor}")
-	public ResponseEntity<List<CajaChica>> getByProveedor(@PathVariable("idProveedor") Integer idProveedor) throws Exception {
-		List<CajaChica> cajaChicaList = cajaChicaService.getByProveedor(idProveedor);
+	@GetMapping("/placa/{idPlaca}")
+	public ResponseEntity<List<CajaChica>> getByPlaca(@PathVariable("idPlaca") Integer idPlaca) throws Exception {
+		List<CajaChica> cajaChicaList = cajaChicaService.getByPlaca(idPlaca);
 		if(cajaChicaList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran cajas chicas para el proveedor "+idProveedor+" en la base de datos");
+			throw new ModelNotFoundException("No se encuentran cajas chicas para la placa en la base de datos");
 		}
 		return new ResponseEntity<List<CajaChica>>(cajaChicaList, HttpStatus.OK);
 	}

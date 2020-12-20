@@ -43,22 +43,17 @@ public class SegmentoCredito {
 	@Column(name = "ultima_transaccion", nullable = false)
 	private LocalDate ultimaTransaccion;
 	
-	@Column(name = "sobre_financiamiento")
-	private Boolean sobreFinanciamiento;
-	
 	public SegmentoCredito() {}
 
 	/**
 	 * @param idSegmentoCredito
 	 * @param segmento
 	 * @param credito
-	 * @param sobreFinanciamiento
 	 */
-	public SegmentoCredito(Integer idSegmentoCredito, Segmento segmento, Double credito, Boolean sobreFinanciamiento, LocalDate ultimaTransaccion) {
+	public SegmentoCredito(Integer idSegmentoCredito, Segmento segmento, Double credito, LocalDate ultimaTransaccion) {
 		this.idSegmentoCredito = idSegmentoCredito;
 		this.segmento = segmento;
 		this.credito = credito;
-		this.sobreFinanciamiento = sobreFinanciamiento;
 		this.ultimaTransaccion = ultimaTransaccion;
 	}
 
@@ -116,20 +111,6 @@ public class SegmentoCredito {
 	 */
 	public void setUltimaTransaccion(LocalDate ultimaTransaccion) {
 		this.ultimaTransaccion = ultimaTransaccion;
-	}
-
-	/**
-	 * @return the sobreFinanciamiento
-	 */
-	public Boolean getSobreFinanciamiento() {
-		return sobreFinanciamiento;
-	}
-
-	/**
-	 * @param sobreFinanciamiento the sobreFinanciamiento to set
-	 */
-	public void setSobreFinanciamiento(Boolean sobreFinanciamiento) {
-		this.sobreFinanciamiento = sobreFinanciamiento;
 	}
 	
 }

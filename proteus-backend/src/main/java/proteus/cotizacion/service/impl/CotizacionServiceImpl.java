@@ -49,6 +49,7 @@ public class CotizacionServiceImpl extends CRUDImpl<Cotizacion, Integer> impleme
 		for(CotizacionTrabajo cotizacionTrabajo : cotizacion.getCotizacionTrabajo()) {
 			cotizacionTrabajo.setCotizacion(cotizacion);
 			totalCotizacion += cotizacionTrabajo.getCosto();
+			//this.cotizacionTrabajoService.create(cotizacionTrabajo);
 		}
 		
 		//Aisgnamos la cotizacion a cada repuesto de cotizacion
@@ -60,6 +61,7 @@ public class CotizacionServiceImpl extends CRUDImpl<Cotizacion, Integer> impleme
 			totalCotizacion += totalRepuesto;
 			
 			cotizacionRepuesto.setCostoTotal(totalRepuesto);
+			//this.cotizacionRepuestoService.create(cotizacionRepuesto);
 		}
 		cotizacion.setTotal(totalCotizacion);
 		

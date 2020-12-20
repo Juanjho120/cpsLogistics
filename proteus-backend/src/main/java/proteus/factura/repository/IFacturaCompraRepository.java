@@ -34,4 +34,10 @@ public interface IFacturaCompraRepository extends IGenericRepository<FacturaComp
 	@Query("SELECT cpd.facturaCompra FROM CreditoProveedorDetalle cpd WHERE cpd.vencida = :vencida")
 	List<FacturaCompra> findByVencimiento(Boolean vencida);
 	
+	@Query("FROM FacturaCompra WHERE idFacturaCompra NOT IN (SELECT cpd.facturaCompra.idFacturaCompra FROM CreditoProveedorDetalle cpd)")
+	List<FacturaCompra> findNotInCreditoProveedorDetalle();
+	
+	@Query("SELECT cpd.facturaCompra FROM CreditoProveedorDetalle cpd WHERE cpd.pagada = :pagada")
+	List<FacturaCompra> findByPagada(Boolean pagada);
+	
 }

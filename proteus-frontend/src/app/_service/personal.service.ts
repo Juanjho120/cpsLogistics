@@ -11,5 +11,10 @@ export class PersonalService extends GenericService<Personal> {
 
   constructor(protected http : HttpClient) {
     super(http, `${environment.HOST}/personal`);
-   }
+  }
+
+  getByPersonalPuesto(idPersonalPuesto : number) {
+    return this.http.get<Personal[]>(`${this.url}/puesto/${idPersonalPuesto}`);
+  }
+
 }

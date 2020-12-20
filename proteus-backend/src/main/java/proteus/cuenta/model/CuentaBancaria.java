@@ -59,7 +59,7 @@ public class CuentaBancaria {
 	
 	@NotNull(message = "El nombre la cuenta bancaria no puede ser nulo")
 	@Size(min = 3, message = "El nombre de la cuenta bancaria debe tener por lo menos 3 caracteres")
-	@Column(name = "nombre", nullable = false, length = 30)
+	@Column(name = "nombre", nullable = false)
 	private String nombre;
 	
 	public CuentaBancaria() {}

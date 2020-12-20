@@ -63,5 +63,20 @@ public class CuentaBancariaServiceImpl extends CRUDImpl<CuentaBancaria, Integer>
 	public void deleteByCategoriaAndIdItem(Integer idCategoria, Integer idItem) throws Exception {
 		cuentaBancariaRepository.deleteByCategoriaAndIdItem(idCategoria, idItem);
 	}
+
+	@Override
+	public List<CuentaBancaria> getByBanco(Integer idBanco) throws Exception {
+		return cuentaBancariaRepository.findByBanco(idBanco);
+	}
+
+	@Override
+	public List<CuentaBancaria> getByMoneda(Integer idMoneda) throws Exception {
+		return cuentaBancariaRepository.findByMoneda(idMoneda);
+	}
+
+	@Override
+	public List<CuentaBancaria> getByNombreLike(String nombre) throws Exception {
+		return cuentaBancariaRepository.findByNombreLike("%"+nombre+"%");
+	}
 	
 }

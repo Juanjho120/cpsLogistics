@@ -18,5 +18,7 @@ public interface IFacturaCompraService extends ICRUD<FacturaCompra, Integer>{
 	List<FacturaCompra> getByFecha(String fechaDesde, String fechaHasta) throws Exception;
 	List<FacturaCompra> getByRepuesto(Integer idRepuesto) throws Exception;
 	List<FacturaCompra> getByVencimiento(Boolean vencida) throws Exception;
+	List<FacturaCompra> getByPagada(Boolean pagada) throws Exception;
+	List<FacturaCompra> getNotInCreditoProveedorDetalle() throws Exception;
 	
 }

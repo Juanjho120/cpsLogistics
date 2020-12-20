@@ -57,6 +57,51 @@ public class CuentaBancariaController {
 	}
 	
 	/**
+	 * Obtiene todas las cuentas bancarias por banco
+	 * @param idBanco
+	 * @return Listado de cuentas bancarias
+	 * @throws Exception
+	 */
+	@GetMapping("/banco/{idBanco}")
+	public ResponseEntity<List<CuentaBancaria>> getByBanco(@PathVariable("idBanco") Integer idBanco) throws Exception {
+		List<CuentaBancaria> cuentaBancariaList = cuentaBancariaService.getByBanco(idBanco);
+		if(cuentaBancariaList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran cuentas bancarias");
+		}
+		return new ResponseEntity<List<CuentaBancaria>>(cuentaBancariaList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Obtiene todas las cuentas bancarias por moneda
+	 * @param idMoneda
+	 * @return Listado de cuentas bancarias
+	 * @throws Exception
+	 */
+	@GetMapping("/moneda/{idMoneda}")
+	public ResponseEntity<List<CuentaBancaria>> getByMoneda(@PathVariable("idMoneda") Integer idMoneda) throws Exception {
+		List<CuentaBancaria> cuentaBancariaList = cuentaBancariaService.getByMoneda(idMoneda);
+		if(cuentaBancariaList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran cuentas bancarias");
+		}
+		return new ResponseEntity<List<CuentaBancaria>>(cuentaBancariaList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Obtiene todas las cuentas bancarias por nombre
+	 * @param nombre
+	 * @return Listado de cuentas bancarias
+	 * @throws Exception
+	 */
+	@GetMapping("/nombre/{nombre}")
+	public ResponseEntity<List<CuentaBancaria>> getByNombre(@PathVariable("nombre") String nombre) throws Exception {
+		List<CuentaBancaria> cuentaBancariaList = cuentaBancariaService.getByNombreLike(nombre);
+		if(cuentaBancariaList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran cuentas bancarias");
+		}
+		return new ResponseEntity<List<CuentaBancaria>>(cuentaBancariaList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Busca una cuenta bancaria por su id
 	 * @param id
 	 * @return Cuenta bancaria

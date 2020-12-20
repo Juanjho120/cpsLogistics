@@ -23,6 +23,9 @@ public interface IServicioRepository extends IGenericRepository<Servicio, Intege
 	@Query("FROM Servicio WHERE finalizado = :finalizado")
 	List<Servicio> findByFinalizado(Boolean finalizado);
 	
+	@Query("FROM Servicio WHERE finalizado = :finalizado AND facturado = :facturado")
+	List<Servicio> findByFinalizadoAndFacturado(Boolean finalizado, Boolean facturado);
+	
 	@Query("FROM Servicio WHERE facturado = :facturado")
 	List<Servicio> findByFacturado(Boolean facturado);
 	
@@ -31,6 +34,9 @@ public interface IServicioRepository extends IGenericRepository<Servicio, Intege
 	
 	@Query("FROM Servicio WHERE fechaHora BETWEEN :fechaDesde AND :fechaHasta")
 	List<Servicio> findByFechaRango(LocalDateTime fechaDesde, LocalDateTime fechaHasta);
+	
+	@Query("FROM Servicio WHERE fechaHora BETWEEN :fechaDesde AND :fechaHasta AND finalizado = :finalizado AND facturado = :facturado")
+	List<Servicio> findByFechaAndFinalizadoAndFacturado(LocalDateTime fechaDesde, LocalDateTime fechaHasta, Boolean finalizado, Boolean facturado);
 	
 	@Query("FROM Servicio WHERE placa.idPlaca = :idPlaca AND finalizado = :finalizado")
 	List<Servicio> findByPlacaAndFinalizado(Integer idPlaca, Boolean finalizado);
@@ -56,7 +62,13 @@ public interface IServicioRepository extends IGenericRepository<Servicio, Intege
 	@Query("FROM Servicio WHERE servicioTipo.idServicioTipo = :idServicioTipo")
 	List<Servicio> findByServicioTipo(Integer idServicioTipo);
 	
+	@Query("FROM Servicio WHERE servicioTipo.idServicioTipo = :idServicioTipo AND finalizado = :finalizado AND facturado = :facturado")
+	List<Servicio> findByServicioTipoAndFinalizadoAndFacturado(Integer idServicioTipo, Boolean finalizado, Boolean facturado);
+	
 	@Query("FROM Servicio WHERE cotizacion.idCotizacion = :idCotizacion")
 	List<Servicio> findByCotizacion(Integer idCotizacion);
+	
+	@Query("FROM Servicio s WHERE s.idServicio NOT IN (SELECT c.servicio.idServicio FROM Checklist c)")
+	List<Servicio> findNotInChecklist();
 	
 }

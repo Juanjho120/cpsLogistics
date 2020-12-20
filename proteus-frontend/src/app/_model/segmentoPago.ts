@@ -1,7 +1,11 @@
-import { SegmentoCreditoDetalle } from './segmentoCreditoDetalle';
+import { PagoTipo } from './pagoTipo';
+import { SegmentoPagoDetalle } from './segmentoPagoDetalle';
 export class SegmentoPago {
     idSegmentoPago : number;
-    segmentoCreditoDetalle : SegmentoCreditoDetalle;
+    pagoTipo : PagoTipo;
+    idItem : number;
     fechaHoraPago : string;
     monto : number;
+    facturas : string;
+    segmentoPagoDetalle : SegmentoPagoDetalle[];
 }

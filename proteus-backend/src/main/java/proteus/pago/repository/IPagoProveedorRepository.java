@@ -16,13 +16,14 @@ import proteus.pago.model.PagoProveedor;
  */
 @Repository
 public interface IPagoProveedorRepository extends IGenericRepository<PagoProveedor, Integer> {
-
-	PagoProveedor findByNoDocumento(String noDocumento);
 	
-	@Query("FROM PagoProveedor WHERE creditoProveedor.proveedor.idProveedor = :idProveedor")
+	@Query("SELECT ppd.pagoProveedor FROM PagoProveedorDetalle ppd WHERE ppd.creditoProveedorDetalle.creditoProveedor.proveedor.idProveedor = :idProveedor")
 	List<PagoProveedor> findByProveedor(Integer idProveedor);
 	
 	@Query("FROM PagoProveedor WHERE fechaHoraPago BETWEEN :fechaDesde AND :fechaHasta")
 	List<PagoProveedor> findByFechaPago(LocalDateTime fechaDesde, LocalDateTime fechaHasta);
+	
+	@Query("SELECT DISTINCT ppd.pagoProveedor FROM PagoProveedorDetalle ppd WHERE ppd.creditoProveedorDetalle.creditoProveedor.idCreditoProveedor = :idCreditoProveedor")
+	List<PagoProveedor> findByCreditoProveedor(Integer idCreditoProveedor);
 	
 }

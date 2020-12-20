@@ -1,0 +1,62 @@
+<div>
+    <form [formGroup]="formCajaChica" #frmCajaChica="ngForm" (ngSubmit)="operar()">
+        
+        <mat-form-field>
+            <input matInput placeholder="Fecha de ingreso" required formControlName="fechaIngreso">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Concepto" required formControlName="concepto">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Autoriza</mat-label>
+            <mat-select [(value)]="idAutoriza" formControlName="autoriza" required>
+                <mat-option *ngFor="let p of (personal$ | async)" [value]="p.idPersonal">
+                    {{p.nombre}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Recibe</mat-label>
+            <mat-select [(value)]="idRecibe" formControlName="recibe" required>
+                <mat-option *ngFor="let p of (personal$ | async)" [value]="p.idPersonal">
+                    {{p.nombre}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="No de Servicio" required formControlName="servicio">
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Descripción" required formControlName="descripcion"></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Tipo de comprobante" required formControlName="comprobanteTipo">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Proveedor</mat-label>
+            <mat-select [(value)]="idProveedorMenor" formControlName="proveedorMenor" required>
+                <mat-option *ngFor="let pm of (proveedoresMenores$ | async)" [value]="pm.idProveedorMenor">
+                    {{pm.nombre}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Numero de comprobante" required formControlName="numeroComprobante">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Monto" required formControlName="monto" type="number" min="0">
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="frmCajaChica.invalid">Guardar</button>
+        <button mat-raised-button color="warn" (click)="cerrar()" type="button">Cancelar</button>
+    </form>
+</div>

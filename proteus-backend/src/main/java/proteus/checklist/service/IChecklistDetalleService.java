@@ -17,5 +17,6 @@ public interface IChecklistDetalleService extends ICRUD<ChecklistDetalle, Intege
 	List<ChecklistDetalle> getByChecklist(Integer idChecklist) throws Exception;
 	void deleteByChecklist(Integer idChecklist) throws Exception;
 	List<ChecklistDetalle> createByChecklistTipo(Checklist checklist, List<ChecklistEvaluacion> checklistEvaluacionList) throws Exception;
+	List<ChecklistDetalle> createByChecklistTipo(Integer idChecklistTipo) throws Exception;
 	
 }

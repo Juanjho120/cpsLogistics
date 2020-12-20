@@ -42,6 +42,34 @@ public class PlacaController {
 	}
 	
 	/**
+	 * Obtiene todas las placas que no estan en servicio
+	 * @return Listado de placas
+	 * @throws Exception
+	 */
+	@GetMapping("/not-in-service")
+	public ResponseEntity<List<Placa>> getNotInService() throws Exception {
+		List<Placa> placaList = placaService.getNotInService();
+		if(placaList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran placas libres");
+		}
+		return new ResponseEntity<List<Placa>>(placaList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Obtiene todas las placas que estan en servicio
+	 * @return Listado de placas
+	 * @throws Exception
+	 */
+	@GetMapping("/in-service")
+	public ResponseEntity<List<Placa>> getInService() throws Exception {
+		List<Placa> placaList = placaService.getInService();
+		if(placaList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran placas en servicio");
+		}
+		return new ResponseEntity<List<Placa>>(placaList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Obtiene todas las placas de una marca de la base de datos
 	 * @return Listado de placas
 	 * @throws Exception

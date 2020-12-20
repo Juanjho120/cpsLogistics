@@ -1,5 +1,6 @@
 package proteus.caja.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -15,14 +16,14 @@ import proteus.generico.repository.IGenericRepository;
  */
 @Repository
 public interface ICajaChicaRepository extends IGenericRepository<CajaChica, Integer> {
-
-	@Query("FROM CajaChica WHERE proveedor.idProveedor = :idProveedor AND codigoFactura = :codigoFactura")
-	CajaChica findByProveedorAndCodigoFactura(Integer idProveedor, String codigoFactura);
 	
 	@Query("FROM CajaChica WHERE servicio.idServicio = :idServicio")
 	List<CajaChica> findByServicio(Integer idServicio);
 	
-	@Query("FROM CajaChica WHERE proveedor.idProveedor = :idProveedor")
-	List<CajaChica> findByProveedor(Integer idProveedor);
+	@Query("FROM CajaChica WHERE servicio.placa.idPlaca = :idPlaca")
+	List<CajaChica> findByPlaca(Integer idPlaca);
+	
+	@Query("FROM CajaChica WHERE fechaIngreso BETWEEN :fechaDesde AND :fechaHasta")
+	List<CajaChica> findByFechaIngreso(LocalDate fechaDesde, LocalDate fechaHasta);
 	
 }

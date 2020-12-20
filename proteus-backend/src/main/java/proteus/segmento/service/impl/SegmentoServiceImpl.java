@@ -1,5 +1,7 @@
 package proteus.segmento.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,11 @@ public class SegmentoServiceImpl extends CRUDImpl<Segmento, Integer> implements 
 			return segmentoRepository.save(segmento);
 		}
 		return null;
+	}
+
+	@Override
+	public List<Segmento> getWithCredito() throws Exception {
+		return segmentoRepository.findWithCredito();
 	}
 	
 }

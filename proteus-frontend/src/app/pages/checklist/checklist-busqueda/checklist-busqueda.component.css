@@ -1,0 +1,153 @@
+.mat-card {
+    width: 97%;
+    padding: 20px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-top: 5px;
+    margin-left: 40px;
+    margin-bottom: 25px;
+}
+
+.mat-radio-group {
+    margin-left: 10px;
+}
+
+.mat-form-field-placa {
+    margin-right: 25px;
+    width: 200px;
+}
+
+.mat-form-field-checklist-tipo {
+    margin-right: 25px;
+    width: 200px;
+}
+
+.mat-form-field-mecanico {
+    margin-right: 25px;
+    width: 200px;
+}
+
+.mat-form-field-supervisor {
+    margin-right: 25px;
+    width: 200px;
+}
+
+.mat-form-field-fecha-inicio {
+    margin-right: 25px;
+    width: 120px;
+}
+
+.mat-form-field-fecha-fin {
+    margin-right: 25px;
+    width: 120px;
+}
+
+.mat-table-container {
+    margin-top: 20px;
+    border-style: ridge;
+    border-width: 1px;
+}
+
+.mat-header-cell {
+    font-size: 14px;
+    justify-content: center!important;
+    background-color: blue;
+    color: white;
+}
+
+.mat-column-noServicio {
+    flex: 0 0 75px;
+    justify-content: center;
+}
+
+.mat-column-noChecklist {
+    flex: 0 0 75px;
+}
+
+.mat-column-checklistServicioTipo {
+    flex: 0 0 110px;
+    justify-content: center;
+}
+
+.mat-column-servicioTipo {
+    flex: 0 0 115px;
+    justify-content: center;
+}
+
+.mat-column-placa {
+    flex: 0 0 115px;
+    justify-content: center;
+}
+
+.mat-column-fechaIngreso {
+    flex: 0 0 115px;
+    justify-content: center;
+}
+
+.mat-column-fechaRevision {
+    flex: 0 0 115px;
+    justify-content: center;
+}
+
+.mat-column-mecanico {
+    flex: 0 0 186px;
+    justify-content: center;
+}
+
+.mat-column-supervisor {
+    flex: 0 0 186px;
+    justify-content: center;
+}
+
+.element-row {
+    position: relative;
+  }
+  
+.element-row:not(.expanded) {
+    cursor: pointer;
+}
+
+.element-row:not(.expanded):hover {
+    background: #f5f5f5;
+}
+
+.element-row.expanded {
+    border-bottom-color: transparent;
+}
+
+.sistema-mecanico-label {
+    font-size: 12px;
+    margin-right: 580px;
+}
+
+.mat-grid-tile-header {
+    background: lightblue;
+}
+
+.mat-grid-tile-descripcion ::ng-deep figure {
+    justify-content: left!important;
+    margin-left: 7px;
+}
+
+.mat-grid-tile-evaluacion ::ng-deep figure {
+    justify-content: center!important;
+}
+
+.mat-grid-list {
+    border-style: solid;
+    border-width: 1px;
+    width: 750px;
+}
+
+.lightgreen {
+    background-color: lightgreen;
+}
+
+.lightcoral {
+    background-color: lightcoral;
+}
+
+.lightgray {
+    background-color: lightgray;
+}

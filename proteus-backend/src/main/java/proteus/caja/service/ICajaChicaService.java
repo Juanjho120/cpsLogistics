@@ -12,8 +12,8 @@ import proteus.generico.service.ICRUD;
  */
 public interface ICajaChicaService extends ICRUD<CajaChica, Integer> {
 
-	CajaChica getByProveedorAndCodigoFactura(Integer idProveedor, String codigoFactura) throws Exception;
-	List<CajaChica> getByProveedor(Integer idProveedor) throws Exception;
 	List<CajaChica> getByServicio(Integer idServicio) throws Exception;
+	List<CajaChica> getByPlaca(Integer idPlaca) throws Exception;
+	List<CajaChica> getByFechaIngreso(String fechaDesde, String fechaHasta) throws Exception;
 	
 }

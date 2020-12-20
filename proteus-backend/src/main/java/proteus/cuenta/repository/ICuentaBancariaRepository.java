@@ -20,6 +20,15 @@ public interface ICuentaBancariaRepository extends IGenericRepository<CuentaBanc
 	@Query("FROM CuentaBancaria WHERE numero = :numero AND banco.idBanco = :idBanco")
 	CuentaBancaria findByNumeroAndBanco(String numero, Integer idBanco);
 	
+	@Query("FROM CuentaBancaria WHERE banco.idBanco = :idBanco")
+	List<CuentaBancaria> findByBanco(Integer idBanco);
+	
+	@Query("FROM CuentaBancaria WHERE moneda.idMoneda = :idMoneda")
+	List<CuentaBancaria> findByMoneda(Integer idMoneda);
+	
+	@Query("FROM CuentaBancaria WHERE nombre LIKE :nombre")
+	List<CuentaBancaria> findByNombreLike(String nombre);
+	
 	@Query("FROM CuentaBancaria WHERE categoria.idCategoria = :idCategoria")
 	List<CuentaBancaria> findByCategoria(Integer idCategoria);
 	

@@ -14,6 +14,8 @@ public interface ICreditoProveedorDetalleService extends ICRUD<CreditoProveedorD
 
 	CreditoProveedorDetalle getByFacturaCompra(Integer idFacturaCompra) throws Exception;
 	List<CreditoProveedorDetalle> getByCreditoProveedor(Integer idCreditoProveedor) throws Exception;
+	List<CreditoProveedorDetalle> getByCreditoProveedorAndPagada(Integer idCreditoProveedor, Boolean pagada) throws Exception;
+	List<CreditoProveedorDetalle> getByPagada(Boolean pagada) throws Exception;
 	void checkFacturasVencidas() throws Exception;
 	
 }

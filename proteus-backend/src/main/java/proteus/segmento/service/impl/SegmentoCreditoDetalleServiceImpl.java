@@ -1,5 +1,6 @@
 package proteus.segmento.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -48,31 +49,47 @@ public class SegmentoCreditoDetalleServiceImpl extends CRUDImpl<SegmentoCreditoD
 	
 	@Override
 	public SegmentoCreditoDetalle create(SegmentoCreditoDetalle segmentoCreditoDetalle) throws Exception {
+		//No permite crear si ya existe otro detalle de credito con el mismo numero de factura o servicio
 		SegmentoCreditoDetalle segmentoCreditoDetalleAux = this.getByServicio(segmentoCreditoDetalle.getServicio().getIdServicio());
 		if(segmentoCreditoDetalleAux==null) {
-			Double totalFacturado = 0.0;
-			
-			//Busco los valores del servicio
-			Servicio servicio = servicioService.getById(segmentoCreditoDetalle.getServicio().getIdServicio());
-			
-			//Le asigno el total facturado del servicio al detalle de credito
-			totalFacturado = servicio.getCostoTotal();
-			
-			//Obtengo el credito del segmento a traves del segmento que esta asignado al servicio
-			SegmentoCredito segmentoCredito = segmentoCreditoService.getBySegmento(servicio.getSegmento().getIdSegmento());
-			segmentoCreditoDetalle.setSegmentoCredito(segmentoCredito);
-			
-			//El total facturado y el restante es el mismo que el del servicio
-			//Aun no se ha pagado nada al momento de crearse
-			segmentoCreditoDetalle.setTotalFacturado(totalFacturado);
-			segmentoCreditoDetalle.setTotalRestante(totalFacturado);
-			segmentoCreditoDetalle.setTotalPagado(0.0);
-			segmentoCreditoDetalle.setFechaHoraEmision(LocalDateTime.now());
-			
-			servicioService.updateFacturado(servicio.getIdServicio(), true);
-			segmentoCreditoDetalle =  segmentoCreditoDetalleRepository.save(segmentoCreditoDetalle);
-			segmentoCreditoService.updateCredito(segmentoCredito.getIdSegmentoCredito());
-			return segmentoCreditoDetalle;
+			segmentoCreditoDetalleAux = this.getByFacturaNumero(segmentoCreditoDetalle.getFacturaNumero());
+			if(segmentoCreditoDetalleAux==null) {
+				Double totalFacturado = 0.0;
+				
+				//Busco los valores del servicio
+				Servicio servicio = servicioService.getById(segmentoCreditoDetalle.getServicio().getIdServicio());
+				
+				//Le asigno el total facturado del servicio al detalle de credito
+				totalFacturado = servicio.getCostoTotal();
+				
+				//Obtengo el credito del segmento a traves del segmento que esta asignado al servicio
+				SegmentoCredito segmentoCredito = segmentoCreditoService.getBySegmento(servicio.getSegmento().getIdSegmento());
+				
+				//Si no lo encuentro entonces creo el credito para el segmento
+				if(segmentoCredito == null) {
+					segmentoCredito = new SegmentoCredito();
+					segmentoCredito.setSegmento(servicio.getSegmento());
+					segmentoCredito.setCredito(0.0);
+					segmentoCredito.setUltimaTransaccion(LocalDate.now());
+					segmentoCredito = segmentoCreditoService.create(segmentoCredito);
+				}
+				
+				segmentoCreditoDetalle.setSegmentoCredito(segmentoCredito);
+				
+				//El total facturado y el restante es el mismo que el del servicio
+				//Aun no se ha pagado nada al momento de crearse
+				segmentoCreditoDetalle.setTotalFacturado(totalFacturado);
+				segmentoCreditoDetalle.setTotalRestante(totalFacturado);
+				segmentoCreditoDetalle.setTotalPagado(0.0);
+				segmentoCreditoDetalle.setFechaHoraEmision(LocalDateTime.now());
+				
+				//El servicio pasa a estar facturado
+				servicioService.updateFacturado(servicio.getIdServicio(), true);
+				segmentoCreditoDetalle =  segmentoCreditoDetalleRepository.save(segmentoCreditoDetalle);
+				segmentoCreditoService.updateCredito(segmentoCredito.getIdSegmentoCredito()); //Actualizo el credito
+				segmentoCreditoService.updateUltimaTransaccion(segmentoCredito.getIdSegmentoCredito(), LocalDate.now()); //Actualizo la fecha
+				return segmentoCreditoDetalle;
+			}
 		}
 		return null;
 	}
@@ -143,5 +160,34 @@ public class SegmentoCreditoDetalleServiceImpl extends CRUDImpl<SegmentoCreditoD
 			}
 		}
 		return segmentoCreditoDetalleDTOList;
+	}
+
+	@Override
+	public SegmentoCreditoDetalle getByFacturaNumero(String facturaNumero) throws Exception {
+		return segmentoCreditoDetalleRepository.findByFacturaNumero(facturaNumero);
+	}
+
+	@Override
+	public Double sumTotalRestante(List<SegmentoCreditoDetalle> segmentoCreditoDetalleList) throws Exception {
+		Double totalRestante = 0.0;
+		for(SegmentoCreditoDetalle segmentoCreditoDetalle : segmentoCreditoDetalleList) {
+			totalRestante += segmentoCreditoDetalle.getTotalRestante();
+		}
+		return totalRestante;
+	}
+
+	@Override
+	public List<SegmentoCreditoDetalle> getSaldoPendiente() throws Exception {
+		return segmentoCreditoDetalleRepository.findSaldoPendiente();
+	}
+
+	@Override
+	public List<SegmentoCreditoDetalle> getPagadas() throws Exception {
+		return segmentoCreditoDetalleRepository.findPagadas();
+	}
+
+	@Override
+	public List<SegmentoCreditoDetalle> getBySegmentoSinPagar(Integer idSegmento) throws Exception {
+		return segmentoCreditoDetalleRepository.findBySegmentoSinPagar(idSegmento);
 	}
 }

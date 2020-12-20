@@ -13,6 +13,9 @@ import proteus.generico.service.ICRUD;
 public interface ICuentaBancariaService extends ICRUD<CuentaBancaria, Integer> {
 
 	CuentaBancaria getByNumeroAndBanco(String numero, Integer idBanco) throws Exception;
+	List<CuentaBancaria> getByBanco(Integer idBanco) throws Exception;
+	List<CuentaBancaria> getByMoneda(Integer idMoneda) throws Exception;
+	List<CuentaBancaria> getByNombreLike(String nombre) throws Exception;
 	List<CuentaBancaria> getByCategoria(Integer idCategoria) throws Exception;
 	List<CuentaBancaria> getByCategoriaAndIdItem(Integer idCategoria, Integer idItem) throws Exception;
 	List<CuentaBancaria> getByCuentaBancariaTipo(Integer idCuentaBancariaTipo) throws Exception;

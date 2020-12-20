@@ -13,8 +13,10 @@ import proteus.generico.service.ICRUD;
  */
 public interface IChecklistService extends ICRUD<Checklist, Integer> {
 
+	List<Checklist> getAllNotFinalizado() throws Exception;
 	Checklist createDTO(ChecklistChecklistEvaluacionDTO checklistDto) throws Exception;
 	Checklist getByServicio(Integer idServicio) throws Exception;
+	Checklist getByServicioFinalizado(Integer idServicio) throws Exception;
 	Checklist getByNoOrdenTrabajo(String noOrdenTrabajo) throws Exception;
 	Checklist updateDTO(ChecklistChecklistEvaluacionDTO checklistDto) throws Exception;
 	List<Checklist> getByFechaHoraIngreso(String fechaDesde, String fechaHasta) throws Exception;
@@ -23,5 +25,7 @@ public interface IChecklistService extends ICRUD<Checklist, Integer> {
 	List<Checklist> getBySupervisor(Integer idPersonal) throws Exception;
 	List<Checklist> getByUsuarioIngreso(Integer idUsuario) throws Exception;
 	List<Checklist> getByChecklistServicioTipo(Integer idChecklistServicioTipo);
+	List<Checklist> getByPlacaAndServicioFinalizado(Integer idPlaca, Boolean finalizado) throws Exception;
+	List<Checklist> getByPlaca(Integer idPlaca) throws Exception;
 	
 }

@@ -237,10 +237,8 @@ export class CotizacionComponent implements OnInit {
         this.limpiarControlCotizacion();
         this.cotizacion = data;
         this.cargarCotizacionBusqueda();
-        console.log(this.formCotizacion);
-        console.log(this.idSegmento);
       }
-    })
+    });
   }
 
   cargarCotizacionBusqueda() {
@@ -253,12 +251,14 @@ export class CotizacionComponent implements OnInit {
 
     this.formCotizacion.setValue({segmento : this.idSegmento});
 
-    for(let cotizacionTrabajo of this.cotizacionTrabajos) {
-      this.totalTrabajo += cotizacionTrabajo.costo; 
+    for(let i = 0; i < this.cotizacionTrabajos.length; i++) {
+      this.cotizacionTrabajos[i].idCotizacionTrabajo = null;
+      this.totalTrabajo += this.cotizacionTrabajos[i].costo; 
     }
 
-    for(let cotizacionRepuesto of this.cotizacionRepuestos) {
-      this.totalRepuesto += cotizacionRepuesto.costoTotal;
+    for(let i = 0; i < this.cotizacionRepuestos.length; i++) {
+      this.cotizacionRepuestos[i].idCotizacionRepuesto = null;
+      this.totalRepuesto += this.cotizacionRepuestos[i].costoTotal;
     }
   }
 
@@ -273,7 +273,7 @@ export class CotizacionComponent implements OnInit {
       if(data) {
         this.limpiarControlCotizacion();
       }
-    })
+    });
   }
 
   evaluarBotonEliminar() {
@@ -285,8 +285,11 @@ export class CotizacionComponent implements OnInit {
 
   operar() {
     if(this.cotizacion.idCotizacion > 0) {
+      this.cotizacion.segmento = new Segmento();
       this.cotizacion.segmento.idSegmento = this.idSegmento;
+      this.cotizacion.usuario = new Usuario();
       this.cotizacion.usuario = this.usuario;
+      this.cotizacion.fechaHora = null;
       this.cotizacion.cotizacionRepuesto = this.cotizacionRepuestos;
       this.cotizacion.cotizacionTrabajo = this.cotizacionTrabajos;
       this.cotizacionService.update(this.cotizacion).pipe(switchMap(() => {
@@ -301,6 +304,7 @@ export class CotizacionComponent implements OnInit {
       this.cotizacion.segmento = new Segmento();
       this.cotizacion.segmento.idSegmento = this.idSegmento;
       this.cotizacion.usuario = this.usuario;
+      this.cotizacion.fechaHora = null;
       this.cotizacion.cotizacionRepuesto = this.cotizacionRepuestos;
       this.cotizacion.cotizacionTrabajo = this.cotizacionTrabajos;
 

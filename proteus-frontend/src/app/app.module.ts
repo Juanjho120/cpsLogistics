@@ -49,6 +49,40 @@ import { FacturaCompraDialogoEliminarComponent } from './pages/factura-compra/fa
 import { CotizacionComponent } from './pages/cotizacion/cotizacion.component';
 import { CotizacionDialogoBuscarComponent } from './pages/cotizacion/cotizacion-dialogo-buscar/cotizacion-dialogo-buscar.component';
 import { CotizacionDialogoEliminarComponent } from './pages/cotizacion/cotizacion-dialogo-eliminar/cotizacion-dialogo-eliminar.component';
+import { ServicioComponent } from './pages/servicio/servicio.component';
+import { ServicioIngresoEdicionComponent } from './pages/servicio/servicio-ingreso-edicion/servicio-ingreso-edicion.component';
+import { ServicioBusquedaComponent } from './pages/servicio/servicio-busqueda/servicio-busqueda.component';
+import { ServicioResumenComponent } from './pages/servicio/servicio-resumen/servicio-resumen.component';
+import { ServicioDialogoBuscarComponent } from './pages/servicio/servicio-ingreso-edicion/servicio-dialogo-buscar/servicio-dialogo-buscar.component';
+import { ServicioDialogoEliminarComponent } from './pages/servicio/servicio-ingreso-edicion/servicio-dialogo-eliminar/servicio-dialogo-eliminar.component';
+import { ChecklistComponent } from './pages/checklist/checklist.component';
+import { ChecklistIngresoEdicionComponent } from './pages/checklist/checklist-ingreso-edicion/checklist-ingreso-edicion.component';
+import { ChecklistBusquedaComponent } from './pages/checklist/checklist-busqueda/checklist-busqueda.component';
+import { ChecklistDialogoBuscarComponent } from './pages/checklist/checklist-ingreso-edicion/checklist-dialogo-buscar/checklist-dialogo-buscar.component';
+import { FinanzasComponent } from './pages/finanzas/finanzas.component';
+import { FinanzasCreditoPagoComponent } from './pages/finanzas/finanzas-credito-pago/finanzas-credito-pago.component';
+import { CajaChicaComponent } from './pages/finanzas/caja-chica/caja-chica.component';
+import { CuentaBancariaComponent } from './pages/finanzas/cuenta-bancaria/cuenta-bancaria.component';
+import { CreditoProveedorDetalleDialogoComponent } from './pages/finanzas/finanzas-credito-pago/credito-proveedor-detalle-dialogo/credito-proveedor-detalle-dialogo.component';
+import { PagoProveedorDialogoComponent } from './pages/finanzas/finanzas-credito-pago/pago-proveedor-dialogo/pago-proveedor-dialogo.component';
+import { PagoProveedorDialogoEliminarComponent } from './pages/finanzas/finanzas-credito-pago/pago-proveedor-dialogo-eliminar/pago-proveedor-dialogo-eliminar.component';
+import { CajaChicaDialogoEditarComponent } from './pages/finanzas/caja-chica/caja-chica-dialogo-editar/caja-chica-dialogo-editar.component';
+import { CajaChicaDialogoEliminarComponent } from './pages/finanzas/caja-chica/caja-chica-dialogo-eliminar/caja-chica-dialogo-eliminar.component';
+import { CuentaBancariaDialogoEditarComponent } from './pages/finanzas/cuenta-bancaria/cuenta-bancaria-dialogo-editar/cuenta-bancaria-dialogo-editar.component';
+import { CuentaBancariaDialogoEliminarComponent } from './pages/finanzas/cuenta-bancaria/cuenta-bancaria-dialogo-eliminar/cuenta-bancaria-dialogo-eliminar.component';
+import { BancoDialogoEliminarComponent } from './pages/finanzas/cuenta-bancaria/banco/banco-dialogo-eliminar/banco-dialogo-eliminar.component';
+import { BancoDialogoEditarComponent } from './pages/finanzas/cuenta-bancaria/banco/banco-dialogo-editar/banco-dialogo-editar.component';
+import { CuentaBancariaTipoDialogoEditarComponent } from './pages/finanzas/cuenta-bancaria/cuenta-bancaria-tipo/cuenta-bancaria-tipo-dialogo-editar/cuenta-bancaria-tipo-dialogo-editar.component';
+import { CuentaBancariaTipoDialogoEliminarComponent } from './pages/finanzas/cuenta-bancaria/cuenta-bancaria-tipo/cuenta-bancaria-tipo-dialogo-eliminar/cuenta-bancaria-tipo-dialogo-eliminar.component';
+import { MonedaDialogoEditarComponent } from './pages/finanzas/cuenta-bancaria/moneda/moneda-dialogo-editar/moneda-dialogo-editar.component';
+import { MonedaDialogoEliminarComponent } from './pages/finanzas/cuenta-bancaria/moneda/moneda-dialogo-eliminar/moneda-dialogo-eliminar.component';
+import { PagoProveedorDetalleDialogoComponent } from './pages/finanzas/finanzas-credito-pago/pago-proveedor-detalle-dialogo/pago-proveedor-detalle-dialogo.component';
+import { ChequeBoletaComponent } from './pages/finanzas/cheque-boleta/cheque-boleta.component';
+import { ChequeDialogoEliminarComponent } from './pages/finanzas/cheque-boleta/cheque-dialogo-eliminar/cheque-dialogo-eliminar.component';
+import { BoletaDialogoEliminarComponent } from './pages/finanzas/cheque-boleta/boleta-dialogo-eliminar/boleta-dialogo-eliminar.component';
+import { SegmentoCreditoDetalleDialogoComponent } from './pages/segmento/segmento-credito-pago/segmento-credito-detalle-dialogo/segmento-credito-detalle-dialogo.component';
+import { SegmentoPagoDetalleDialogoComponent } from './pages/segmento/segmento-credito-pago/segmento-pago-detalle-dialogo/segmento-pago-detalle-dialogo.component';
+import { ChecklistServicioDialogoComponent } from './pages/servicio/servicio-resumen/checklist-servicio-dialogo/checklist-servicio-dialogo.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +126,41 @@ import { CotizacionDialogoEliminarComponent } from './pages/cotizacion/cotizacio
     FacturaCompraDialogoEliminarComponent,
     CotizacionComponent,
     CotizacionDialogoBuscarComponent,
-    CotizacionDialogoEliminarComponent
+    CotizacionDialogoEliminarComponent,
+    ServicioComponent,
+    ServicioIngresoEdicionComponent,
+    ServicioBusquedaComponent,
+    ServicioResumenComponent,
+    ServicioDialogoBuscarComponent,
+    ServicioDialogoEliminarComponent,
+    ChecklistComponent,
+    ChecklistIngresoEdicionComponent,
+    ChecklistBusquedaComponent,
+    ChecklistDialogoBuscarComponent,
+    FinanzasComponent,
+    FinanzasCreditoPagoComponent,
+    CajaChicaComponent,
+    CuentaBancariaComponent,
+    CreditoProveedorDetalleDialogoComponent,
+    PagoProveedorDialogoComponent,
+    PagoProveedorDialogoEliminarComponent,
+    CajaChicaDialogoEditarComponent,
+    CajaChicaDialogoEliminarComponent,
+    CuentaBancariaDialogoEditarComponent,
+    CuentaBancariaDialogoEliminarComponent,
+    BancoDialogoEliminarComponent,
+    BancoDialogoEditarComponent,
+    CuentaBancariaTipoDialogoEditarComponent,
+    CuentaBancariaTipoDialogoEliminarComponent,
+    MonedaDialogoEditarComponent,
+    MonedaDialogoEliminarComponent,
+    PagoProveedorDetalleDialogoComponent,
+    ChequeBoletaComponent,
+    ChequeDialogoEliminarComponent,
+    BoletaDialogoEliminarComponent,
+    SegmentoCreditoDetalleDialogoComponent,
+    SegmentoPagoDetalleDialogoComponent,
+    ChecklistServicioDialogoComponent
   ],
   imports: [
     BrowserModule,

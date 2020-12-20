@@ -1,0 +1,37 @@
+.container {
+    margin: 20px;
+    border-style: ridge;
+    border-width: 1px;
+}
+
+.finanzas-creditos-pagos-container {
+    margin: 20px;
+}
+
+.finanzas-creditos-pagos-card-container {
+    width: 100%;
+}
+
+.caja-chica-container {
+    margin: 20px;
+}
+
+.caja-chica-card-container {
+    width: 100%;
+}
+
+.cuentas-bancarias-container {
+    margin: 20px;
+}
+
+.cuentas-bancarias-card-container {
+    width: 100%;
+}
+
+.cheques-boletas-card-container {
+    width: 100%;
+}
+
+.cheques-boletas-container {
+    margin: 20px;
+}

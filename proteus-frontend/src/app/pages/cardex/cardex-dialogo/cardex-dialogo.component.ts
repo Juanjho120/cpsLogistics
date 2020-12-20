@@ -40,6 +40,10 @@ export class CardexDialogoComponent implements OnInit {
       'descripcion' : new FormControl(this.repuesto.descripcion, [Validators.required, Validators.minLength(3)]),
       'existencia' : new FormControl(this.repuesto.existencia, Validators.required)
     });
+
+    this.form.get('existencia').disable();
+    this.form.get('codigoBarra').disable();
+    this.form.get('codigo').disable();
   }
 
   f() {
@@ -49,10 +53,7 @@ export class CardexDialogoComponent implements OnInit {
   operar() {
     if(this.form.invalid) {return; }
 
-    this.repuesto.codigo = this.form.value['codigo'];
-    this.repuesto.codigoBarra = this.form.value['codigoBarra'];
     this.repuesto.descripcion = this.form.value['descripcion'];
-    this.repuesto.existencia = this.form.value['existencia'];
 
     //ACTUALIZAR
     if(this.repuesto != null && this.repuesto.idRepuesto > 0) {

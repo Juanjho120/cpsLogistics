@@ -12,6 +12,12 @@
         <button class="button-guardar-inventario" mat-raised-button color="primary" type="button" [disabled]="!inventarioCompleto" (click)="guardarInventario()">Guardar</button>
         <button class="button-limpiar-inventario" mat-raised-button color="primary" type="button" (click)="limpiarControlGeneral()">Limpiar</button>
         
+        <form [formGroup]="formInventario">
+            <mat-form-field class="mat-form-field-razon">
+                <textarea matInput placeholder="Razon" required formControlName="razon"></textarea>
+            </mat-form-field>
+        </form>
+        
         <form [formGroup]="form" #frmRepuesto="ngForm" (ngSubmit)="agregarDetalle()">
 
             <mat-form-field class="mat-form-field-cantidad">

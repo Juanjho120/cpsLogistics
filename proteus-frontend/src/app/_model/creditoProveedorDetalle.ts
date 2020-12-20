@@ -4,7 +4,7 @@ export class CreditoProveedorDetalle {
     idCreditoProveedorDetalle : number;
     creditoProveedor : CreditoProveedor;
     facturaCompra : FacturaCompra;
-    descripcion : string;
     observaciones : string;
     vencida : boolean;
+    pagada : boolean;
 }

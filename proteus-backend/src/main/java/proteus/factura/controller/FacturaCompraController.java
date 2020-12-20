@@ -42,6 +42,20 @@ public class FacturaCompraController {
 	}
 	
 	/**
+	 * Obtiene todas las facturas de compra que no estan asignadas a un credito de proveedor
+	 * @return Listado de facturas de compra
+	 * @throws Exception
+	 */
+	@GetMapping("/not-in-credito-proveedor")
+	public ResponseEntity<List<FacturaCompra>> getNotInCreditoProveedorDetalle() throws Exception {
+		List<FacturaCompra> facturaCompraList = facturaCompraService.getNotInCreditoProveedorDetalle();
+		if(facturaCompraList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran facturas de compras sin asignar");
+		}
+		return new ResponseEntity<List<FacturaCompra>>(facturaCompraList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Obtiene todas las facturas de compra por proveedor de la base de datos
 	 * @param idProveedor
 	 * @return Listado de facturas de compra
@@ -133,6 +147,23 @@ public class FacturaCompraController {
 			throw new ModelNotFoundException("No se encuentran facturas vencidas");
 		} else if(facturaCompraList.isEmpty() && !vencida) {
 			throw new ModelNotFoundException("No se encuentran facturas no vencidas");
+		}
+		return new ResponseEntity<List<FacturaCompra>>(facturaCompraList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Busca una factura de compra por estado pagada
+	 * @param pagada
+	 * @return Lista de facturas de compra
+	 * @throws Exception
+	 */
+	@GetMapping("/pagada/{pagada}")
+	public ResponseEntity<List<FacturaCompra>> getByPagada(@PathVariable("pagada") Boolean pagada) throws Exception {
+		List<FacturaCompra> facturaCompraList = facturaCompraService.getByPagada(pagada);
+		if(facturaCompraList.isEmpty() && pagada) {
+			throw new ModelNotFoundException("No se encuentran facturas pagadas");
+		} else if(facturaCompraList.isEmpty() && !pagada) {
+			throw new ModelNotFoundException("No se encuentran facturas no pagadas");
 		}
 		return new ResponseEntity<List<FacturaCompra>>(facturaCompraList, HttpStatus.OK);
 	}

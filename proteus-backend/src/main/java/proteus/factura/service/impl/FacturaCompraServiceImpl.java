@@ -133,5 +133,15 @@ public class FacturaCompraServiceImpl extends CRUDImpl<FacturaCompra, Integer> i
 	public List<FacturaCompra> getByVencimiento(Boolean vencida) throws Exception {
 		return facturaCompraRepository.findByVencimiento(vencida);
 	}
+
+	@Override
+	public List<FacturaCompra> getNotInCreditoProveedorDetalle() throws Exception {
+		return facturaCompraRepository.findNotInCreditoProveedorDetalle();
+	}
+
+	@Override
+	public List<FacturaCompra> getByPagada(Boolean pagada) throws Exception {
+		return facturaCompraRepository.findByPagada(pagada);
+	}
 	
 }

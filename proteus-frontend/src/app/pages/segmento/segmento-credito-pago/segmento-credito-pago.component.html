@@ -1,35 +1,93 @@
 <mat-card dynamicHeight>
     <mat-card-content>
+        <p class="asignacion-facturas-label"><b>Facturación de Servicios</b></p>
+        <div class="mat-table-servicios-container">
+            <mat-table [dataSource]="dataSourceServicio">
+                <ng-container matColumnDef='noServicio'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Servicio No</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.noServicio}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='fecha'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.fecha}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='servicioTipo'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Servicio</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.servicioTipo}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='placaServicio'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Placa</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.placa}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='segmento'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Segmento</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.segmento}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='trabajo'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Trabajo</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.costoTrabajo}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='repuesto'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Repuesto</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.costoRepuesto}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='total'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Total</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.costoTotal}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='facturar'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Facturar</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <button mat-button color="primary" (click)="abrirDialogoSegmentoCreditoDetalle(row)">
+                            <mat-icon>receipt</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsServicio; sticky : true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsServicio;"></mat-row>
+            </mat-table>
+        </div>
+        <mat-divider></mat-divider>
         <div class="mat-card-content-nit-busqueda">
-            <form [formGroup]="form" #frmSegmentoCredito="ngForm" (ngSubmit)="buscar()">
-                <mat-form-field class="mat-form-field-nit">
-                    <input type="text" placeholder="Nit" matInput [matAutocomplete]="autoSegmentoCredito" 
-                        [formControl]="myControlNit" required formControlName="nit">
+            <form [formGroup]="form" #frmSegmentoCredito="ngForm" (ngSubmit)="buscarSegmentoCredito()">
+                <mat-form-field appearance="fill" class="mat-form-field-segmento">
+                    <mat-label>Segmento</mat-label>
+                    <mat-select [(value)]="idSegmento" formControlName="segmento" required>
+                        <mat-option *ngFor="let s of (segmentos$ | async)" [value]="s.idSegmento">
+                            {{s.nit}} / {{s.nombre}}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
     
-                <mat-autocomplete #autoSegmentoCredito="matAutocomplete" [displayWith]="mostrarSegmentoCredito" (optionSelected)="seleccionarSegmentoCredito($event)">
-                    <mat-option *ngFor="let sc of segmentoCreditoFiltrados$ | async" [value]="sc">
-                        {{ sc.segmento.nit }}
-                    </mat-option>
-                </mat-autocomplete>
-    
-                <button mat-flat-button color="primary" type="submit" [disabled]="frmSegmentoCredito.invalid">Buscar</button>
+                <button mat-flat-button color="primary" type="submit" [disabled]="frmSegmentoCredito.invalid">Ver Historial</button>
             </form>
         </div>
-        <mat-divider></mat-divider><br>
         <div class="mat-card-content-segmento-credito" id="div-segmento">
             <section class="section-segmento">
                 <div class="segmento-nit-container">
-                    <h1 class="h1-nombre">{{segmentoCreditoSeleccionado.segmento.nombre}}</h1>
-                    <h3 class="h3-nit">{{segmentoCreditoSeleccionado.segmento.nit}}</h3>
+                    <h1 class="h1-nombre">{{segmentoCredito.segmento.nombre}}</h1>
+                    <h3 class="h3-nit">{{segmentoCredito.segmento.nit}}</h3>
+                </div>
+                <div class="button-container">
+                    <button mat-button color="primary" (click)="abrirDialogoSegmentoPago()">
+                        <mat-icon>monetization_on</mat-icon>
+                    </button>
                 </div>
                 <div class="segmento-credito-container">
-                    Q {{segmentoCreditoSeleccionado.credito}}
+                    Q {{segmentoCredito.credito.toFixed(2)}}
                 </div>
             </section>
-            <p><b>Última transacción: </b> {{segmentoCreditoSeleccionado.ultimaTransaccion}}</p>
-            <mat-checkbox [checked]="segmentoCreditoSeleccionado.sobreFinanciamiento" [disabled]="true">Sobre Financiamiento</mat-checkbox>
-            <br><br>
+            <p><b>Última transacción: </b> {{segmentoCredito.ultimaTransaccion}}</p>
+            <br>
             <mat-divider></mat-divider>
             <div class="segmento-credito-detalle-container">
                 <b>Detalle de créditos</b>
@@ -39,44 +97,40 @@
                     </mat-form-field>
                 </div>
                 <div class="mat-table-credito-detalle">
-                    <mat-table [dataSource]="dataSourceDetalleDTO" matSort>
+                    <mat-table [dataSource]="dataSourceDetalle" matSort>
                         <ng-container matColumnDef='fechaEmision'>
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Emisión</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.fechaEmision}}</mat-cell>
+                            <mat-cell *matCellDef="let row">{{row.fechaHoraEmision}}</mat-cell>
                         </ng-container>
     
+                        <ng-container matColumnDef='facturaNumero'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Factura</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.facturaNumero}}</mat-cell>
+                        </ng-container>
+
                         <ng-container matColumnDef='servicio'>
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Servicio</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.idServicio}}</mat-cell>
+                            <mat-cell *matCellDef="let row">{{row.servicio.idServicio}}</mat-cell>
                         </ng-container>
     
                         <ng-container matColumnDef='placa'>
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Placa</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.placaNumero}}</mat-cell>
+                            <mat-cell *matCellDef="let row">{{row.servicio.placa.numero}}</mat-cell>
                         </ng-container>
     
                         <ng-container matColumnDef='totalFacturado'>
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Total Facturado</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.totalFacturado}}</mat-cell>
+                            <mat-cell *matCellDef="let row">Q. {{row.totalFacturado.toFixed(2)}}</mat-cell>
                         </ng-container>
     
                         <ng-container matColumnDef='totalPagado'>
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Total Pagado</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.totalPagado}}</mat-cell>
+                            <mat-cell *matCellDef="let row">Q. {{row.totalPagado.toFixed(2)}}</mat-cell>
                         </ng-container>
     
                         <ng-container matColumnDef='totalRestante'>
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Total Restante</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.totalRestante}}</mat-cell>
-                        </ng-container>
-    
-                        <ng-container matColumnDef='accion'>
-                            <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
-                            <mat-cell *matCellDef="let row">
-                                <button mat-button color="primary" (click)="abrirDialogoPago(row)">
-                                    <mat-icon>request_page</mat-icon>
-                                </button>
-                            </mat-cell>
+                            <mat-cell *matCellDef="let row">Q. {{row.totalRestante.toFixed(2)}}</mat-cell>
                         </ng-container>
     
                         <mat-header-row *matHeaderRowDef="displayedColumnsDetalle; sticky : true"></mat-header-row>
@@ -92,31 +146,34 @@
                     </mat-form-field>
                 </div>
                 <div class="mat-table-segmento-pago">
-                    <mat-table [dataSource]="dataSourcePagoDTO" matSort>
+                    <mat-table [dataSource]="dataSourcePago" matSort>
                         <ng-container matColumnDef='fechaPago'>
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Pago</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.fechaPago}}</mat-cell>
+                            <mat-cell *matCellDef="let row">{{row.fechaHoraPago}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef='pagoTipo'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Pago</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.pagoTipo.nombre}}</mat-cell>
                         </ng-container>
     
-                        <ng-container matColumnDef='servicio'>
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Servicio</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.idServicio}}</mat-cell>
+                        <ng-container matColumnDef='facturas'>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Facturas pagadas</mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.facturas}}</mat-cell>
                         </ng-container>
-    
-                        <ng-container matColumnDef='placa'>
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Placa</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.placaNumero}}</mat-cell>
-                        </ng-container>
-    
+
                         <ng-container matColumnDef='monto'>
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Monto</mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{row.monto}}</mat-cell>
+                            <mat-cell *matCellDef="let row">Q. {{row.monto.toFixed(2)}}</mat-cell>
                         </ng-container>
     
                         <ng-container matColumnDef='acciones'>
                             <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
                             <mat-cell *matCellDef="let row">
-                                <button mat-button color="warn" (click)="abrirDialogoPagoEliminar(row)">
+                                <button mat-button color="primary" (click)="abrirDialogoSegmentoPagoDetalle(row.idSegmentoPago)">
+                                    <mat-icon>content_copy</mat-icon>
+                                </button>
+                                <button mat-button color="warn" (click)="abrirDialogoSegmentoPagoEliminar(row)">
                                     <mat-icon>delete</mat-icon>
                                 </button>
                             </mat-cell>

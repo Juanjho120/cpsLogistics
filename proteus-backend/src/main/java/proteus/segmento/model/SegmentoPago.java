@@ -1,7 +1,9 @@
 package proteus.segmento.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -10,10 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.PositiveOrZero;
+
+import proteus.pago.model.PagoTipo;
 
 /**
  * Model for Table "segmento_pagos"
@@ -28,10 +33,13 @@ public class SegmentoPago {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idSegmentoPago;
 	
-	@NotNull(message = "El segmento credito detalle no puede ser nulo")
+	@NotNull(message = "El tipo de pago no puede ser nulo")
 	@ManyToOne
-	@JoinColumn(name = "id_segmento_credito_detalle", nullable = false, foreignKey = @ForeignKey(name = "fkSegmentoPagoSegmentoCreditoDetalle"))
-	private SegmentoCreditoDetalle segmentoCreditoDetalle;
+	@JoinColumn(name = "id_pago_tipo", nullable = false, foreignKey = @ForeignKey(name = "fkSegmentoPagoPagoTipo"))
+	private PagoTipo pagoTipo;
+	
+	@Column(name = "id_item")
+	private Integer idItem;
 	
 	@PastOrPresent(message = "La fecha y hora de pago debe estar en tiempo pasado o presente")
 	@Column(name = "fecha_pago", nullable = false)
@@ -42,17 +50,23 @@ public class SegmentoPago {
 	@Column(name = "monto", nullable = false)
 	private Double monto;
 	
+	@OneToMany(mappedBy = "segmentoPago", cascade = { CascadeType.ALL }, orphanRemoval = true)
+	private List<SegmentoPagoDetalle> segmentoPagoDetalle;
+	
 	public SegmentoPago() {}
 
 	/**
 	 * @param idSegmentoPago
-	 * @param segmentoCreditoDetalle
+	 * @param pagoTipo
+	 * @param idItem
 	 * @param fechaHoraPago
 	 * @param monto
 	 */
-	public SegmentoPago(Integer idSegmentoPago, SegmentoCreditoDetalle segmentoCreditoDetalle, LocalDateTime fechaHoraPago, Double monto) {
+	public SegmentoPago(Integer idSegmentoPago, PagoTipo pagoTipo,
+			Integer idItem, LocalDateTime fechaHoraPago, Double monto) {
 		this.idSegmentoPago = idSegmentoPago;
-		this.segmentoCreditoDetalle = segmentoCreditoDetalle;
+		this.pagoTipo = pagoTipo;
+		this.idItem = idItem;
 		this.fechaHoraPago = fechaHoraPago;
 		this.monto = monto;
 	}
@@ -72,17 +86,31 @@ public class SegmentoPago {
 	}
 
 	/**
-	 * @return the segmentoCreditoDetalle
+	 * @return the pagoTipo
 	 */
-	public SegmentoCreditoDetalle getSegmentoCreditoDetalle() {
-		return segmentoCreditoDetalle;
+	public PagoTipo getPagoTipo() {
+		return pagoTipo;
 	}
 
 	/**
-	 * @param segmentoCreditoDetalle the segmentoCreditoDetalle to set
+	 * @param pagoTipo the pagoTipo to set
 	 */
-	public void setSegmentoCreditoDetalle(SegmentoCreditoDetalle segmentoCreditoDetalle) {
-		this.segmentoCreditoDetalle = segmentoCreditoDetalle;
+	public void setPagoTipo(PagoTipo pagoTipo) {
+		this.pagoTipo = pagoTipo;
+	}
+
+	/**
+	 * @return the idItem
+	 */
+	public Integer getIdItem() {
+		return idItem;
+	}
+
+	/**
+	 * @param idItem the idItem to set
+	 */
+	public void setIdItem(Integer idItem) {
+		this.idItem = idItem;
 	}
 
 	/**
@@ -111,6 +139,20 @@ public class SegmentoPago {
 	 */
 	public void setMonto(Double monto) {
 		this.monto = monto;
+	}
+
+	/**
+	 * @return the segmentoPagoDetalle
+	 */
+	public List<SegmentoPagoDetalle> getSegmentoPagoDetalle() {
+		return segmentoPagoDetalle;
+	}
+
+	/**
+	 * @param segmentoPagoDetalle the segmentoPagoDetalle to set
+	 */
+	public void setSegmentoPagoDetalle(List<SegmentoPagoDetalle> segmentoPagoDetalle) {
+		this.segmentoPagoDetalle = segmentoPagoDetalle;
 	}
 	
 }

@@ -58,5 +58,15 @@ public class PlacaServiceImpl extends CRUDImpl<Placa, Integer> implements IPlaca
 			}
 		}
 	}
+
+	@Override
+	public List<Placa> getNotInService() throws Exception {
+		return placaRepository.findNotInService();
+	}
+
+	@Override
+	public List<Placa> getInService() throws Exception {
+		return placaRepository.findInService();
+	}
 	
 }

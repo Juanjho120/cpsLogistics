@@ -52,6 +52,20 @@ public class ChecklistServiceImpl extends CRUDImpl<Checklist, Integer> implement
 		}
 		return null;
 	}
+	
+	@Override
+	public Checklist create(Checklist checklist) throws Exception {
+		Checklist checklistAux = this.getByServicio(checklist.getServicio().getIdServicio());
+		if(checklistAux==null) {
+			for(ChecklistDetalle checklistDetalle : checklist.getChecklistDetalle()) {
+				checklistDetalle.setChecklist(checklist);
+			}
+			
+			checklist.setFechaHoraIngreso(LocalDateTime.now());
+			return checklistRepository.save(checklist);
+		}
+		return null;
+	}
 
 	@Override
 	public Checklist getByServicio(Integer idServicio) throws Exception {
@@ -87,6 +101,25 @@ public class ChecklistServiceImpl extends CRUDImpl<Checklist, Integer> implement
 		
 		return checklistRepository.save(checklist);
 	}
+	
+	@Override
+	public Checklist update(Checklist checklist) throws Exception {
+		Checklist checklistAux = this.getByServicio(checklist.getServicio().getIdServicio());
+		//Borra el detalle antiguo
+		if(!checklistDetalleService.getByChecklist(checklist.getIdChecklist()).isEmpty()) {
+			checklistDetalleService.deleteByChecklist(checklist.getIdChecklist());
+		}
+		
+		for(ChecklistDetalle checklistDetalle : checklist.getChecklistDetalle()) {
+			checklistDetalle.setChecklist(checklist);
+		}
+		
+		//Se mantiene la fecha y hora de ingreso original
+		checklist.setFechaHoraIngreso(checklistAux.getFechaHoraIngreso());
+		
+		return checklistRepository.save(checklist);
+	}
+	
 
 	@Override
 	public List<Checklist> getByFechaHoraIngreso(String fechaDesde, String fechaHasta) throws Exception {
@@ -127,6 +160,26 @@ public class ChecklistServiceImpl extends CRUDImpl<Checklist, Integer> implement
 	@Override
 	public List<Checklist> getByChecklistServicioTipo(Integer idChecklistServicioTipo) {
 		return checklistRepository.findByChecklistServicioTipo(idChecklistServicioTipo);
+	}
+
+	@Override
+	public List<Checklist> getByPlacaAndServicioFinalizado(Integer idPlaca, Boolean finalizado) throws Exception {
+		return checklistRepository.findByPlacaAndServicioFinalizado(idPlaca, finalizado);
+	}
+
+	@Override
+	public Checklist getByServicioFinalizado(Integer idServicio) throws Exception {
+		return checklistRepository.findByServicioFinalizado(idServicio);
+	}
+
+	@Override
+	public List<Checklist> getAllNotFinalizado() throws Exception {
+		return checklistRepository.findAllNotFinalizado();
+	}
+
+	@Override
+	public List<Checklist> getByPlaca(Integer idPlaca) throws Exception {
+		return checklistRepository.findByPlaca(idPlaca);
 	}
 	
 }

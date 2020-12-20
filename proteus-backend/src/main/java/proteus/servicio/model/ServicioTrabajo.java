@@ -35,7 +35,7 @@ public class ServicioTrabajo {
 	
 	@NotNull(message = "La descripcion del trabajo del servicio no puede ser nulo")
 	@Size(min = 3, message = "La descripcion del trabajo del servicio debe tener por lo menos 3 caracteres")
-	@Column(name = "descripcion_trabajo", nullable = false, length = 30)
+	@Column(name = "descripcion_trabajo", nullable = false)
 	private String descripcionTrabajo;
 	
 	@PositiveOrZero(message = "El costo del trabajo del servicio debe ser positivo o cero")

@@ -1,5 +1,6 @@
 <mat-card dynamicHeight>
     <mat-card-content>
+        <p class="por-fechas-label"><b>POR FECHAS</b></p>
         <section class="section-form-fecha">
             <form [formGroup]="form" #frmInventarioBusqueda="ngForm" (ngSubmit)="buscar()">
                 <mat-form-field class="mat-form-field-fecha-inicio">
@@ -17,6 +18,9 @@
                 </mat-form-field>
 
                 <button mat-flat-button color="primary" type="submit" [disabled]="frmInventarioBusqueda.invalid">Buscar</button>
+                <button mat-button color="primary" [disabled]="botonReporteDisabled" (click)="crearReporteInventarioEntradaSalida()">
+                    <mat-icon>print</mat-icon>
+                </button>
             </form>
         </section>
         <div class="card-table-container">
@@ -49,6 +53,40 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
-        </div>
+        </div><br>
+        <p class="por-producto-label"><b>POR PRODUCTO Y FECHAS</b></p>
+        <section class="section-form-producto-fecha">
+            <form [formGroup]="formProducto" #frmProducto="ngForm" (ngSubmit)="buscarProducto()">
+                <mat-form-field class="mat-form-field-repuesto">
+                    <input type="text" placeholder="Seleccione el repuesto" required matInput [matAutocomplete]="autoRepuesto" 
+                        [formControl]="myControlRepuesto" formControlName="repuesto">
+                </mat-form-field>
+                <mat-autocomplete #autoRepuesto="matAutocomplete" [displayWith]="mostrarRepuesto" (optionSelected)="seleccionarRepuesto($event)">
+                    <mat-option *ngFor="let r of repuestosFiltrados$ | async" [value]="r">
+                        {{ r.descripcion }}
+                    </mat-option>
+                </mat-autocomplete>
+    
+                <mat-form-field class="mat-form-field-fecha-inicio">
+                    <input matInput [matDatepicker]="pickerInicioProducto" placeholder="Inicio" [max]="maxFecha"
+                        value="fechaInicioProductoSeleccionada" (dateChange)="cambiarFechaInicioProducto($event)" formControlName="fechaInicio" required>
+                    <mat-datepicker-toggle matSuffix [for]="pickerInicioProducto"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerInicioProducto></mat-datepicker>
+                </mat-form-field>
+    
+                <mat-form-field class="mat-form-field-fecha-fin">
+                    <input matInput [matDatepicker]="pickerFinProducto" placeholder="Fin" [max]="maxFecha"
+                        value="fechaFinProductoSeleccionada" (dateChange)="cambiarFechaFinProducto($event)" formControlName="fechaFin" required>
+                    <mat-datepicker-toggle matSuffix [for]="pickerFinProducto"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFinProducto></mat-datepicker>
+                </mat-form-field>
+    
+                <button mat-flat-button color="primary" type="submit" [disabled]="frmProducto.invalid">Buscar</button>
+                <button mat-button color="primary" [disabled]="botonReporteProductoDisabled" (click)="crearReporteProductoEntradaSalida()">
+                    <mat-icon>print</mat-icon>
+                </button>
+            </form>
+            
+        </section>
     </mat-card-content>
 </mat-card>

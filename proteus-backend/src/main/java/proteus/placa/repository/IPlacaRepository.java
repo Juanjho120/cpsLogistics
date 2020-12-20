@@ -21,4 +21,10 @@ public interface IPlacaRepository extends IGenericRepository<Placa, Integer> {
 	@Query("FROM Placa WHERE marcaAuto.idMarcaAuto = :idMarcaAuto")
 	List<Placa> findByMarcaAuto(Integer idMarcaAuto);
 	
+	@Query("FROM Placa WHERE idPlaca NOT IN (SELECT s.placa.idPlaca FROM Servicio s WHERE s.finalizado = 0)")
+	List<Placa> findNotInService();
+	
+	@Query("FROM Placa WHERE idPlaca IN (SELECT s.placa.idPlaca FROM Servicio s WHERE s.finalizado = 0)")
+	List<Placa> findInService();
+	
 }

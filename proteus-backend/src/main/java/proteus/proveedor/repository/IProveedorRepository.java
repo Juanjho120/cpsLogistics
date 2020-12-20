@@ -1,5 +1,8 @@
 package proteus.proveedor.repository;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import proteus.generico.repository.IGenericRepository;
@@ -15,5 +18,8 @@ public interface IProveedorRepository extends IGenericRepository<Proveedor, Inte
 
 	Proveedor findByNombreAndNit(String nombre, String nit);
 	Proveedor findByNit(String nit);
+	
+	@Query("FROM Proveedor WHERE idProveedor IN (SELECT cp.proveedor.idProveedor FROM CreditoProveedor cp)")
+	List<Proveedor> findWithCredito();
 	
 }

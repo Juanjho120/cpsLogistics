@@ -1,0 +1,77 @@
+.mat-column-fecha {
+    flex : 0 0 120px;
+    justify-content: center;
+}
+
+.mat-column-codigo {
+    flex : 0 0 160px;
+}
+
+.mat-column-total {
+    flex : 0 0 110px;
+    text-align: right;
+    justify-content: flex-end;
+}
+
+.mat-table-facturasPorPagar-container {
+    border-style: ridge;
+    border-width: 1px;
+    width: 440px;
+    max-height: 250px;
+    overflow: auto;
+    margin-bottom: 20px;
+}
+
+.mat-table-facturasAPagar-container {
+    border-style: ridge;
+    border-width: 1px;
+    width: 440px;
+    max-height: 250px;
+    overflow: auto;
+    margin-bottom: 20px;
+}
+
+.mat-header-cell {
+    font-size: 14px;
+    justify-content: center!important;
+    background-color: blue;
+    color: white;
+}
+
+.mat-row:hover {
+    background-color: aqua;
+    cursor: pointer;
+}
+
+.mat-form-field-pagoTipo {
+    width: 150px;
+}
+
+.mat-form-field-observaciones {
+    display: inline;
+}
+
+.mat-form-field-cuentaBancaria {
+    display: inline;
+}
+
+.mat-form-field-numero {
+    width: 300px;
+    margin-right: 30px;
+}
+
+.mat-form-field-monto {
+    width: 120px;
+}
+
+.mat-form-field-fechaEmision {
+    width: 150px;
+}
+
+.title-container {
+    text-align: center;
+}
+
+.form-pago-container {
+    margin-top: 20px;
+}

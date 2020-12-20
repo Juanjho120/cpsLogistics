@@ -28,5 +28,9 @@ export class FacturaCompraService extends GenericService<FacturaCompra> {
   getByVencimiento(vencida : boolean) {
     return this.http.get<FacturaCompra[]>(`${this.url}/vencimiento/${vencida}`);
   }
+
+  getNotInCreditoProveedorDetalle() {
+    return this.http.get<FacturaCompra[]>(`${this.url}/not-in-credito-proveedor`);
+  }
   
 }

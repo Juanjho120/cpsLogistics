@@ -17,4 +17,9 @@ export class ProveedorService extends GenericService<Proveedor> {
   getAllDTO() {
     return this.http.get<ProveedorDTO[]>(`${this.url}/dto`);
   }
+
+  getWithCredito() {
+    return this.http.get<Proveedor[]>(`${this.url}/with-credito`);
+  }
+  
 }

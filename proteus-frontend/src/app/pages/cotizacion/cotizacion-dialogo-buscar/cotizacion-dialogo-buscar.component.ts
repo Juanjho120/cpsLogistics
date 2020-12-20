@@ -140,6 +140,7 @@ export class CotizacionDialogoBuscarComponent implements OnInit {
       return;
     } else if(this.idBusqueda == 1) {
       this.cotizacionService.getBySegmento(this.idSegmento).subscribe(data => {
+        this.cotizacionFormato = [];
         for(let cotizacion of data) {
           cotizacion.fechaHora = moment(cotizacion.fechaHora).format(this.formatoFechaHoraB);
           this.cotizacionFormato.push(cotizacion);
@@ -148,7 +149,7 @@ export class CotizacionDialogoBuscarComponent implements OnInit {
       });
     } else if(this.idBusqueda == 2) {
       this.cotizacionService.getByFecha(this.fechaInicioFormato, this.fechaFinFormato).subscribe(data => {
-        this.dataSource = new MatTableDataSource(data);
+        this.cotizacionFormato = [];
         for(let cotizacion of data) {
           cotizacion.fechaHora = moment(cotizacion.fechaHora).format(this.formatoFechaHoraB);
           this.cotizacionFormato.push(cotizacion);
@@ -157,7 +158,7 @@ export class CotizacionDialogoBuscarComponent implements OnInit {
       });
     } else if(this.idBusqueda == 3) {
       this.cotizacionService.getByUsuario(this.idUsuario).subscribe(data => {
-        this.dataSource = new MatTableDataSource(data);
+        this.cotizacionFormato = [];
         for(let cotizacion of data) {
           cotizacion.fechaHora = moment(cotizacion.fechaHora).format(this.formatoFechaHoraB);
           this.cotizacionFormato.push(cotizacion);

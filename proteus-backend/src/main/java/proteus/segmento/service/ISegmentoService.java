@@ -1,5 +1,7 @@
 package proteus.segmento.service;
 
+import java.util.List;
+
 import proteus.generico.service.ICRUD;
 import proteus.segmento.model.Segmento;
 
@@ -11,5 +13,6 @@ import proteus.segmento.model.Segmento;
 public interface ISegmentoService extends ICRUD<Segmento, Integer> {
 
 	Segmento getByNit(String nit) throws Exception;
+	List<Segmento> getWithCredito() throws Exception;
 	
 }

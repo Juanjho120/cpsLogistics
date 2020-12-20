@@ -1,6 +1,7 @@
 package proteus.servicio.service.impl;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import proteus.generico.repository.IGenericRepository;
 import proteus.generico.service.CRUDImpl;
+import proteus.placa.model.Placa;
+import proteus.placa.service.IPlacaService;
 import proteus.repuesto.service.IRepuestoService;
 import proteus.servicio.model.Servicio;
 import proteus.servicio.model.ServicioRepuesto;
@@ -37,6 +40,9 @@ public class ServicioServiceImpl extends CRUDImpl<Servicio, Integer> implements 
 	
 	@Autowired
 	private IRepuestoService repuestoService;
+	
+	@Autowired
+	private IPlacaService placaService;
 
 	@Override
 	protected IGenericRepository<Servicio, Integer> getRepository() {
@@ -80,6 +86,10 @@ public class ServicioServiceImpl extends CRUDImpl<Servicio, Integer> implements 
 					//Restando la existencia del repuesto
 					repuestoService.actualizarCantidad(servicioRepuesto.getRepuesto().getIdRepuesto(), servicioRepuesto.getCantidad(), false);
 				}
+				
+				Placa placa = placaService.getById(servicio.getPlaca().getIdPlaca());
+				placa.setUltimoKilometraje(servicio.getKilometrajeRecorrido());
+				placaService.update(placa);
 				
 				servicio.setCostoTotal(totalServicio);
 				servicio.setFacturado(false);		//Los servicios nuevos no estan facturados
@@ -235,8 +245,14 @@ public class ServicioServiceImpl extends CRUDImpl<Servicio, Integer> implements 
 	}
 
 	@Override
-	public List<Servicio> getByFechaRango(LocalDateTime fechaDesde, LocalDateTime fechaHasta) throws Exception {
-		return servicioRepository.findByFechaRango(fechaDesde, fechaHasta.plusDays(1));
+	public List<Servicio> getByFechaRango(String fechaDesde, String fechaHasta) throws Exception {
+		//Convirtiendo cadena de texto a tipo de fecha LocalDateTime
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		
+		LocalDateTime fechaDesdeParse = LocalDateTime.parse(fechaDesde, formatter);
+		LocalDateTime fechaHastaParse = LocalDateTime.parse(fechaHasta, formatter);
+		
+		return servicioRepository.findByFechaRango(fechaDesdeParse, fechaHastaParse.plusDays(1));
 	}
 
 	@Override
@@ -281,6 +297,35 @@ public class ServicioServiceImpl extends CRUDImpl<Servicio, Integer> implements 
 		Servicio servicio = this.getById(idServicio);
 		servicio.setFacturado(facturado);
 		servicioRepository.save(servicio);
+		
+	}
+
+	@Override
+	public List<Servicio> getByFinalizadoAndFacturado(Boolean finalizado, Boolean facturado) throws Exception {
+		return servicioRepository.findByFinalizadoAndFacturado(finalizado, facturado);
+	}
+
+	@Override
+	public List<Servicio> getByServicioTipoAndFinalizadoAndFacturado(Integer idServicioTipo, Boolean finalizado,
+			Boolean facturado) throws Exception {
+		return servicioRepository.findByServicioTipoAndFinalizadoAndFacturado(idServicioTipo, finalizado, facturado);
+	}
+
+	@Override
+	public List<Servicio> getByFechaAndFinalizadoAndFacturado(String fechaDesde, String fechaHasta, Boolean finalizado,
+			Boolean facturado) throws Exception {
+		//Convirtiendo cadena de texto a tipo de fecha LocalDateTime
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		
+		LocalDateTime fechaDesdeParse = LocalDateTime.parse(fechaDesde, formatter);
+		LocalDateTime fechaHastaParse = LocalDateTime.parse(fechaHasta, formatter);
+		
+		return servicioRepository.findByFechaAndFinalizadoAndFacturado(fechaDesdeParse, fechaHastaParse.plusDays(1), finalizado, facturado);
+	}
+
+	@Override
+	public List<Servicio> getNotInChecklist() throws Exception {
+		return servicioRepository.findNotInChecklist();
 	}
 	
 }

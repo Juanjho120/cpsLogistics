@@ -18,7 +18,7 @@ export class SegmentoCreditoDetalleService extends GenericService<SegmentoCredit
     return this.http.get<SegmentoCreditoDetalle[]>(`${this.url}/segmento/${idSegmento}`);
   }
 
-  getDTOBySegmento(idSegmento : number) {
-    return this.http.get<SegmentoCreditoDetalleDTO[]>(`${this.url}/dto/segmento/${idSegmento}`);
+  getBySegmentoSinPagar(idSegmento : number) {
+    return this.http.get<SegmentoCreditoDetalle[]>(`${this.url}/saldo-pendiente/segmento/${idSegmento}`);
   }
 }

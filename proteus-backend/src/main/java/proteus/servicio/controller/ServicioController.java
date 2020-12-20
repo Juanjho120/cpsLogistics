@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import proteus.exception.ModelNotFoundException;
-import proteus.servicio.dto.ServicioBusquedaDTO;
 import proteus.servicio.model.Servicio;
 import proteus.servicio.service.IServicioService;
 
@@ -38,6 +37,20 @@ public class ServicioController {
 		List<Servicio> servicioList = servicioService.getAll();
 		if(servicioList.isEmpty()) {
 			throw new ModelNotFoundException("No se encuentran servicios en la base de datos");
+		}
+		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Obtiene todos los servicios que no tengan checklist
+	 * @return Listado de servicios
+	 * @throws Exception
+	 */
+	@GetMapping("/not-in-checklist")
+	public ResponseEntity<List<Servicio>> getNotInChecklist() throws Exception {
+		List<Servicio> servicioList = servicioService.getNotInChecklist();
+		if(servicioList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran servicios sin checklist");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -68,6 +81,23 @@ public class ServicioController {
 		List<Servicio> servicioList = servicioService.getByFinalizado(finalizado);
 		if(servicioList.isEmpty()) {
 			throw new ModelNotFoundException("No se encuentran servicios con finalizacion "+finalizado+" en la base de datos");
+		}
+		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Obtiene todos los servicios por finalizacion y facturacion de la base de datos
+	 * @param finalizado
+	 * @param facturado
+	 * @return Listado de servicios
+	 * @throws Exception
+	 */
+	@GetMapping("/finalizado/{finalizado}/facturado/{facturado}")
+	public ResponseEntity<List<Servicio>> getByFinalizadoAndFacturado(@PathVariable("finalizado") Boolean finalizado, 
+			@PathVariable("facturado") Boolean facturado) throws Exception {
+		List<Servicio> servicioList = servicioService.getByFinalizadoAndFacturado(finalizado, facturado);
+		if(servicioList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran servicios con finalizacion "+finalizado+" y facturacion "+facturado+" en la base de datos");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -118,6 +148,24 @@ public class ServicioController {
 	}
 	
 	/**
+	 * Obtiene todos los servicios por tipo, finalizado y facturado de la base de datos
+	 * @param idServicioTipo
+	 * @param finalizado
+	 * @param facturado
+	 * @return Listado de servicios
+	 * @throws Exception
+	 */
+	@GetMapping("/servicio-tipo/{idServicioTipo}/finalizado/{finalizado}/facturado/{facturado}")
+	public ResponseEntity<List<Servicio>> getByServicioTipoAndFinalizadoAndFacturado(@PathVariable("idServicioTipo") Integer idServicioTipo, 
+			@PathVariable("finalizado") Boolean finalizado, @PathVariable("facturado") Boolean facturado) throws Exception {
+		List<Servicio> servicioList = servicioService.getByServicioTipoAndFinalizadoAndFacturado(idServicioTipo, finalizado, facturado);
+		if(servicioList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran servicios en la base de datos");
+		}
+		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Obtiene todos los servicios por cotizacion de la base de datos
 	 * @param idCotizacion
 	 * @return Listado de servicios
@@ -138,12 +186,34 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
-	@GetMapping("/fecha")
-	public ResponseEntity<List<Servicio>> getByFechaRango(@RequestBody ServicioBusquedaDTO servicioDto) throws Exception {
-		List<Servicio> servicioList = servicioService.getByFechaRango(servicioDto.getFechaDesde(), servicioDto.getFechaHasta());
+	@GetMapping("/fecha/{fechaDesde}/{fechaHasta}")
+	public ResponseEntity<List<Servicio>> getByFechaRango(@PathVariable("fechaDesde") String fechaDesde, 
+			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
+		List<Servicio> servicioList = servicioService.getByFechaRango(fechaDesde, fechaHasta);
 		if(servicioList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran servicios dentro del rango de fechas "+servicioDto.getFechaDesde()
-					+" / "+servicioDto.getFechaHasta()+" en la base de datos");
+			throw new ModelNotFoundException("No se encuentran servicios dentro del rango de fechas "+fechaDesde
+					+" / "+fechaHasta+" en la base de datos");
+		}
+		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Obtiene todos los servicios por rango de fecha, finalizado y facturado de la base de datos
+	 * @param fechaDesde
+	 * @param fechaHasta
+	 * @param finalizado
+	 * @param facturado
+	 * @return Listado de servicios
+	 * @throws Exception
+	 */
+	@GetMapping("/fecha/{fechaDesde}/{fechaHasta}/finalizado/{finalizado}/facturado/{facturado}")
+	public ResponseEntity<List<Servicio>> getByFechaAndFinalizadoAndFacturado(@PathVariable("fechaDesde") String fechaDesde, 
+			@PathVariable("fechaHasta") String fechaHasta, @PathVariable("finalizado") Boolean finalizado, 
+			@PathVariable("facturado") Boolean facturado) throws Exception {
+		List<Servicio> servicioList = servicioService.getByFechaAndFinalizadoAndFacturado(fechaDesde, fechaHasta, finalizado, facturado);
+		if(servicioList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran servicios dentro del rango de fechas "+fechaDesde
+					+" / "+fechaHasta+" en la base de datos");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -154,12 +224,13 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
-	@GetMapping("/placa/finalizado")
-	public ResponseEntity<List<Servicio>> getByPlacaAndFinalizado(@RequestBody ServicioBusquedaDTO servicioDto) throws Exception {
-		List<Servicio> servicioList = servicioService.getByPlacaAndFinalizado(servicioDto.getIdPlaca(), servicioDto.getFinalizado());
+	@GetMapping("/placa/{idPlaca}/finalizado/{finalizado}")
+	public ResponseEntity<List<Servicio>> getByPlacaAndFinalizado(@PathVariable("idPlaca") Integer idPlaca, 
+			@PathVariable("finalizado") Boolean finalizado) throws Exception {
+		List<Servicio> servicioList = servicioService.getByPlacaAndFinalizado(idPlaca, finalizado);
 		if(servicioList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran servicios de la placa "+servicioDto.getIdPlaca()
-					+" con finalizacion "+servicioDto.getFinalizado()+" en la base de datos");
+			throw new ModelNotFoundException("No se encuentran servicios de la placa " + idPlaca
+					+ " con finalizacion " + finalizado + " en la base de datos");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -170,12 +241,13 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
-	@GetMapping("/placa/facturado")
-	public ResponseEntity<List<Servicio>> getByPlacaAndFacturado(@RequestBody ServicioBusquedaDTO servicioDto) throws Exception {
-		List<Servicio> servicioList = servicioService.getByPlacaAndFacturado(servicioDto.getIdPlaca(), servicioDto.getFacturado());
+	@GetMapping("/placa/{idPlaca}/facturado/{facturado}")
+	public ResponseEntity<List<Servicio>> getByPlacaAndFacturado(@PathVariable("idPlaca") Integer idPlaca, 
+			@PathVariable("facturado") Boolean facturado) throws Exception {
+		List<Servicio> servicioList = servicioService.getByPlacaAndFacturado(idPlaca, facturado);
 		if(servicioList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran servicios de la placa "+servicioDto.getIdPlaca()
-					+" con facturacion "+servicioDto.getFacturado()+" en la base de datos");
+			throw new ModelNotFoundException("No se encuentran servicios de la placa "+ idPlaca
+					+" con facturacion "+facturado+" en la base de datos");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -186,13 +258,13 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
-	@GetMapping("/placa/finalizado/facturado")
-	public ResponseEntity<List<Servicio>> getByPlacaAndFinalizadoAndFacturado(@RequestBody ServicioBusquedaDTO servicioDto) throws Exception {
-		List<Servicio> servicioList = servicioService.getByPlacaAndFinalizadoAndFacturado(servicioDto.getIdPlaca(), 
-				servicioDto.getFinalizado(), servicioDto.getFacturado());
+	@GetMapping("/placa/{idPlaca}/finalizado/{finalizado}/facturado/{facturado}")
+	public ResponseEntity<List<Servicio>> getByPlacaAndFinalizadoAndFacturado(@PathVariable("idPlaca") Integer idPlaca, 
+			@PathVariable("finalizado") Boolean finalizado, @PathVariable("facturado") Boolean facturado) throws Exception {
+		List<Servicio> servicioList = servicioService.getByPlacaAndFinalizadoAndFacturado(idPlaca, finalizado, facturado);
 		if(servicioList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran servicios de la placa "+servicioDto.getIdPlaca()
-					+" con finalizacion "+servicioDto.getFinalizado()+" y facturacion "+servicioDto.getFacturado()+" en la base de datos");
+			throw new ModelNotFoundException("No se encuentran servicios de la placa "+idPlaca
+					+" con finalizacion "+finalizado+" y facturacion "+facturado+" en la base de datos");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -203,12 +275,13 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
-	@GetMapping("/segmento/finalizado")
-	public ResponseEntity<List<Servicio>> getBySegmentoAndFinalizado(@RequestBody ServicioBusquedaDTO servicioDto) throws Exception {
-		List<Servicio> servicioList = servicioService.getBySegmentoAndFinalizado(servicioDto.getIdSegmento(), servicioDto.getFinalizado());
+	@GetMapping("/segmento/{idSegmento}/finalizado/{finalizado}")
+	public ResponseEntity<List<Servicio>> getBySegmentoAndFinalizado(@PathVariable("idSegmento") Integer idSegmento, 
+			@PathVariable("finalizado") Boolean finalizado) throws Exception {
+		List<Servicio> servicioList = servicioService.getBySegmentoAndFinalizado(idSegmento, finalizado);
 		if(servicioList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran servicios del segmento "+servicioDto.getIdSegmento()
-					+" con finalizacion "+servicioDto.getFinalizado()+" en la base de datos");
+			throw new ModelNotFoundException("No se encuentran servicios del segmento "+idSegmento
+					+" con finalizacion "+finalizado+" en la base de datos");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -219,12 +292,13 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
-	@GetMapping("/segmento/facturado")
-	public ResponseEntity<List<Servicio>> getBySegmentoAndFacturado(@RequestBody ServicioBusquedaDTO servicioDto) throws Exception {
-		List<Servicio> servicioList = servicioService.getBySegmentoAndFacturado(servicioDto.getIdSegmento(), servicioDto.getFacturado());
+	@GetMapping("/segmento/{idSegmento}/facturado/{facturado}")
+	public ResponseEntity<List<Servicio>> getBySegmentoAndFacturado(@PathVariable("idSegmento") Integer idSegmento, 
+			@PathVariable("facturado") Boolean facturado) throws Exception {
+		List<Servicio> servicioList = servicioService.getBySegmentoAndFacturado(idSegmento, facturado);
 		if(servicioList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran servicios del segmento "+servicioDto.getIdSegmento()
-					+" con facturacion "+servicioDto.getFacturado()+" en la base de datos");
+			throw new ModelNotFoundException("No se encuentran servicios del segmento "+idSegmento
+					+" con facturacion "+facturado+" en la base de datos");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -235,13 +309,13 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
-	@GetMapping("/segmento/finalizado/facturado")
-	public ResponseEntity<List<Servicio>> getBySegmentoAndFinalizadoAndFacturado(@RequestBody ServicioBusquedaDTO servicioDto) throws Exception {
-		List<Servicio> servicioList = servicioService.getBySegmentoAndFinalizadoAndFacturado(servicioDto.getIdSegmento(), 
-				servicioDto.getFinalizado(), servicioDto.getFacturado());
+	@GetMapping("/segmento/{idSegmento}/finalizado/{finalizado}/facturado/{facturado}")
+	public ResponseEntity<List<Servicio>> getBySegmentoAndFinalizadoAndFacturado(@PathVariable("idSegmento") Integer idSegmento, 
+			@PathVariable("finalizado") Boolean finalizado, @PathVariable("facturado") Boolean facturado) throws Exception {
+		List<Servicio> servicioList = servicioService.getBySegmentoAndFinalizadoAndFacturado(idSegmento, finalizado, facturado);
 		if(servicioList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran servicios del segmento "+servicioDto.getIdSegmento()
-					+" con finalizacion "+servicioDto.getFinalizado()+" y facturacion "+servicioDto.getFacturado()+" en la base de datos");
+			throw new ModelNotFoundException("No se encuentran servicios del segmento "+idSegmento
+					+" con finalizacion "+finalizado+" y facturacion "+facturado+" en la base de datos");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -252,12 +326,13 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
-	@GetMapping("/segmento/placa")
-	public ResponseEntity<List<Servicio>> getBySegmentoAndPlaca(@RequestBody ServicioBusquedaDTO servicioDto) throws Exception {
-		List<Servicio> servicioList = servicioService.getBySegmentoAndPlaca(servicioDto.getIdSegmento(), servicioDto.getIdPlaca());
+	@GetMapping("/segmento/{idSegmento}/placa/{idPlaca}")
+	public ResponseEntity<List<Servicio>> getBySegmentoAndPlaca(@PathVariable("idSegmento") Integer idSegmento, 
+			@PathVariable("idPlaca") Integer idPlaca) throws Exception {
+		List<Servicio> servicioList = servicioService.getBySegmentoAndPlaca(idSegmento, idPlaca);
 		if(servicioList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran servicios del segmento "+servicioDto.getIdSegmento()
-					+" y placa "+servicioDto.getIdPlaca()+" en la base de datos");
+			throw new ModelNotFoundException("No se encuentran servicios del segmento "+idSegmento
+					+" y placa "+idPlaca+" en la base de datos");
 		}
 		return new ResponseEntity<List<Servicio>>(servicioList, HttpStatus.OK);
 	}
@@ -317,15 +392,15 @@ public class ServicioController {
 	 * @throws Exception
 	 */
 	@PutMapping("/finalizado")
-	public ResponseEntity<String> updateFinalizado(@RequestBody Servicio servicio) throws Exception {
+	public ResponseEntity<Void> updateFinalizado(@RequestBody Servicio servicio) throws Exception {
 		servicioService.updateFinalizado(servicio.getIdServicio(), servicio.getFinalizado());
-		String mensaje = "Servicio "+servicio.getIdServicio();
+		/*String mensaje = "Servicio "+servicio.getIdServicio();
 		if(servicio.getFinalizado()) {
 			mensaje += " ahora esta finalizado";
 		} else {
 			mensaje += " ahora esta sin finalizar";
-		}
-		return new ResponseEntity<String>(mensaje, HttpStatus.CREATED);
+		}*/
+		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	
 	/**

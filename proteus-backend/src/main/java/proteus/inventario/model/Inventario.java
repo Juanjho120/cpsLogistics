@@ -44,6 +44,10 @@ public class Inventario {
 	@JoinColumn(name = "id_concepto", nullable = false, foreignKey = @ForeignKey(name = "fkInventarioConcepto"))
 	private Concepto concepto;
 	
+	@NotNull(message = "La razon del inventario no puede ser nulo")
+	@Column(name = "razon", nullable = false)
+	private String razon;
+	
 	@PositiveOrZero(message = "La cantidad del inventario debe ser positivo o cero")
 	@Column(name = "cantidad", nullable = false)
 	private Integer cantidad;
@@ -61,13 +65,15 @@ public class Inventario {
 	 * @param idInventario
 	 * @param usuario
 	 * @param concepto
+	 * @param razon
 	 * @param cantidad
 	 * @param fechaHora
 	 */
-	public Inventario(Integer idInventario, Usuario usuario, Concepto concepto, Integer cantidad, LocalDateTime fechaHora) {
+	public Inventario(Integer idInventario, Usuario usuario, String razon, Concepto concepto, Integer cantidad, LocalDateTime fechaHora) {
 		this.idInventario = idInventario;
 		this.usuario = usuario;
 		this.concepto = concepto;
+		this.razon = razon;
 		this.cantidad = cantidad;
 		this.fechaHora = fechaHora;
 	}
@@ -112,6 +118,20 @@ public class Inventario {
 	 */
 	public void setConcepto(Concepto concepto) {
 		this.concepto = concepto;
+	}
+
+	/**
+	 * @return the razon
+	 */
+	public String getRazon() {
+		return razon;
+	}
+
+	/**
+	 * @param razon the razon to set
+	 */
+	public void setRazon(String razon) {
+		this.razon = razon;
 	}
 
 	/**

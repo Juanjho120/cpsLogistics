@@ -22,4 +22,10 @@ public interface ICreditoProveedorDetalleRepository extends IGenericRepository<C
 	@Query("FROM CreditoProveedorDetalle WHERE creditoProveedor.idCreditoProveedor = :idCreditoProveedor")
 	List<CreditoProveedorDetalle> findByCreditoProveedor(Integer idCreditoProveedor);
 	
+	@Query("FROM CreditoProveedorDetalle WHERE creditoProveedor.idCreditoProveedor = :idCreditoProveedor AND pagada = :pagada")
+	List<CreditoProveedorDetalle> findByCreditoProveedorAndPagada(Integer idCreditoProveedor, Boolean pagada);
+	
+	@Query("FROM CreditoProveedorDetalle WHERE pagada = :pagada")
+	List<CreditoProveedorDetalle> findByPagada(Boolean pagada);
+	
 }

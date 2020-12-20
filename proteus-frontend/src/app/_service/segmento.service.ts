@@ -11,5 +11,10 @@ export class SegmentoService extends GenericService<Segmento> {
 
   constructor(protected http: HttpClient) {
     super(http, `${environment.HOST}/segmentos`);
-   }
+  }
+
+  getWithCredito() {
+    return this.http.get<Segmento[]>(`${this.url}/with-credito`);
+  }
+
 }

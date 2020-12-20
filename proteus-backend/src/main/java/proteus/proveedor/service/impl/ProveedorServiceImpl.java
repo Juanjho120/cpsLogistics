@@ -78,6 +78,11 @@ public class ProveedorServiceImpl extends CRUDImpl<Proveedor, Integer> implement
 		return proveedorDTOList;
 	}
 
+	@Override
+	public List<Proveedor> getWithCredito() throws Exception {
+		return proveedorRepository.findWithCredito();
+	}
+
 	
 	
 }

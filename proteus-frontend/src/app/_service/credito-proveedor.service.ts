@@ -11,5 +11,10 @@ export class CreditoProveedorService extends GenericService<CreditoProveedor> {
 
   constructor(protected http: HttpClient) {
     super(http, `${environment.HOST}/creditos-proveedores`);
-   }
+  }
+
+  getByProveedor(idProveedor : number) {
+    return this.http.get<CreditoProveedor>(`${this.url}/proveedor/${idProveedor}`);
+  }
+
 }

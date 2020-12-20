@@ -86,6 +86,7 @@ export class InventarioBusquedaComponent implements OnInit {
     inventario.usuario = i.usuario;
     inventario.concepto = i.concepto;
     inventario.cantidad = i.cantidad;
+    inventario.razon = i.razon;
     inventario.fechaHora = moment(i.fechaHora).format(this.formatoFechaHoraBusqueda);
     inventario.inventarioDetalle = i.inventarioDetalle;
     return inventario;

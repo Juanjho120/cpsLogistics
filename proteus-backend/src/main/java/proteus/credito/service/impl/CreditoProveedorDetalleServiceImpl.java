@@ -68,6 +68,7 @@ public class CreditoProveedorDetalleServiceImpl extends CRUDImpl<CreditoProveedo
 			
 			//Como es nuevo el credito entonces no ha vencido la factura
 			creditoProveedorDetalle.setVencida(false);
+			creditoProveedorDetalle.setPagada(false);
 			return creditoProveedorDetalleRepository.save(creditoProveedorDetalle);
 		}
 		return null;
@@ -81,8 +82,8 @@ public class CreditoProveedorDetalleServiceImpl extends CRUDImpl<CreditoProveedo
 	@Override
 	public CreditoProveedorDetalle update(CreditoProveedorDetalle creditoProveedorDetalle) throws Exception {
 		CreditoProveedorDetalle creditoProveedorDetalleAux = this.getById(creditoProveedorDetalle.getIdCreditoProveedorDetalle());
-		creditoProveedorDetalleAux.setDescripcion(creditoProveedorDetalle.getDescripcion());
 		creditoProveedorDetalleAux.setObservaciones(creditoProveedorDetalle.getObservaciones());
+		creditoProveedorDetalleAux.setPagada(creditoProveedorDetalle.getPagada());
 		return creditoProveedorDetalleRepository.save(creditoProveedorDetalleAux);
 	}
 	
@@ -118,6 +119,17 @@ public class CreditoProveedorDetalleServiceImpl extends CRUDImpl<CreditoProveedo
 			
 			creditoProveedorDetalleRepository.save(creditoProveedorDetalle);
 		}
+	}
+
+	@Override
+	public List<CreditoProveedorDetalle> getByPagada(Boolean pagada) throws Exception {
+		return creditoProveedorDetalleRepository.findByPagada(pagada);
+	}
+
+	@Override
+	public List<CreditoProveedorDetalle> getByCreditoProveedorAndPagada(Integer idCreditoProveedor, Boolean pagada)
+			throws Exception {
+		return creditoProveedorDetalleRepository.findByCreditoProveedorAndPagada(idCreditoProveedor, pagada);
 	}
 	
 }

@@ -43,6 +43,20 @@ public class ChecklistController {
 	}
 	
 	/**
+	 * Obtiene todos los checklists con servicios que no estan finalizados
+	 * @return Listado de checklists
+	 * @throws Exception
+	 */
+	@GetMapping("/not-finalizado")
+	public ResponseEntity<List<Checklist>> getAllNotFinalizado() throws Exception {
+		List<Checklist> checklistList = checklistService.getAllNotFinalizado();
+		if(checklistList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran checklists en la base de datos");
+		}
+		return new ResponseEntity<List<Checklist>>(checklistList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Busca un checklist por su id
 	 * @param id
 	 * @return Checklist
@@ -70,6 +84,53 @@ public class ChecklistController {
 			throw new ModelNotFoundException("Checklist para el servicio " + idServicio + " no encontrado");
 		}
 		return new ResponseEntity<Checklist>(checklist, HttpStatus.OK);
+	}
+	
+	/**
+	 * Busca un checklist por servicio finalizado
+	 * @param idServicio
+	 * @return Checklist
+	 * @throws Exception
+	 */
+	@GetMapping("/servicio/finalizado/{idServicio}")
+	public ResponseEntity<Checklist> getByServicioFinalizado(@PathVariable("idServicio") Integer idServicio) throws Exception {
+		Checklist checklist = checklistService.getByServicioFinalizado(idServicio);
+		if(checklist == null) {
+			throw new ModelNotFoundException("Checklist para el servicio " + idServicio + " y finalizado no encontrado");
+		}
+		return new ResponseEntity<Checklist>(checklist, HttpStatus.OK);
+	}
+	
+	/**
+	 * Busca un checklist o listado de checklists por placa y servicio finalizado
+	 * @param idPlaca
+	 * @param finalizado
+	 * @return Checklist List
+	 * @throws Exception
+	 */
+	@GetMapping("/placa/{idPlaca}/finalizado/{finalizado}")
+	public ResponseEntity<List<Checklist>> getByPlacaAndServicioFinalizado(@PathVariable("idPlaca") Integer idPlaca, 
+			@PathVariable("finalizado") Boolean finalizado) throws Exception {
+		List<Checklist> checklistList = checklistService.getByPlacaAndServicioFinalizado(idPlaca, finalizado);
+		if(checklistList.isEmpty()) {
+			throw new ModelNotFoundException("Checklists no encontrados");
+		}
+		return new ResponseEntity<List<Checklist>>(checklistList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Busca un checklist o listado de checklists por placa
+	 * @param idPlaca
+	 * @return Checklist List
+	 * @throws Exception
+	 */
+	@GetMapping("/placa/{idPlaca}")
+	public ResponseEntity<List<Checklist>> getByPlaca(@PathVariable("idPlaca") Integer idPlaca) throws Exception {
+		List<Checklist> checklistList = checklistService.getByPlaca(idPlaca);
+		if(checklistList.isEmpty()) {
+			throw new ModelNotFoundException("Checklists no encontrados");
+		}
+		return new ResponseEntity<List<Checklist>>(checklistList, HttpStatus.OK);
 	}
 	
 	/**
@@ -187,9 +248,25 @@ public class ChecklistController {
 	 * @param checklistNew
 	 * @throws Exception
 	 */
-	@PostMapping
-	public ResponseEntity<Void> create(@Valid @RequestBody ChecklistChecklistEvaluacionDTO checklistNew) throws Exception {
+	@PostMapping("/dto")
+	public ResponseEntity<Void> createDTO(@Valid @RequestBody ChecklistChecklistEvaluacionDTO checklistNew) throws Exception {
 		Checklist checklist = checklistService.createDTO(checklistNew);
+		if(checklist==null) {
+			throw new Exception("No se ha podido crear el checklist");
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		}
+	}
+	
+	/**
+	 * Guarda un nuevo checklist
+	 * No lo guarda cuando encuentra otro checklist con el mismo servicio
+	 * @param checklistNew
+	 * @throws Exception
+	 */
+	@PostMapping
+	public ResponseEntity<Void> create(@Valid @RequestBody Checklist checklistNew) throws Exception {
+		Checklist checklist = checklistService.create(checklistNew);
 		if(checklist==null) {
 			throw new Exception("No se ha podido crear el checklist");
 		} else {
@@ -203,9 +280,21 @@ public class ChecklistController {
 	 * @return Checklist actualizado
 	 * @throws Exception
 	 */
-	@PutMapping
-	public ResponseEntity<Checklist> update(@Valid @RequestBody ChecklistChecklistEvaluacionDTO checklistUp) throws Exception {
+	@PutMapping("/dto")
+	public ResponseEntity<Checklist> updateDTO(@Valid @RequestBody ChecklistChecklistEvaluacionDTO checklistUp) throws Exception {
 		Checklist checklist = checklistService.updateDTO(checklistUp);
+		return new ResponseEntity<Checklist>(checklist, HttpStatus.CREATED);
+	}
+	
+	/**
+	 * Actualiza todos los valores del checklist buscandolo por su id
+	 * @param checklistUp
+	 * @return Checklist actualizado
+	 * @throws Exception
+	 */
+	@PutMapping
+	public ResponseEntity<Checklist> update(@Valid @RequestBody Checklist checklistUp) throws Exception {
+		Checklist checklist = checklistService.update(checklistUp);
 		return new ResponseEntity<Checklist>(checklist, HttpStatus.CREATED);
 	}
 	

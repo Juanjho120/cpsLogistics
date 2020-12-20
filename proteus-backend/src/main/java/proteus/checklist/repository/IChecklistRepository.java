@@ -17,8 +17,14 @@ import proteus.generico.repository.IGenericRepository;
 @Repository
 public interface IChecklistRepository extends IGenericRepository<Checklist, Integer> {
 
+	@Query("FROM Checklist WHERE servicio.finalizado = 0")
+	List<Checklist> findAllNotFinalizado();
+	
 	@Query("FROM Checklist WHERE servicio.idServicio = :idServicio")
 	Checklist findByServicio(Integer idServicio);
+	
+	@Query("FROM Checklist WHERE servicio.idServicio = :idServicio AND servicio.finalizado = 0")
+	Checklist findByServicioFinalizado(Integer idServicio);
 	
 	Checklist findByNoOrdenTrabajo(String noOrdenTrabajo);
 	
@@ -39,5 +45,11 @@ public interface IChecklistRepository extends IGenericRepository<Checklist, Inte
 	
 	@Query("FROM Checklist WHERE checklistServicioTipo.idChecklistServicioTipo = :idChecklistServicioTipo")
 	List<Checklist> findByChecklistServicioTipo(Integer idChecklistServicioTipo);
+	
+	@Query("FROM Checklist WHERE servicio.placa.idPlaca = :idPlaca AND servicio.finalizado = :finalizado")
+	List<Checklist> findByPlacaAndServicioFinalizado(Integer idPlaca, Boolean finalizado);
+	
+	@Query("FROM Checklist WHERE servicio.placa.idPlaca = :idPlaca")
+	List<Checklist> findByPlaca(Integer idPlaca);
 	
 }

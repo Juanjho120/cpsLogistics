@@ -72,6 +72,53 @@ public class CreditoProveedorDetalleController {
 	}
 	
 	/**
+	 * Busca un detalle de credito a proveedor por credito
+	 * @param idCreditoProveedor
+	 * @return Detalle de credito a proveedor
+	 * @throws Exception
+	 */
+	@GetMapping("/credito-proveedor/{idCreditoProveedor}")
+	public ResponseEntity<List<CreditoProveedorDetalle>> getByCreditoProveedor(@PathVariable("idCreditoProveedor") Integer idCreditoProveedor) throws Exception {
+		List<CreditoProveedorDetalle> creditoProveedorDetalleList = creditoProveedorDetalleService.getByCreditoProveedor(idCreditoProveedor);
+		if(creditoProveedorDetalleList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran detalles de crédito para dicho crédito");
+		}
+		return new ResponseEntity<List<CreditoProveedorDetalle>>(creditoProveedorDetalleList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Busca un detalle de credito a proveedor por credito y si estan o no pagadas las facturas
+	 * @param idCreditoProveedor
+	 * @param pagada
+	 * @return Detalle de credito a proveedor
+	 * @throws Exception
+	 */
+	@GetMapping("/credito-proveedor/{idCreditoProveedor}/pagada/{pagada}")
+	public ResponseEntity<List<CreditoProveedorDetalle>> getByCreditoProveedorAndPagada(@PathVariable("idCreditoProveedor") Integer idCreditoProveedor,
+			@PathVariable("pagada") Boolean pagada) throws Exception {
+		List<CreditoProveedorDetalle> creditoProveedorDetalleList = creditoProveedorDetalleService.getByCreditoProveedorAndPagada(idCreditoProveedor, pagada);
+		if(creditoProveedorDetalleList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran detalles de crédito");
+		}
+		return new ResponseEntity<List<CreditoProveedorDetalle>>(creditoProveedorDetalleList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Busca los detalles de creditos por el estado pagada
+	 * @param pagada
+	 * @return Detalle de credito a proveedor
+	 * @throws Exception
+	 */
+	@GetMapping("/pagada/{pagada}")
+	public ResponseEntity<List<CreditoProveedorDetalle>> getByPagada(@PathVariable("pagada") Boolean pagada) throws Exception {
+		List<CreditoProveedorDetalle> creditoProveedorDetalleList = creditoProveedorDetalleService.getByPagada(pagada);
+		if(creditoProveedorDetalleList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran detalles de crédito");
+		}
+		return new ResponseEntity<List<CreditoProveedorDetalle>>(creditoProveedorDetalleList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Guarda un nuevo detalle de credito a proveedor
 	 * No se puede crear si existe otro detalle de credito con la misma factura
 	 * @param creditoProveedorDetalleNew

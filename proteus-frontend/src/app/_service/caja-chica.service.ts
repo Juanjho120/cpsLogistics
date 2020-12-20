@@ -12,4 +12,20 @@ export class CajaChicaService extends GenericService<CajaChica> {
   constructor(protected http: HttpClient) { 
     super(http, `${environment.HOST}/cajas-chicas`);
   }
+
+  getByServicio(idServicio : number) {
+    return this.http.get<CajaChica[]>(`${this.url}/servicio/${idServicio}`);
+  }
+
+  getByPlaca(idPlaca : number) {
+    return this.http.get<CajaChica[]>(`${this.url}/placa/${idPlaca}`);
+  }
+
+  getByProveedorMenor(idProveedorMenor : number) {
+    return this.http.get<CajaChica[]>(`${this.url}/proveedor-menor/${idProveedorMenor}`);
+  }
+
+  getByFechaIngreso(fechaDesde : string, fechaHasta : string) {
+    return this.http.get<CajaChica[]>(`${this.url}/fecha-ingreso/${fechaDesde}/${fechaHasta}`);
+  }
 }

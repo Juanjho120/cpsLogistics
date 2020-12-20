@@ -1,10 +1,18 @@
-import { Proveedor } from './proveedor';
+import { ComprobanteTipo } from './comprobanteTipo';
+import { Personal } from './personal';
+import { Concepto } from './concepto';
+import { ProveedorMenor } from './proveedorMenor';
 import { Servicio } from './servicio';
 export class CajaChica {
     idCajaChica : number;
-    servicio : Servicio;
-    proveedor : Proveedor;
-    descripcion : string;
+    fechaIngreso : string;
+    concepto : Concepto;
     monto : number;
-    codigoFactura : string;
+    autoriza : Personal;
+    recibe : Personal;
+    descripcion : string;
+    servicio : Servicio;
+    comprobanteTipo : ComprobanteTipo;
+    numeroComprobante : string;
+    proveedorMenor : ProveedorMenor;
 }

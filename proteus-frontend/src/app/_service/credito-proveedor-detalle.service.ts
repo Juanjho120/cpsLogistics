@@ -11,5 +11,22 @@ export class CreditoProveedorDetalleService extends GenericService<CreditoProvee
 
   constructor(protected http: HttpClient) {
     super(http, `${environment.HOST}/credito-proveedor-detalles`);
-   }
+  }
+
+  getByCreditoProveedor(idCreditoProveedor : number) {
+    return this.http.get<CreditoProveedorDetalle[]>(`${this.url}/credito-proveedor/${idCreditoProveedor}`);
+  }
+
+  getByCreditoProveedorAndPagada(idCreditoProveedor : number, pagada : boolean) {
+    return this.http.get<CreditoProveedorDetalle[]>(`${this.url}/credito-proveedor/${idCreditoProveedor}/pagada/${pagada}`);
+  }
+
+  getByPagada(pagada : boolean) {
+    return this.http.get<CreditoProveedorDetalle[]>(`${this.url}/pagada/${pagada}`);
+  }
+
+  checkVencimiento() {
+    return this.http.put(`${this.url}/check-vencimiento`, null);
+  }
+  
 }

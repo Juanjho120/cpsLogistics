@@ -15,5 +15,7 @@ public interface IPlacaService extends ICRUD<Placa, Integer> {
 	Placa getByNumero(String numero) throws Exception;
 	List<Placa> getByMarcaAuto(Integer idMarcaAuto) throws Exception;
 	void updateUltimoKilometraje(Integer idPlaca, Integer ultimoKilometraje) throws Exception;
+	List<Placa> getNotInService() throws Exception;
+	List<Placa> getInService() throws Exception;
 	
 }

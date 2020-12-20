@@ -1,7 +1,9 @@
 package proteus.pago.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -10,12 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.PositiveOrZero;
-
-import proteus.credito.model.CreditoProveedor;
 
 /**
  * Model for Table "pagos_proveedores"
@@ -30,44 +31,49 @@ public class PagoProveedor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idPagoProveedor;
 	
-	@NotNull(message = "El credito proveedor no puede ser nulo")
+	@NotNull(message = "El tipo de pago no puede ser nulo")
 	@ManyToOne
-	@JoinColumn(name = "id_credito_proveedor", nullable = false, foreignKey = @ForeignKey(name = "fkPagoProveedorCreditoProveedor"))
-	private CreditoProveedor creditoProveedor;
+	@JoinColumn(name = "id_pago_tipo", nullable = false, foreignKey = @ForeignKey(name = "fkPagoProveedorPagoTipo"))
+	private PagoTipo pagoTipo;
 	
-	@NotNull(message = "El numero de documento del pago no puede ser nulo")
-	@Column(name = "no_documento", nullable = false)
-	private String noDocumento;
+	@Column(name = "id_item")
+	private Integer idItem;
+	
+	@PastOrPresent(message = "La fecha y hora de pago debe estar en tiempo pasado o presente")
+	@Column(name = "fecha_pago", nullable = false)
+	private LocalDateTime fechaHoraPago;
 	
 	@NotNull(message = "El monto del pago no puede ser nulo")
 	@PositiveOrZero(message = "El monto del pago debe ser positivo o cero")
 	@Column(name = "monto", nullable = false)
 	private Double monto;
 	
-	@PastOrPresent(message = "La fecha y hora de pago debe estar en tiempo pasado o presente")
-	@Column(name = "fecha_pago", nullable = false)
-	private LocalDateTime fechaHoraPago;
-	
 	@Column(name = "observaciones")
 	private String observaciones;
+	
+	@OneToMany(mappedBy = "pagoProveedor", cascade = { CascadeType.ALL }, orphanRemoval = true)
+	private List<PagoProveedorDetalle> pagoProveedorDetalle;
 	
 	public PagoProveedor() {}
 
 	/**
 	 * @param idPagoProveedor
-	 * @param creditoProveedor
-	 * @param noDocumento
-	 * @param monto
+	 * @param pagoTipo
+	 * @param idItem
 	 * @param fechaHoraPago
+	 * @param monto
 	 * @param observaciones
+	 * @param pagoProveedorDetalle
 	 */
-	public PagoProveedor(Integer idPagoProveedor, CreditoProveedor creditoProveedor, String noDocumento, Double monto, LocalDateTime fechaHoraPago, String observaciones) {
+	public PagoProveedor(Integer idPagoProveedor, PagoTipo pagoTipo, Integer idItem, LocalDateTime fechaHoraPago, Double monto,
+			String observaciones, List<PagoProveedorDetalle> pagoProveedorDetalle) {
 		this.idPagoProveedor = idPagoProveedor;
-		this.creditoProveedor = creditoProveedor;
-		this.noDocumento = noDocumento;
-		this.monto = monto;
+		this.pagoTipo = pagoTipo;
+		this.idItem = idItem;
 		this.fechaHoraPago = fechaHoraPago;
+		this.monto = monto;
 		this.observaciones = observaciones;
+		this.pagoProveedorDetalle = pagoProveedorDetalle;
 	}
 
 	/**
@@ -85,45 +91,31 @@ public class PagoProveedor {
 	}
 
 	/**
-	 * @return the creditoProveedor
+	 * @return the pagoTipo
 	 */
-	public CreditoProveedor getCreditoProveedor() {
-		return creditoProveedor;
+	public PagoTipo getPagoTipo() {
+		return pagoTipo;
 	}
 
 	/**
-	 * @param creditoProveedor the creditoProveedor to set
+	 * @param pagoTipo the pagoTipo to set
 	 */
-	public void setCreditoProveedor(CreditoProveedor creditoProveedor) {
-		this.creditoProveedor = creditoProveedor;
+	public void setPagoTipo(PagoTipo pagoTipo) {
+		this.pagoTipo = pagoTipo;
 	}
 
 	/**
-	 * @return the noDocumento
+	 * @return the idItem
 	 */
-	public String getNoDocumento() {
-		return noDocumento;
+	public Integer getIdItem() {
+		return idItem;
 	}
 
 	/**
-	 * @param noDocumento the noDocumento to set
+	 * @param idItem the idItem to set
 	 */
-	public void setNoDocumento(String noDocumento) {
-		this.noDocumento = noDocumento;
-	}
-
-	/**
-	 * @return the monto
-	 */
-	public Double getMonto() {
-		return monto;
-	}
-
-	/**
-	 * @param monto the monto to set
-	 */
-	public void setMonto(Double monto) {
-		this.monto = monto;
+	public void setIdItem(Integer idItem) {
+		this.idItem = idItem;
 	}
 
 	/**
@@ -141,6 +133,20 @@ public class PagoProveedor {
 	}
 
 	/**
+	 * @return the monto
+	 */
+	public Double getMonto() {
+		return monto;
+	}
+
+	/**
+	 * @param monto the monto to set
+	 */
+	public void setMonto(Double monto) {
+		this.monto = monto;
+	}
+
+	/**
 	 * @return the observaciones
 	 */
 	public String getObservaciones() {
@@ -153,5 +159,19 @@ public class PagoProveedor {
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
-	
+
+	/**
+	 * @return the pagoProveedorDetalle
+	 */
+	public List<PagoProveedorDetalle> getPagoProveedorDetalle() {
+		return pagoProveedorDetalle;
+	}
+
+	/**
+	 * @param pagoProveedorDetalle the pagoProveedorDetalle to set
+	 */
+	public void setPagoProveedorDetalle(List<PagoProveedorDetalle> pagoProveedorDetalle) {
+		this.pagoProveedorDetalle = pagoProveedorDetalle;
+	}
+
 }

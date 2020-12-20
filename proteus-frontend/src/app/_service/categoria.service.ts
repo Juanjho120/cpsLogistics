@@ -11,5 +11,5 @@ export class CategoriaService extends GenericService<Categoria> {
 
   constructor(protected http: HttpClient) {
     super(http, `${environment.HOST}/categorias`);
-   }
+  }
 }

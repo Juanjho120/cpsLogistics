@@ -4,5 +4,4 @@ export class SegmentoCredito {
     segmento : Segmento;
     credito : number;
     ultimaTransaccion : string;
-    sobreFinanciamiento : boolean;
 }

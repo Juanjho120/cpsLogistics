@@ -34,6 +34,10 @@ public class SegmentoCreditoDetalle {
 	@JoinColumn(name = "id_segmento_credito", nullable = false, foreignKey = @ForeignKey(name = "fkSegmentoCreditoDetalleSegmentoCredito"))
 	private SegmentoCredito segmentoCredito;
 	
+	@NotNull(message = "El numero de factura del credito detalle del segmento no puede ser nulo")
+	@Column(name = "factura_numero", nullable = false)
+	private String facturaNumero;
+	
 	@NotNull(message = "El servicio no puede ser nulo")
 	@ManyToOne
 	@JoinColumn(name = "id_servicio", nullable = false, foreignKey = @ForeignKey(name = "fkSegmentoCreditoDetalleServicio"))
@@ -60,6 +64,7 @@ public class SegmentoCreditoDetalle {
 	/**
 	 * @param idSegmentoCreditoDetalle
 	 * @param segmentoCredito
+	 * @param facturaNumero
 	 * @param servicio
 	 * @param fechaHoraEmision
 	 * @param totalFacturado
@@ -67,9 +72,10 @@ public class SegmentoCreditoDetalle {
 	 * @param totalPagado
 	 */
 	public SegmentoCreditoDetalle(Integer idSegmentoCreditoDetalle, SegmentoCredito segmentoCredito, Servicio servicio, LocalDateTime fechaHoraEmision, Double totalFacturado, 
-			Double totalRestante, Double totalPagado) {
+			Double totalRestante, Double totalPagado, String facturaNumero) {
 		this.idSegmentoCreditoDetalle = idSegmentoCreditoDetalle;
 		this.segmentoCredito = segmentoCredito;
+		this.facturaNumero = facturaNumero;
 		this.servicio = servicio;
 		this.fechaHoraEmision = fechaHoraEmision;
 		this.totalFacturado = totalFacturado;
@@ -103,6 +109,20 @@ public class SegmentoCreditoDetalle {
 	 */
 	public void setSegmentoCredito(SegmentoCredito segmentoCredito) {
 		this.segmentoCredito = segmentoCredito;
+	}
+
+	/**
+	 * @return the facturaNumero
+	 */
+	public String getFacturaNumero() {
+		return facturaNumero;
+	}
+
+	/**
+	 * @param facturaNumero the facturaNumero to set
+	 */
+	public void setFacturaNumero(String facturaNumero) {
+		this.facturaNumero = facturaNumero;
 	}
 
 	/**

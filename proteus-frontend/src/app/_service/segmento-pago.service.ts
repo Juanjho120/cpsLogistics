@@ -1,3 +1,4 @@
+import { SegmentoPagoTransaccionChequeDTO } from './../_model/dto/segmentoPagoTransaccionChequeDTO';
 import { SegmentoPagoDTO } from './../_model/dto/segmentoPagoDTO';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -20,6 +21,10 @@ export class SegmentoPagoService extends GenericService<SegmentoPago> {
 
   getDTOBySegmento(idSegmento : number) {
     return this.http.get<SegmentoPagoDTO[]>(`${this.url}/dto/segmento/${idSegmento}`);
+  }
+
+  createDTO(segmentoPagoDto : SegmentoPagoTransaccionChequeDTO) {
+    return this.http.post(`${this.url}/dto`, segmentoPagoDto);
   }
 
 }

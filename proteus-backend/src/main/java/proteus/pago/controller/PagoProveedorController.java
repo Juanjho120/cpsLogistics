@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import proteus.exception.ModelNotFoundException;
+import proteus.pago.dto.PagoProveedorTransaccionChequeDTO;
 import proteus.pago.model.PagoProveedor;
 import proteus.pago.service.IPagoProveedorService;
 
@@ -57,6 +57,21 @@ public class PagoProveedorController {
 	}
 	
 	/**
+	 * Obtiene todos los pagos a proveedores por credito proveedor de la base de datos
+	 * @param idCreditoProveedor
+	 * @return Listado de pagos a proveedores
+	 * @throws Exception
+	 */
+	@GetMapping("/credito-proveedor/{idCreditoProveedor}")
+	public ResponseEntity<List<PagoProveedor>> getByCreditoProveedor(@PathVariable("idCreditoProveedor") Integer idCreditoProveedor) throws Exception {
+		List<PagoProveedor> pagoProveedorList = pagoProveedorService.getByCreditoProveedor(idCreditoProveedor);
+		if(pagoProveedorList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran pagos para dicho credito");
+		}
+		return new ResponseEntity<List<PagoProveedor>>(pagoProveedorList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Obtiene todos los pagos a proveedores por fecha de la base de datos
 	 * @param fechaDesde
 	 * @param fechaHasta
@@ -89,47 +104,15 @@ public class PagoProveedorController {
 	}
 	
 	/**
-	 * Busca un pago a proveedor por su numero de documento
-	 * @param noDocumento
-	 * @return Pago a proveedor
+	 * Guarda un nuevo pago para un proveedor junto con sus documentos (cheque, transaccion o efectivo)
+	 * No lo guarda cuando ya esta pagado en su totalidad
+	 * @param pagoProveedorDtoNew
 	 * @throws Exception
 	 */
-	@GetMapping("/no-documento/{noDocumento}")
-	public ResponseEntity<PagoProveedor> getByNoDocumento(@PathVariable("noDocumento") String noDocumento) throws Exception {
-		PagoProveedor pagoProveedor = pagoProveedorService.getByNoDocumento(noDocumento);
-		if(pagoProveedor == null) {
-			throw new ModelNotFoundException("Pago al proveedor con numero de documento " + noDocumento + " no encontrado");
-		}
-		return new ResponseEntity<PagoProveedor>(pagoProveedor, HttpStatus.OK);
-	}
-	
-	/**
-	 * Guarda un nuevo pago a proveedor
-	 * Por el momento va a seguir guardando hasta que se tenga saldo a favor (signo negativo)
-	 * No lo guarda si encuentra otro pago con el mismo numero de documento
-	 * @param pagoProveedorNew
-	 * @throws Exception
-	 */
-	@PostMapping
-	public ResponseEntity<Void> create(@Valid @RequestBody PagoProveedor pagoProveedorNew) throws Exception {
-		PagoProveedor pagoProveedor = pagoProveedorService.create(pagoProveedorNew);
-		if(pagoProveedor==null) {
-			throw new Exception("No se ha podido crear el pago al proveedor");
-		} else {
-			return new ResponseEntity<Void>(HttpStatus.CREATED);
-		}
-	}
-	
-	/**
-	 * Actualiza solo la el monto y observaciones del detalle de credito al proveedor buscandolo por su id
-	 * @param pagoProveedorUp
-	 * @return Detalle de credito a proveedor actualizado
-	 * @throws Exception
-	 */
-	@PutMapping
-	public ResponseEntity<PagoProveedor> update(@Valid @RequestBody PagoProveedor pagoProveedorUp) throws Exception {
-		PagoProveedor pagoProveedor = pagoProveedorService.update(pagoProveedorUp);
-		return new ResponseEntity<PagoProveedor>(pagoProveedor, HttpStatus.CREATED);
+	@PostMapping("/dto")
+	public ResponseEntity<Void> createDTO(@Valid @RequestBody PagoProveedorTransaccionChequeDTO pagoProveedorDtoNew) throws Exception {
+		pagoProveedorService.createDTO(pagoProveedorDtoNew);
+		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	
 	/**

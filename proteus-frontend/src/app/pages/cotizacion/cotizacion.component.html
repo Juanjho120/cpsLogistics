@@ -47,7 +47,7 @@
                                 </mat-form-field>
                                 Q.
                                 <mat-form-field class="mat-form-field-costo-trabajo">
-                                    <input matInput placeholder="Costo" required formControlName="costo" type="number" min="0">
+                                    <input matInput placeholder="Costo" required formControlName="costo" type="number" min="0" autocomplete="off">
                                 </mat-form-field>
 
                                 <button mat-flat-button color="primary" type="submit" [disabled]="frmCotizacionTrabajo.invalid">Añadir</button>
@@ -78,12 +78,12 @@
                         <div class="cotizacion-repuesto-header-container">
                             <form [formGroup]="formCotizacionRepuesto" #frmCotizacionRepuesto="ngForm" (ngSubmit)="agregarCotizacionRepuesto()">
                                 <mat-form-field class="mat-form-field-cantidad-repuesto">
-                                    <input matInput placeholder="Cant" required formControlName="cantidad" type="number" min="0">
+                                    <input matInput placeholder="Cant" required formControlName="cantidad" type="number" min="0" autocomplete="off">
                                 </mat-form-field>
 
                                 <mat-form-field class="mat-form-field-repuesto">
                                     <input type="text" placeholder="Seleccione el repuesto" matInput [matAutocomplete]="autoRepuesto" 
-                                        [formControl]="myControlRepuesto" required formControlName="repuesto">
+                                        [formControl]="myControlRepuesto" required formControlName="repuesto" autocomplete="off">
                                 </mat-form-field>
                     
                                 <mat-autocomplete #autoRepuesto="matAutocomplete" [displayWith]="mostrarRepuesto" (optionSelected)="seleccionarRepuesto($event)">
@@ -94,7 +94,7 @@
 
                                 Q.
                                 <mat-form-field class="mat-form-field-costo-repuesto">
-                                    <input matInput placeholder="Costo" required formControlName="costoUnitario" type="number" min="0">
+                                    <input matInput placeholder="Costo" required formControlName="costoUnitario" type="number" min="0" autocomplete="off">
                                 </mat-form-field>
 
                                 <button mat-flat-button color="primary" type="submit" [disabled]="frmCotizacionRepuesto.invalid">Añadir</button>

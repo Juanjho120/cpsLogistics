@@ -1,3 +1,6 @@
+import { FinanzasComponent } from './pages/finanzas/finanzas.component';
+import { ChecklistComponent } from './pages/checklist/checklist.component';
+import { ServicioComponent } from './pages/servicio/servicio.component';
 import { CotizacionComponent } from './pages/cotizacion/cotizacion.component';
 import { FacturaCompraComponent } from './pages/factura-compra/factura-compra.component';
 import { PlacaComponent } from './pages/placa/placa.component';
@@ -28,7 +31,10 @@ const routes: Routes = [
   { path: 'proveedor', component: ProveedorComponent},
   { path: 'placa', component: PlacaComponent},
   { path: 'factura-compra', component: FacturaCompraComponent},
-  { path: 'cotizacion', component: CotizacionComponent}
+  { path: 'cotizacion', component: CotizacionComponent},
+  { path: 'servicio', component: ServicioComponent},
+  { path: 'checklist', component: ChecklistComponent},
+  { path: 'finanzas', component: FinanzasComponent}
 ];
 
 @NgModule({

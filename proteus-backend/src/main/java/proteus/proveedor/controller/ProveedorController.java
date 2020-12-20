@@ -43,6 +43,20 @@ public class ProveedorController {
 	}
 	
 	/**
+	 * Obtiene todos los proveedores con creditos
+	 * @return Listado de proveedores
+	 * @throws Exception
+	 */
+	@GetMapping("/with-credito")
+	public ResponseEntity<List<Proveedor>> getWithCredito() throws Exception {
+		List<Proveedor> proveedorList = proveedorService.getWithCredito();
+		if(proveedorList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran proveedores con creditos");
+		}
+		return new ResponseEntity<List<Proveedor>>(proveedorList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Obtiene todos los proveedores con sus asesores en la base de datos
 	 * @return Listado de proveedores
 	 * @throws Exception

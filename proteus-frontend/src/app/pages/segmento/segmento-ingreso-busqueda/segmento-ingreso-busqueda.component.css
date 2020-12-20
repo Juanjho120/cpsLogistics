@@ -27,14 +27,21 @@
 }
 
 .mat-column-acciones {
-    flex : 0 0 15%;
+    flex : 0 0 11%;
 }
 
 .mat-table {
-    max-height: 420px;
+    max-height: 450px;
     overflow: auto;
 }
 
 .mat-header-cell {
     font-size: 14px;
+}
+
+.mat-header-cell {
+    font-size: 14px;
+    justify-content: center!important;
+    background-color: blue;
+    color: white;
 }

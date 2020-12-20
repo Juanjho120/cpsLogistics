@@ -1,0 +1,39 @@
+.mat-table {
+    width: 930px;
+}
+
+.mat-column-fecha {
+    flex: 0 0 120px;
+}
+
+.mat-column-servicioTipo {
+    flex: 0 0 150px;
+}
+
+.mat-column-segmento {
+    flex: 0 0 250px;
+}
+
+.mat-column-placa {
+    flex: 0 0 100px;
+}
+
+.mat-column-costo {
+    flex: 0 0 130px;
+}
+
+.mat-column-cotizacion {
+    flex: 0 0 100px;
+}
+
+.mat-column-select {
+    flex: 0 0 50px;
+}
+
+.mat-header-cell {
+    font-size: 14px;
+}
+
+.mat-form-field-segmento {
+    width: 300px;
+}

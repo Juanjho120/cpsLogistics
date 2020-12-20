@@ -42,6 +42,20 @@ public class SegmentoController {
 	}
 	
 	/**
+	 * Obtiene todos los segmentos con credito
+	 * @return Listado de segmentos
+	 * @throws Exception
+	 */
+	@GetMapping("/with-credito")
+	public ResponseEntity<List<Segmento>> getWithCredito() throws Exception {
+		List<Segmento> segmentoList = segmentoService.getWithCredito();
+		if(segmentoList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran segmentos con credito");
+		}
+		return new ResponseEntity<List<Segmento>>(segmentoList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Busca un segmento por su id
 	 * @param id
 	 * @return Segmento

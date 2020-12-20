@@ -29,4 +29,16 @@ public interface ISegmentoCreditoDetalleRepository extends IGenericRepository<Se
 	@Query("FROM SegmentoCreditoDetalle WHERE segmentoCredito.segmento.idSegmento = :idSegmento")
 	List<SegmentoCreditoDetalle> findBySegmento(Integer idSegmento);
 	
+	@Query("FROM SegmentoCreditoDetalle WHERE segmentoCredito.segmento.idSegmento = :idSegmento AND totalRestante > 0")
+	List<SegmentoCreditoDetalle> findBySegmentoSinPagar(Integer idSegmento);
+	
+	@Query("FROM SegmentoCreditoDetalle WHERE facturaNumero = :facturaNumero")
+	SegmentoCreditoDetalle findByFacturaNumero(String facturaNumero);
+	
+	@Query("FROM SegmentoCreditoDetalle WHERE totalRestante > 0")
+	List<SegmentoCreditoDetalle> findSaldoPendiente();
+	
+	@Query("FROM SegmentoCreditoDetalle WHERE totalRestante = 0")
+	List<SegmentoCreditoDetalle> findPagadas();
+	
 }

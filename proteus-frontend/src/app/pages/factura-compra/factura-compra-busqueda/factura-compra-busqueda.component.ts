@@ -216,7 +216,7 @@ export class FacturaCompraBusquedaComponent implements OnInit {
     this.dialog.open(FacturaCompraDialogoEliminarComponent, {
       width: '300px',
       data: facturaCompra
-    })
+    });
   }
 
 }

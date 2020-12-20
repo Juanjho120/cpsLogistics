@@ -52,7 +52,7 @@ export class CardexComponent implements OnInit {
   abrirDialogoEdicion(repuesto? : Repuesto) {
     let repuestoAux = repuesto != null ? repuesto : new Repuesto();
     this.dialog.open(CardexDialogoComponent, {
-      width : '450px',
+      width : '300px',
       data : repuestoAux
     })
   }

@@ -35,15 +35,14 @@ public class CreditoProveedorDetalle {
 	@JoinColumn(name = "id_factura_compra", nullable = false, foreignKey = @ForeignKey(name = "fkCreditoProveedorDetalleFacturaCompra"))
 	private FacturaCompra facturaCompra;
 	
-	@NotNull(message = "La descripcion del detalle del credito proveedor no puede ser nulo")
-	@Column(name = "descripcion", nullable = false)
-	private String descripcion;
-	
 	@Column(name = "observaciones")
 	private String observaciones;
 	
 	@Column(name = "vencida")
 	private Boolean vencida;
+	
+	@Column(name = "pagada")
+	private Boolean pagada;
 	
 	public CreditoProveedorDetalle() {}
 
@@ -51,17 +50,17 @@ public class CreditoProveedorDetalle {
 	 * @param idCreditoProveedorDetalle
 	 * @param creditoProveedor
 	 * @param facturaCompra
-	 * @param descripcion
 	 * @param vencida
+	 * @param pagada
 	 */
-	public CreditoProveedorDetalle(Integer idCreditoProveedorDetalle, CreditoProveedor creditoProveedor, FacturaCompra facturaCompra, String descripcion,
-			String observaciones, Boolean vencida) {
+	public CreditoProveedorDetalle(Integer idCreditoProveedorDetalle, CreditoProveedor creditoProveedor, FacturaCompra facturaCompra,
+			String observaciones, Boolean vencida, Boolean pagada) {
 		this.idCreditoProveedorDetalle = idCreditoProveedorDetalle;
 		this.creditoProveedor = creditoProveedor;
 		this.facturaCompra = facturaCompra;
-		this.descripcion = descripcion;
 		this.observaciones = observaciones;
 		this.vencida = vencida;
+		this.pagada = pagada;
 	}
 
 	/**
@@ -107,20 +106,6 @@ public class CreditoProveedorDetalle {
 	}
 
 	/**
-	 * @return the descripcion
-	 */
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	/**
-	 * @param descripcion the descripcion to set
-	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	/**
 	 * @return the vencida
 	 */
 	public Boolean getVencida() {
@@ -132,6 +117,20 @@ public class CreditoProveedorDetalle {
 	 */
 	public void setVencida(Boolean vencida) {
 		this.vencida = vencida;
+	}
+
+	/**
+	 * @return the pagada
+	 */
+	public Boolean getPagada() {
+		return pagada;
+	}
+
+	/**
+	 * @param pagada the pagada to set
+	 */
+	public void setPagada(Boolean pagada) {
+		this.pagada = pagada;
 	}
 
 	/**

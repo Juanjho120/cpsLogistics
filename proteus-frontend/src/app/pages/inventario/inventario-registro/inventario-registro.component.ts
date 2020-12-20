@@ -20,6 +20,7 @@ export class InventarioRegistroComponent implements OnInit {
 
   idConcepto : number;
   form : FormGroup;
+  formInventario : FormGroup;
 
   repuestos : Repuesto[];
   repuestoSeleccionado : Repuesto;
@@ -42,6 +43,10 @@ export class InventarioRegistroComponent implements OnInit {
     this.form = new FormGroup({
       'cantidad' : new FormControl('', Validators.required),
       'repuesto' : this.myControlRepuesto
+    });
+
+    this.formInventario = new FormGroup({
+      'razon' : new FormControl('', Validators.required)
     });
 
     this.repuestoService.getAll().subscribe(data => {
@@ -119,6 +124,7 @@ export class InventarioRegistroComponent implements OnInit {
 
   limpiarControlGeneral() {
     this.limpiarControlDetalle();
+    this.formInventario.reset();
     this.inventarioDetalle = [];
     this.inventarioCompleto = false;
     this.idConcepto = 0;
@@ -130,6 +136,7 @@ export class InventarioRegistroComponent implements OnInit {
       inventario.usuario = new Usuario();
       inventario.usuario.idUsuario = 1; //ESTO DEBE SER DINAMICO SEGUN EL USUARIO REGISTRADO-------
       inventario.concepto = new Concepto();
+      inventario.razon = this.formInventario.value['razon'];
       inventario.concepto.idConcepto = this.idConcepto;
       inventario.inventarioDetalle = this.inventarioDetalle;
 

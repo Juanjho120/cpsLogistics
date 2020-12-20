@@ -11,5 +11,14 @@ export class PlacaService extends GenericService<Placa> {
 
   constructor(protected http: HttpClient) {
     super(http, `${environment.HOST}/placas`);
-   }
+  }
+
+  getNotInService() {
+    return this.http.get<Placa[]>(`${this.url}/not-in-service`);
+  }
+
+  getInService() {
+    return this.http.get<Placa[]>(`${this.url}/in-service`);
+  }
+  
 }

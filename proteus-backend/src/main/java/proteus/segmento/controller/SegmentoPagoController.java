@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import proteus.exception.ModelNotFoundException;
-import proteus.segmento.dto.SegmentoPagoDTO;
+import proteus.segmento.dto.SegmentoPagoTransaccionChequeDTO;
 import proteus.segmento.model.SegmentoPago;
 import proteus.segmento.service.ISegmentoPagoService;
 
@@ -57,18 +57,18 @@ public class SegmentoPagoController {
 	}
 	
 	/**
-	 * Obtiene todos los pagos de segmentos por segmento de la base de datos
-	 * @param idSegmento
+	 * Obtiene todos los pagos de segmentos por numero de factura en efectivo
+	 * @param facturaNumero
 	 * @return Listado de pagos de segmentos
 	 * @throws Exception
 	 */
-	@GetMapping("/dto/segmento/{idSegmento}")
-	public ResponseEntity<List<SegmentoPagoDTO>> getDTOBySegmento(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
-		List<SegmentoPagoDTO> segmentoPagoList = segmentoPagoService.getDTOBySegmento(idSegmento);
+	@GetMapping("/factura-numero/{facturaNumero}")
+	public ResponseEntity<List<SegmentoPago>> getByFacturaNumeroEfectivo(@PathVariable("facturaNumero") String facturaNumero) throws Exception {
+		List<SegmentoPago> segmentoPagoList = segmentoPagoService.getByFacturaNumeroEfectivo(facturaNumero);
 		if(segmentoPagoList.isEmpty()) {
-			throw new ModelNotFoundException("No se encuentran pagos del segmento en la base de datos");
+			throw new ModelNotFoundException("No se encuentran pagos del segmento en efectivo");
 		}
-		return new ResponseEntity<List<SegmentoPagoDTO>>(segmentoPagoList, HttpStatus.OK);
+		return new ResponseEntity<List<SegmentoPago>>(segmentoPagoList, HttpStatus.OK);
 	}
 	
 	/**
@@ -117,6 +117,18 @@ public class SegmentoPagoController {
 		} else {
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		}
+	}
+	
+	/**
+	 * Guarda un nuevo pago de un segmento junto con sus documentos (cheque, transaccion o efectivo)
+	 * No lo guarda cuando ya esta pagado en su totalidad
+	 * @param segmentoPagoNew
+	 * @throws Exception
+	 */
+	@PostMapping("/dto")
+	public ResponseEntity<Void> createDTO(@Valid @RequestBody SegmentoPagoTransaccionChequeDTO segmentoPagoDtoNew) throws Exception {
+		segmentoPagoService.createDTO(segmentoPagoDtoNew);
+		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 	
 	/**

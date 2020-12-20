@@ -8,6 +8,11 @@
     width: 120px;
 }
 
+.mat-form-field-repuesto {
+    width: 350px;
+    margin-right: 20px;
+}
+
 .mat-form-field-fecha-fin {
     margin-right: 25px;
     width: 120px;
@@ -20,10 +25,19 @@
     height: 60px;
 }
 
+.section-form-producto-fecha {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
 .card-table-container {
     width: 100%;
     border-style: ridge;
     border-width: 1px;
+    max-height: 400px;
+    overflow: auto;
 }
 
 .mat-column-codigo {
@@ -40,4 +54,20 @@
 
 .mat-column-existencia {
     flex : 0 0 15%;
+}
+
+.mat-header-cell {
+    font-size: 14px;
+    background-color: blue;
+    color: white;
+}
+
+.por-fechas-label {
+    font-size: 14px;
+    display: inline;
+}
+
+.por-producto-label {
+    font-size: 14px;
+    display: inline;
 }

@@ -68,14 +68,19 @@
                         
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <p><b>Tipo de inventario: </b> {{i.concepto.nombre}}</p>
-                <p><b>Ingresado por: </b> {{i.usuario.nombre}} {{i.usuario.apellido}}</p>
-                <p><b>Fecha y hora de ingreso: </b> {{i.fechaHora}}</p>
-                <mat-list role="list">
-                    <mat-list-item *ngFor="let id of i.inventarioDetalle">
-                        <div mat-line>{{id.repuesto.descripcion}} ({{id.cantidad}})</div>
-                    </mat-list-item>
-                </mat-list>
+                <p style="margin: 0px;"><b>Tipo de inventario: </b> {{i.concepto.nombre}}</p>
+                <p style="margin: 0px;"><b>Ingresado por: </b> {{i.usuario.nombre}} {{i.usuario.apellido}}</p>
+                <p style="margin: 0px;"><b>Fecha y hora de ingreso: </b> {{i.fechaHora}}</p>
+                <p style="margin: 0px;"><b>Razón del inventario: </b> {{i.razon}}</p>
+                <br>
+                <mat-grid-list cols="10" rowHeight = "30px">
+                    <mat-grid-tile [colspan]="1" [rowspan]="1" class="mat-grid-tile-header"><b>Cant</b></mat-grid-tile>
+                    <mat-grid-tile [colspan]="9" [rowspan]="1" class="mat-grid-tile-header"><b>Repuesto</b></mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list cols="10" rowHeight = "50px" *ngFor="let id of i.inventarioDetalle">
+                    <mat-grid-tile [colspan]="1" [rowspan]="1" class="mat-grid-tile-content">{{id.cantidad}}</mat-grid-tile>
+                    <mat-grid-tile [colspan]="9" [rowspan]="1" class="mat-grid-tile-content">{{id.repuesto.descripcion}}</mat-grid-tile>
+                </mat-grid-list>
             </mat-expansion-panel>
         </section>
     </mat-card-content>

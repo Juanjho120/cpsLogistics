@@ -1,0 +1,14 @@
+<div>
+    <form [formGroup]="form" #frmCreditoDetalleProveedor="ngForm" (ngSubmit)="asignar()">
+        <mat-form-field>
+            <input matInput placeholder="Código de factura" formControlName="facturaCodigo">
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Observaciones" formControlName="observaciones"></textarea>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="frmCreditoDetalleProveedor.invalid">Asignar</button>
+        <button mat-raised-button color="warn" (click)="cerrar()" type="button">Cancelar</button>
+    </form>
+</div>

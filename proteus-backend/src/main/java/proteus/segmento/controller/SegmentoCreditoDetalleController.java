@@ -43,6 +43,34 @@ public class SegmentoCreditoDetalleController {
 	}
 	
 	/**
+	 * Obtiene todos los detalles de credito de un segmento con un saldo pendiente por pagar
+	 * @return Listado de detalles de credito de un segmento
+	 * @throws Exception
+	 */
+	@GetMapping("/saldo-pendiente")
+	public ResponseEntity<List<SegmentoCreditoDetalle>> getSaldoPendiente() throws Exception {
+		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getSaldoPendiente();
+		if(segmentoCreditoDetalleList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran detalles de creditos de los segmentos con saldo pendiente");
+		}
+		return new ResponseEntity<List<SegmentoCreditoDetalle>>(segmentoCreditoDetalleList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Obtiene todos los detalles de credito de un segmento pagadas
+	 * @return Listado de detalles de credito de un segmento
+	 * @throws Exception
+	 */
+	@GetMapping("/pagadas")
+	public ResponseEntity<List<SegmentoCreditoDetalle>> getPagadas() throws Exception {
+		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getPagadas();
+		if(segmentoCreditoDetalleList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran detalles de creditos de los segmentos pagadas");
+		}
+		return new ResponseEntity<List<SegmentoCreditoDetalle>>(segmentoCreditoDetalleList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Busca un detalle de credito de un segmento por su id
 	 * @param id
 	 * @return Detalle de credito de un segmento
@@ -83,6 +111,21 @@ public class SegmentoCreditoDetalleController {
 		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getBySegmento(idSegmento);
 		if(segmentoCreditoDetalleList.isEmpty()) {
 			throw new ModelNotFoundException("Detalles de credito del segmento " + idSegmento + " no encontrado");
+		}
+		return new ResponseEntity<List<SegmentoCreditoDetalle>>(segmentoCreditoDetalleList, HttpStatus.OK);
+	}
+	
+	/**
+	 * Busca un detalle de credito de un segmento por segmento con saldo pendiente
+	 * @param idSegmento
+	 * @return Lista detalles de credito de un segmento
+	 * @throws Exception
+	 */
+	@GetMapping("/saldo-pendiente/segmento/{idSegmento}")
+	public ResponseEntity<List<SegmentoCreditoDetalle>> getBySegmentoSinPagar(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
+		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getBySegmentoSinPagar(idSegmento);
+		if(segmentoCreditoDetalleList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran facturas con saldo pendiente");
 		}
 		return new ResponseEntity<List<SegmentoCreditoDetalle>>(segmentoCreditoDetalleList, HttpStatus.OK);
 	}
