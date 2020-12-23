@@ -2,6 +2,7 @@ package proteus.credito.service;
 
 import java.util.List;
 
+import proteus.credito.dto.FacturaProveedorDTO;
 import proteus.credito.model.CreditoProveedorDetalle;
 import proteus.generico.service.ICRUD;
 
@@ -17,5 +18,7 @@ public interface ICreditoProveedorDetalleService extends ICRUD<CreditoProveedorD
 	List<CreditoProveedorDetalle> getByCreditoProveedorAndPagada(Integer idCreditoProveedor, Boolean pagada) throws Exception;
 	List<CreditoProveedorDetalle> getByPagada(Boolean pagada) throws Exception;
 	void checkFacturasVencidas() throws Exception;
+	List<FacturaProveedorDTO> getFacturaByProveedor(Integer idProveedor) throws Exception;
+	List<FacturaProveedorDTO> getFacturaByFecha(String fechaDesde, String fechaHasta) throws Exception;
 	
 }

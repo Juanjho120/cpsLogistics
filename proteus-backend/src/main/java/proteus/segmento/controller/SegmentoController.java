@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class SegmentoController {
 	 * @return Listado de segmentos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<Segmento>> getAll() throws Exception {
 		List<Segmento> segmentoList = segmentoService.getAll();
@@ -46,6 +48,7 @@ public class SegmentoController {
 	 * @return Listado de segmentos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/with-credito")
 	public ResponseEntity<List<Segmento>> getWithCredito() throws Exception {
 		List<Segmento> segmentoList = segmentoService.getWithCredito();
@@ -61,6 +64,7 @@ public class SegmentoController {
 	 * @return Segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Segmento> getById(@PathVariable("id") Integer id) throws Exception {
 		Segmento segmento = segmentoService.getById(id);
@@ -76,6 +80,7 @@ public class SegmentoController {
 	 * @param segmentoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Segmento segmentoNew) throws Exception {
 		Segmento segmento = segmentoService.create(segmentoNew);
@@ -92,6 +97,7 @@ public class SegmentoController {
 	 * @return Segmento actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<Segmento> update(@Valid @RequestBody Segmento segmentoUp) throws Exception {
 		Segmento segmento = segmentoService.update(segmentoUp);
@@ -103,6 +109,7 @@ public class SegmentoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Segmento segmento = segmentoService.getById(id);

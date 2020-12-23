@@ -76,29 +76,35 @@ public class FacturaCompraServiceImpl extends CRUDImpl<FacturaCompra, Integer> i
 	
 	@Override
 	public FacturaCompra update(FacturaCompra facturaCompra) throws Exception {
-		//Borrando el detalle anterior
-		List<FacturaCompraDetalle> facturaCompraDetalleList = facturaCompraDetalleService.getByFacturaCompra(facturaCompra.getIdFacturaCompra());
-		if(!facturaCompraDetalleList.isEmpty()) {
-			facturaCompraDetalleService.deleteByFacturaCompra(facturaCompra.getIdFacturaCompra());
-		}
-		
-		Double totalFactura = 0.0;
-		Double totalFacturaDetalle = 0.0;
-		
-		for(FacturaCompraDetalle facturaCompraDetalle : facturaCompra.getFacturaCompraDetalle()) {
-			//Asigno a cada detalle la misma factura de compra
-			facturaCompraDetalle.setFacturaCompra(facturaCompra);
+		//NO SE PUEDEN ACTUALIZAR SI ESTÁN PAGADAS
+		FacturaCompra facturaCompraAux = facturaCompraRepository.findByIdAndPagada(facturaCompra.getIdFacturaCompra(), true);
+		if(facturaCompraAux==null) {
+			//Borrando el detalle anterior
+			List<FacturaCompraDetalle> facturaCompraDetalleList = facturaCompraDetalleService.getByFacturaCompra(facturaCompra.getIdFacturaCompra());
+			if(!facturaCompraDetalleList.isEmpty()) {
+				facturaCompraDetalleService.deleteByFacturaCompra(facturaCompra.getIdFacturaCompra());
+			}
 			
-			//Calculo el subtotal y total de la factura
-			totalFacturaDetalle = facturaCompraDetalle.getCostoUnitario() * facturaCompraDetalle.getCantidad();
-			totalFactura += totalFacturaDetalle;
+			Double totalFactura = 0.0;
+			Double totalFacturaDetalle = 0.0;
 			
-			facturaCompraDetalle.setCostoTotal(totalFacturaDetalle);
+			for(FacturaCompraDetalle facturaCompraDetalle : facturaCompra.getFacturaCompraDetalle()) {
+				//Asigno a cada detalle la misma factura de compra
+				facturaCompraDetalle.setFacturaCompra(facturaCompra);
+				facturaCompraDetalle.setIdFacturaCompraDetalle(null);
+				
+				//Calculo el subtotal y total de la factura
+				totalFacturaDetalle = facturaCompraDetalle.getCostoUnitario() * facturaCompraDetalle.getCantidad();
+				totalFactura += totalFacturaDetalle;
+				
+				facturaCompraDetalle.setCostoTotal(totalFacturaDetalle);
+			}
+			facturaCompra.setTotal(totalFactura);
+			
+			//Guardo la factura de compra junto con su detalle
+			return facturaCompraRepository.save(facturaCompra);
 		}
-		facturaCompra.setTotal(totalFactura);
-		
-		//Guardo la factura de compra junto con su detalle
-		return facturaCompraRepository.save(facturaCompra);
+		return null;
 	}
 	
 	@Override

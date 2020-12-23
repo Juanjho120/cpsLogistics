@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class VentanaController {
 	 * @return Listado de ventanas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<Ventana>> getAll() throws Exception {
 		List<Ventana> ventanaList = ventanaService.getAll();
@@ -42,11 +44,27 @@ public class VentanaController {
 	}
 	
 	/**
+	 * Obtiene todas las ventanas de la base de datos por usuario
+	 * @param username
+	 * @return Listado de ventanas
+	 * @throws Exception
+	 */
+	@GetMapping("/username/{username}")
+	public ResponseEntity<List<Ventana>> getByUsername(@PathVariable("username") String username) throws Exception {
+		List<Ventana> ventanaList = ventanaService.getByUsername(username);
+		if(ventanaList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran ventanas para el usuario "+username);
+		}
+		return new ResponseEntity<List<Ventana>>(ventanaList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Busca una ventana por su id
 	 * @param id
 	 * @return Ventana
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Ventana> getById(@PathVariable("id") Integer id) throws Exception {
 		Ventana ventana = ventanaService.getById(id);
@@ -61,6 +79,7 @@ public class VentanaController {
 	 * @param ventanaNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createProgramador')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Ventana ventanaNew) throws Exception {
 		Ventana ventana = ventanaService.create(ventanaNew);
@@ -77,6 +96,7 @@ public class VentanaController {
 	 * @return Ventana actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateProgramador')")
 	@PutMapping
 	public ResponseEntity<Ventana> update(@Valid @RequestBody Ventana ventanaUp) throws Exception {
 		Ventana ventana = ventanaService.update(ventanaUp);
@@ -88,6 +108,7 @@ public class VentanaController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteProgramador')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Ventana ventana = ventanaService.getById(id);

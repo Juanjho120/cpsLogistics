@@ -40,4 +40,7 @@ public interface IFacturaCompraRepository extends IGenericRepository<FacturaComp
 	@Query("SELECT cpd.facturaCompra FROM CreditoProveedorDetalle cpd WHERE cpd.pagada = :pagada")
 	List<FacturaCompra> findByPagada(Boolean pagada);
 	
+	@Query("SELECT cpd.facturaCompra FROM CreditoProveedorDetalle cpd WHERE cpd.pagada = :pagada AND cpd.facturaCompra.idFacturaCompra = :idFacturaCompra")
+	FacturaCompra findByIdAndPagada(Integer idFacturaCompra, Boolean pagada);
+	
 }

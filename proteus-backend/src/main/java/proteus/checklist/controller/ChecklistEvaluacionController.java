@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ChecklistEvaluacionController {
 	 * @return Listado de evaluaciones de checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<ChecklistEvaluacion>> getAll() throws Exception {
 		List<ChecklistEvaluacion> checklistEvaluacionList = checklistEvaluacionService.getAll();
@@ -47,6 +49,7 @@ public class ChecklistEvaluacionController {
 	 * @return Evaluacion de checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<ChecklistEvaluacion> getById(@PathVariable("id") Integer id) throws Exception {
 		ChecklistEvaluacion checklistEvaluacion = checklistEvaluacionService.getById(id);
@@ -62,6 +65,7 @@ public class ChecklistEvaluacionController {
 	 * @param checklistEvaluacionNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createServicio')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody ChecklistEvaluacion checklistEvaluacionNew) throws Exception {
 		ChecklistEvaluacion checklistEvaluacion = checklistEvaluacionService.create(checklistEvaluacionNew);
@@ -78,6 +82,7 @@ public class ChecklistEvaluacionController {
 	 * @return Evaluacion del checklist actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping
 	public ResponseEntity<ChecklistEvaluacion> update(@Valid @RequestBody ChecklistEvaluacion checklistEvaluacionUp) throws Exception {
 		ChecklistEvaluacion checklistEvaluacion = checklistEvaluacionService.update(checklistEvaluacionUp);
@@ -89,6 +94,7 @@ public class ChecklistEvaluacionController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteServicio')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		ChecklistEvaluacion checklistEvaluacion = checklistEvaluacionService.getById(id);

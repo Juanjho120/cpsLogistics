@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<Cheque>> getAll() throws Exception {
 		List<Cheque> chequeList = chequeService.getAll();
@@ -46,6 +48,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/in-boletas")
 	public ResponseEntity<List<Cheque>> getInBoletas() throws Exception {
 		List<Cheque> chequeList = chequeService.getInBoletas();
@@ -60,6 +63,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/not-in-boletas")
 	public ResponseEntity<List<Cheque>> getNotInBoletas() throws Exception {
 		List<Cheque> chequeList = chequeService.getNotInBoletas();
@@ -74,6 +78,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/not-in-boletas/except/{idCheque}")
 	public ResponseEntity<List<Cheque>> getNotInBoletasExceptCheque(@PathVariable("idCheque") Integer idCheque) throws Exception {
 		List<Cheque> chequeList = chequeService.getNotInBoletasExceptCheque(idCheque);
@@ -89,6 +94,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/banco/{idBanco}")
 	public ResponseEntity<List<Cheque>> getByBanco(@PathVariable("idBanco") Integer idBanco) throws Exception {
 		List<Cheque> chequeList = chequeService.getByBanco(idBanco);
@@ -104,6 +110,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<List<Cheque>> getByNombre(@PathVariable("nombre") String nombre) throws Exception {
 		List<Cheque> chequeList = chequeService.getByNombre(nombre);
@@ -119,6 +126,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/numero/{numero}")
 	public ResponseEntity<List<Cheque>> getByNumero(@PathVariable("numero") String numero) throws Exception {
 		List<Cheque> chequeList = chequeService.getByNumero(numero);
@@ -135,6 +143,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/fecha-emision/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Cheque>> getByFechaEmision(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -152,6 +161,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/fecha-deposito/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Cheque>> getByFechaDeposito(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -168,6 +178,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/segmento-pago/factura-numero/{facturaNumero}")
 	public ResponseEntity<List<Cheque>> getByFacturaNumeroInSegmentoPago(@PathVariable("facturaNumero") String facturaNumero) throws Exception {
 		List<Cheque> chequeList = chequeService.getByFacturaNumeroInSegmentoPago(facturaNumero);
@@ -183,6 +194,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/pago-proveedor/factura-codigo/{codigo}")
 	public ResponseEntity<List<Cheque>> getByFacturaCodigoInPagoProveedor(@PathVariable("codigo") String codigo) throws Exception {
 		List<Cheque> chequeList = chequeService.getByFacturaCodigoInPagoProveedor(codigo);
@@ -198,6 +210,7 @@ public class ChequeController {
 	 * @return Listado de cheques
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/cuenta-bancaria/{idCuentaBancaria}")
 	public ResponseEntity<List<Cheque>> getByCuentaBancaria(@PathVariable("idCuentaBancaria") Integer idCuentaBancaria) throws Exception {
 		List<Cheque> chequeList = chequeService.getByCuentaBancaria(idCuentaBancaria);
@@ -213,6 +226,7 @@ public class ChequeController {
 	 * @return Cheque
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Cheque> getById(@PathVariable("id") Integer id) throws Exception {
 		Cheque cheque = chequeService.getById(id);
@@ -228,6 +242,7 @@ public class ChequeController {
 	 * @param chequeNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Cheque chequeNew) throws Exception {
 		Cheque cheque = chequeService.create(chequeNew);
@@ -244,6 +259,7 @@ public class ChequeController {
 	 * @return Cheque actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<Cheque> update(@Valid @RequestBody Cheque chequeUp) throws Exception {
 		Cheque cheque = chequeService.update(chequeUp);
@@ -256,6 +272,7 @@ public class ChequeController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Cheque cheque = chequeService.getById(id);

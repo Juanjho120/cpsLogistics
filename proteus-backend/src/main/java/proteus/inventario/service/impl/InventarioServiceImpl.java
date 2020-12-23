@@ -13,6 +13,7 @@ import proteus.concepto.service.IConceptoService;
 import proteus.generico.repository.IGenericRepository;
 import proteus.generico.service.CRUDImpl;
 import proteus.inventario.dto.InventarioEntradaSalidaDTO;
+import proteus.inventario.dto.ProductoEntradaSalidaDTO;
 import proteus.inventario.model.Inventario;
 import proteus.inventario.model.InventarioDetalle;
 import proteus.inventario.repository.IInventarioRepository;
@@ -103,12 +104,15 @@ public class InventarioServiceImpl extends CRUDImpl<Inventario, Integer> impleme
 		for(InventarioDetalle inventarioDetalle : inventario.getInventarioDetalle()) {
 			repuestoService.actualizarCantidad(inventarioDetalle.getRepuesto().getIdRepuesto(), inventarioDetalle.getCantidad(), sumar);
 			cantidadRepuestos += inventarioDetalle.getCantidad();
+			inventarioDetalle.setIdInventarioDetalle(null);
 			inventarioDetalle.setInventario(inventario);
 		}
 		
 		//Seteo la cantidad de producto y luego guardo
 		//La fecha de ingreso nunca se toca
 		inventario.setCantidad(cantidadRepuestos);
+		Inventario inventarioAux = this.getById(inventario.getIdInventario());
+		inventario.setFechaHora(inventarioAux.getFechaHora());
 		return inventarioRepository.save(inventario);
 	}
 	
@@ -329,6 +333,54 @@ public class InventarioServiceImpl extends CRUDImpl<Inventario, Integer> impleme
 			
 		}
 		return inventarioEntradaSalidaList;
+	}
+
+	@Override
+	public List<ProductoEntradaSalidaDTO> getProductoEntradaSalidaDTOByFecha(String fechaDesde, String fechaHasta,
+			Integer idRepuesto) throws Exception {
+		//Convirtiendo cadena de texto a tipo de fecha LocalDateTime
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00");
+		
+		List<Inventario> inventarioList = this.getByRepuestoAndFechaRango(idRepuesto, fechaDesde, fechaHasta);
+		List<ProductoEntradaSalidaDTO> productoDtoList = new ArrayList<ProductoEntradaSalidaDTO>();
+		for(Inventario inventario : inventarioList) {
+			ProductoEntradaSalidaDTO productoDto;
+			Boolean repetido = false;
+			for(ProductoEntradaSalidaDTO productoDtoAux : productoDtoList) {
+				if(productoDtoAux.getFecha().equalsIgnoreCase(inventario.getFechaHora().format(formatter))) {
+					repetido = true;
+					productoDtoAux.setInventarios(productoDtoAux.getInventarios()+", "+inventario.getIdInventario().toString());
+					productoDtoAux.setRazon(productoDtoAux.getRazon()+", "+inventario.getRazon());
+					if(inventario.getConcepto().getNombre().equalsIgnoreCase("ENTRADA")) {
+						
+					} else if(inventario.getConcepto().getNombre().equalsIgnoreCase("SALIDA")) {
+						
+					}
+				}
+			}
+			if(!repetido) {
+				productoDto = new ProductoEntradaSalidaDTO();
+				productoDto.setFecha(inventario.getFechaHora().format(formatter));
+				productoDto.setRazon(inventario.getRazon());
+				productoDto.setInventarios(inventario.getIdInventario().toString());
+				if(inventario.getConcepto().getNombre().equalsIgnoreCase("ENTRADA")) {
+					for(InventarioDetalle inventarioDetalle : inventario.getInventarioDetalle()) {
+						if(inventarioDetalle.getRepuesto().getIdRepuesto()==idRepuesto) {
+							productoDto.setEntrada(productoDto.getEntrada()+inventarioDetalle.getCantidad());
+						}
+					}
+				} else if(inventario.getConcepto().getNombre().equalsIgnoreCase("SALIDA")) {
+					for(InventarioDetalle inventarioDetalle : inventario.getInventarioDetalle()) {
+						if(inventarioDetalle.getRepuesto().getIdRepuesto()==idRepuesto) {
+							productoDto.setSalida(productoDto.getSalida()+inventarioDetalle.getCantidad());
+						}
+					}
+				}
+				
+				productoDtoList.add(productoDto);
+			}
+		}
+		return productoDtoList;
 	}
 	
 }

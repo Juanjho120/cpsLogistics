@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ModificacionController {
 	 * @return Listado de modificaciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllAdmin')")
 	@GetMapping
 	public ResponseEntity<List<Modificacion>> getAll() throws Exception {
 		List<Modificacion> modificacionList = modificacionService.getAll();
@@ -47,6 +49,7 @@ public class ModificacionController {
 	 * @return Listado de modificaciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamAdmin')")
 	@GetMapping("/usuario/{idUsuario}")
 	public ResponseEntity<List<Modificacion>> getByUsuario(@PathVariable("idUsuario") Integer idUsuario) throws Exception {
 		List<Modificacion> modificacionList = modificacionService.getByUsuario(idUsuario);
@@ -62,6 +65,7 @@ public class ModificacionController {
 	 * @return Listado de modificaciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamAdmin')")
 	@GetMapping("/concepto/{idConcepto}")
 	public ResponseEntity<List<Modificacion>> getByConcepto(@PathVariable("idConcepto") Integer idConcepto) throws Exception {
 		List<Modificacion> modificacionList = modificacionService.getByConcepto(idConcepto);
@@ -77,6 +81,7 @@ public class ModificacionController {
 	 * @return Listado de modificaciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamAdmin')")
 	@GetMapping("/tabla/{tabla}")
 	public ResponseEntity<List<Modificacion>> getByTabla(@PathVariable("tabla") String tabla) throws Exception {
 		List<Modificacion> modificacionList = modificacionService.getByTabla(tabla);
@@ -93,6 +98,7 @@ public class ModificacionController {
 	 * @return Listado de modificaciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamAdmin')")
 	@GetMapping("/concepto/{idConcepto}/tabla/{tabla}")
 	public ResponseEntity<List<Modificacion>> getByConceptoAndTabla(@PathVariable("idConcepto") Integer idConcepto, 
 			@PathVariable("tabla") String tabla) throws Exception {
@@ -109,6 +115,7 @@ public class ModificacionController {
 	 * @return Modificacion
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdAdmin')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Modificacion> getById(@PathVariable("id") Integer id) throws Exception {
 		Modificacion modificacion = modificacionService.getById(id);
@@ -139,6 +146,7 @@ public class ModificacionController {
 	 * @return Modificacion actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateProgramador')")
 	@PutMapping
 	public ResponseEntity<Modificacion> update(@Valid @RequestBody Modificacion modificacionUp) throws Exception {
 		Modificacion modificacion = modificacionService.update(modificacionUp);
@@ -150,6 +158,7 @@ public class ModificacionController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteProgramador')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Modificacion modificacion = modificacionService.getById(id);

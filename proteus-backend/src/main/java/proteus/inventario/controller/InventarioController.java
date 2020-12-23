@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import proteus.exception.ModelNotFoundException;
 import proteus.inventario.dto.InventarioEntradaSalidaDTO;
+import proteus.inventario.dto.ProductoEntradaSalidaDTO;
 import proteus.inventario.model.Inventario;
 import proteus.inventario.service.IInventarioService;
 
@@ -33,6 +35,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllBodega')")
 	@GetMapping
 	public ResponseEntity<List<Inventario>> getAll() throws Exception {
 		List<Inventario> inventarioList = inventarioService.getAll();
@@ -48,6 +51,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/concepto/{idConcepto}")
 	public ResponseEntity<List<Inventario>> getByConcepto(@PathVariable("idConcepto") Integer idConcepto) throws Exception {
 		List<Inventario> inventarioList = inventarioService.getByConcepto(idConcepto);
@@ -65,6 +69,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/concepto/{idConcepto}/repuesto/{idRepuesto}")
 	public ResponseEntity<List<Inventario>> getByConceptoAndRepuesto(@PathVariable("idConcepto") Integer idConcepto, 
 			@PathVariable("idRepuesto") Integer idRepuesto) throws Exception {
@@ -83,6 +88,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/concepto/{idConcepto}/usuario/{idUsuario}")
 	public ResponseEntity<List<Inventario>> getByConceptoAndUsuario(@PathVariable("idConcepto") Integer idConcepto, 
 			@PathVariable("idUsuario") Integer idUsuario) throws Exception {
@@ -102,6 +108,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/concepto/{idConcepto}/repuesto/{idRepuesto}/usuario/{idUsuario}")
 	public ResponseEntity<List<Inventario>> getByConceptoAndRepuestoAndUsuario(@PathVariable("idConcepto") Integer idConcepto, 
 			@PathVariable("idRepuesto") Integer idRepuesto, @PathVariable("idUsuario") Integer idUsuario) throws Exception {
@@ -122,6 +129,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/concepto/{idConcepto}/repuesto/{idRepuesto}/fecha-rango/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Inventario>> getByConceptoAndRepuestoAndFecha(@PathVariable("idConcepto") Integer idConcepto, 
 			@PathVariable("idRepuesto") Integer idRepuesto, @PathVariable("fechaDesde") String fechaDesde, 
@@ -144,6 +152,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/concepto/{idConcepto}/repuesto/{idRepuesto}/fecha-rango/{fechaDesde}/{fechaHasta}/usuario/{idUsuario}")
 	public ResponseEntity<List<Inventario>> getByConceptoAndRepuestoAndFechaAndUsuario(@PathVariable("idConcepto") Integer idConcepto, 
 			@PathVariable("idRepuesto") Integer idRepuesto, @PathVariable("idUsuario") Integer idUsuario, 
@@ -162,6 +171,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/repuesto/{idRepuesto}")
 	public ResponseEntity<List<Inventario>> getByRepuesto(@PathVariable("idRepuesto") Integer idRepuesto) throws Exception {
 		List<Inventario> inventarioList = inventarioService.getByRepuesto(idRepuesto);
@@ -178,6 +188,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/repuesto/{idRepuesto}/usuario/{idUsuario}")
 	public ResponseEntity<List<Inventario>> getByRepuestoAndUsuario(@PathVariable("idRepuesto") Integer idRepuesto, 
 			@PathVariable("idUsuario") Integer idUsuario) throws Exception {
@@ -196,6 +207,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/repuesto/{idRepuesto}/fecha-rango/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Inventario>> getByRepuestoAndFechaRango(@PathVariable("idRepuesto") Integer idRepuesto, 
 			@PathVariable("fechaDesde") String fechaDesde, @PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -215,6 +227,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/repuesto/{idRepuesto}/fecha-rango/{fechaDesde}/{fechaHasta}/usuario/{idUsuario}")
 	public ResponseEntity<List<Inventario>> getByRepuestoAndFechaAndUsuario(@PathVariable("idRepuesto") Integer idRepuesto, 
 			@PathVariable("fechaDesde") String fechaDesde, @PathVariable("fechaHasta") String fechaHasta, 
@@ -232,6 +245,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/usuario/{idUsuario}")
 	public ResponseEntity<List<Inventario>> getByUsuario(@PathVariable("idUsuario") Integer idUsuario) throws Exception {
 		List<Inventario> inventarioList = inventarioService.getByUsuario(idUsuario);
@@ -249,6 +263,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/usuario/{idUsuario}/fecha-rango/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Inventario>> getByUsuarioAndFechaRango(@PathVariable("idUsuario") Integer idUsuario, 
 			@PathVariable("fechaDesde") String fechaDesde, @PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -266,6 +281,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/fecha-rango/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Inventario>> getByFechaRango(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -284,6 +300,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/entradas-salidas/fecha-rango/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<InventarioEntradaSalidaDTO>> getInventarioEntradaSalidaByFechaRango(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -295,6 +312,25 @@ public class InventarioController {
 	}
 	
 	/**
+	 * Obtiene todos los repuestos con la cantidad total de entradas y salidas que se tuvieron en un rango de fechas y un solo producto
+	 * @param fechaDesde
+	 * @param fechaHasta
+	 * @param idRepuesto
+	 * @return Listado de inventarios
+	 * @throws Exception
+	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
+	@GetMapping("/entradas-salidas-producto/repuesto/{idRepuesto}/fecha-rango/{fechaDesde}/{fechaHasta}")
+	public ResponseEntity<List<ProductoEntradaSalidaDTO>> getProductoEntradaSalidaByFecha(@PathVariable("fechaDesde") String fechaDesde, 
+			@PathVariable("fechaHasta") String fechaHasta, @PathVariable("idRepuesto") Integer idRepuesto) throws Exception {
+		List<ProductoEntradaSalidaDTO> inventarioList = inventarioService.getProductoEntradaSalidaDTOByFecha(fechaDesde, fechaHasta, idRepuesto);
+		if(inventarioList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran inventarios en la base de datos");
+		}
+		return new ResponseEntity<List<ProductoEntradaSalidaDTO>>(inventarioList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Obtiene todos los inventarios por concepto y rango de fecha de la base de datos
 	 * @param idConcepto
 	 * @param fechaDesde
@@ -302,6 +338,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/concepto/{idConcepto}/fecha-rango/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Inventario>> getByConceptoAndFechaRango(@PathVariable("idConcepto") Integer idConcepto, 
 			@PathVariable("fechaDesde") String fechaDesde, @PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -322,6 +359,7 @@ public class InventarioController {
 	 * @return Listado de inventarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamBodega')")
 	@GetMapping("/concepto/{idConcepto}/fecha-rango/{fechaDesde}/{fechaHasta}/usuario/{idUsuario}")
 	public ResponseEntity<List<Inventario>> getByConceptoAndFechaAndUsuario(@PathVariable("idConcepto") Integer idConcepto, 
 			@PathVariable("fechaDesde") String fechaDesde, @PathVariable("fechaHasta") String fechaHasta, 
@@ -339,6 +377,7 @@ public class InventarioController {
 	 * @return Inventario
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdBodega')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Inventario> getById(@PathVariable("id") Integer id) throws Exception {
 		Inventario inventario = inventarioService.getById(id);
@@ -353,6 +392,7 @@ public class InventarioController {
 	 * @param inventarioNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createBodega')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Inventario inventarioNew) throws Exception {
 		Inventario inventario = inventarioService.create(inventarioNew);
@@ -369,6 +409,7 @@ public class InventarioController {
 	 * @return Inventario actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateBodega')")
 	@PutMapping
 	public ResponseEntity<Inventario> update(@Valid @RequestBody Inventario inventarioUp) throws Exception {
 		Inventario inventario = inventarioService.update(inventarioUp);
@@ -380,6 +421,7 @@ public class InventarioController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Inventario inventario = inventarioService.getById(id);

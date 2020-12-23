@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class TransaccionController {
 	 * @return Listado de transacciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<Transaccion>> getAll() throws Exception {
 		List<Transaccion> transaccionList = transaccionService.getAll();
@@ -47,6 +49,7 @@ public class TransaccionController {
 	 * @return Listado de transacciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/factura-numero/{facturaNumero}")
 	public ResponseEntity<List<Transaccion>> getByFacturaNumeroInSegmentoPago(@PathVariable("facturaNumero") String facturaNumero) throws Exception {
 		List<Transaccion> transaccionList = transaccionService.getByFacturaNumeroInSegmentoPago(facturaNumero);
@@ -63,6 +66,7 @@ public class TransaccionController {
 	 * @return Listado de transacciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/fecha-aprobacion/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Transaccion>> getByFechaAprobacion(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -79,6 +83,7 @@ public class TransaccionController {
 	 * @return Transaccion
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Transaccion> getById(@PathVariable("id") Integer id) throws Exception {
 		Transaccion transaccion = transaccionService.getById(id);
@@ -94,6 +99,7 @@ public class TransaccionController {
 	 * @param transaccionNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Transaccion transaccionNew) throws Exception {
 		Transaccion transaccion = transaccionService.create(transaccionNew);
@@ -110,6 +116,7 @@ public class TransaccionController {
 	 * @return Transaccion actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<Transaccion> update(@Valid @RequestBody Transaccion transaccionUp) throws Exception {
 		Transaccion transaccion = transaccionService.update(transaccionUp);
@@ -121,6 +128,7 @@ public class TransaccionController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Transaccion transaccion = transaccionService.getById(id);

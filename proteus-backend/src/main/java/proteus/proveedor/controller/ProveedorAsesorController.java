@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ProveedorAsesorController {
 	 * @return Listado de asesores de proveedores
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<ProveedorAsesor>> getAll() throws Exception {
 		List<ProveedorAsesor> proveedorAsesorList = proveedorAsesorService.getAll();
@@ -47,6 +49,7 @@ public class ProveedorAsesorController {
 	 * @return Asesor de proveedor
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<ProveedorAsesor> getById(@PathVariable("id") Integer id) throws Exception {
 		ProveedorAsesor proveedorAsesor = proveedorAsesorService.getById(id);
@@ -62,6 +65,7 @@ public class ProveedorAsesorController {
 	 * @return Listado de asesores
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/proveedor/{idProveedor}")
 	public ResponseEntity<List<ProveedorAsesor>> getByProveedor(@PathVariable("idProveedor") Integer idProveedor) throws Exception {
 		List<ProveedorAsesor> proveedorAsesorList = proveedorAsesorService.getByProveedor(idProveedor);
@@ -78,6 +82,7 @@ public class ProveedorAsesorController {
 	 * @param proveedorAsesorNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createCompra')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody ProveedorAsesor proveedorAsesorNew) throws Exception {
 		ProveedorAsesor proveedorAsesor = proveedorAsesorService.create(proveedorAsesorNew);
@@ -94,6 +99,7 @@ public class ProveedorAsesorController {
 	 * @return Asesor de proveedor actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateCompra')")
 	@PutMapping
 	public ResponseEntity<ProveedorAsesor> update(@Valid @RequestBody ProveedorAsesor proveedorAsesorUp) throws Exception {
 		ProveedorAsesor proveedorAsesor = proveedorAsesorService.update(proveedorAsesorUp);
@@ -105,6 +111,7 @@ public class ProveedorAsesorController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteCompra')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		ProveedorAsesor proveedorAsesor = proveedorAsesorService.getById(id);
@@ -120,6 +127,7 @@ public class ProveedorAsesorController {
 	 * @param idProveedor
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteCompra')")
 	@DeleteMapping("/proveedor/{idProveedor}")
 	public ResponseEntity<Void> deleteByProveedor(@PathVariable("idProveedor") Integer idProveedor) throws Exception {
 		List<ProveedorAsesor> proveedorAsesorList = proveedorAsesorService.getByProveedor(idProveedor);

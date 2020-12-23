@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class PlacaController {
 	 * @return Listado de placas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<Placa>> getAll() throws Exception {
 		List<Placa> placaList = placaService.getAll();
@@ -46,6 +48,7 @@ public class PlacaController {
 	 * @return Listado de placas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/not-in-service")
 	public ResponseEntity<List<Placa>> getNotInService() throws Exception {
 		List<Placa> placaList = placaService.getNotInService();
@@ -60,6 +63,7 @@ public class PlacaController {
 	 * @return Listado de placas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/in-service")
 	public ResponseEntity<List<Placa>> getInService() throws Exception {
 		List<Placa> placaList = placaService.getInService();
@@ -74,6 +78,7 @@ public class PlacaController {
 	 * @return Listado de placas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/marca-auto/{idMarcaAuto}")
 	public ResponseEntity<List<Placa>> getByMarcaAuto(@PathVariable("idMarcaAuto") Integer idMarcaAuto) throws Exception {
 		List<Placa> placaList = placaService.getByMarcaAuto(idMarcaAuto);
@@ -89,6 +94,7 @@ public class PlacaController {
 	 * @return Placa
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Placa> getById(@PathVariable("id") Integer id) throws Exception {
 		Placa placa = placaService.getById(id);
@@ -104,6 +110,7 @@ public class PlacaController {
 	 * @return Placa
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/numero/{numero}")
 	public ResponseEntity<Placa> getByNumero(@PathVariable("numero") String numero) throws Exception {
 		Placa placa = placaService.getByNumero(numero);
@@ -119,6 +126,7 @@ public class PlacaController {
 	 * @param placaNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createServicio')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Placa placaNew) throws Exception {
 		Placa placa = placaService.create(placaNew);
@@ -135,6 +143,7 @@ public class PlacaController {
 	 * @return Placa actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping
 	public ResponseEntity<Placa> update(@Valid @RequestBody Placa placaUp) throws Exception {
 		Placa placa = placaService.update(placaUp);
@@ -146,6 +155,7 @@ public class PlacaController {
 	 * @param placaUp
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping("/kilometraje")
 	public ResponseEntity<Void> updateUltimoKilometraje(@RequestBody Placa placa) throws Exception {
 		placaService.updateUltimoKilometraje(placa.getIdPlaca(), placa.getUltimoKilometraje());
@@ -157,6 +167,7 @@ public class PlacaController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteServicio')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Placa placa = placaService.getById(id);

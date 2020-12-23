@@ -1,13 +1,16 @@
 package proteus.usuario.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -41,6 +44,9 @@ public class Usuario {
 	@Column(name = "username", nullable = false, length = 30, unique = true)
 	private String username;
 	
+	@Column(name = "estado", nullable = false)
+	private Boolean enable;
+	
 	@NotNull(message = "El email del usuario no puede ser nulo")
 	@Email(message = "El email del usuario no es valido")
 	@Column(name = "email", nullable = false)
@@ -56,34 +62,10 @@ public class Usuario {
 	@Column(name = "password", nullable = false)
 	private String password;
 	
-	@NotNull(message = "El rol no puede ser nulo")
-	@ManyToOne
-	@JoinColumn(name = "id_rol", nullable = false, foreignKey = @ForeignKey(name = "fkUsuarioRol"))
-	private Rol rol;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "idUsuario"), inverseJoinColumns = @JoinColumn(name = "id_rol", referencedColumnName = "idRol"))
+	private List<Rol> roles;
 	
-	public Usuario() {}
-
-	/**
-	 * @param idUsuario
-	 * @param nombre
-	 * @param apellido
-	 * @param username
-	 * @param email
-	 * @param telefono
-	 * @param password
-	 * @param rol
-	 */
-	public Usuario(Integer idUsuario, String nombre, String apellido, String username, String email, String telefono, String password, Rol rol) {
-		this.idUsuario = idUsuario;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.username = username;
-		this.email = email;
-		this.telefono = telefono;
-		this.password = password;
-		this.rol = rol;
-	}
-
 	/**
 	 * @return the idUsuario
 	 */
@@ -183,17 +165,31 @@ public class Usuario {
 	}
 
 	/**
-	 * @return the rol
+	 * @return the roles
 	 */
-	public Rol getRol() {
-		return rol;
+	public List<Rol> getRoles() {
+		return roles;
 	}
 
 	/**
-	 * @param rol the rol to set
+	 * @param roles the roles to set
 	 */
-	public void setRol(Rol rol) {
-		this.rol = rol;
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
+
+	/**
+	 * @return the enable
+	 */
+	public Boolean getEnable() {
+		return enable;
+	}
+
+	/**
+	 * @param enable the enable to set
+	 */
+	public void setEnable(Boolean enable) {
+		this.enable = enable;
 	}
 	
 }

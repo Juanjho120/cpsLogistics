@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import proteus.generico.repository.IGenericRepository;
 import proteus.generico.service.CRUDImpl;
+import proteus.segmento.dto.FacturaSegmentoDTO;
 import proteus.segmento.dto.SegmentoCreditoDetalleDTO;
 import proteus.segmento.model.SegmentoCredito;
 import proteus.segmento.model.SegmentoCreditoDetalle;
@@ -189,5 +190,49 @@ public class SegmentoCreditoDetalleServiceImpl extends CRUDImpl<SegmentoCreditoD
 	@Override
 	public List<SegmentoCreditoDetalle> getBySegmentoSinPagar(Integer idSegmento) throws Exception {
 		return segmentoCreditoDetalleRepository.findBySegmentoSinPagar(idSegmento);
+	}
+
+	@Override
+	public List<FacturaSegmentoDTO> getFacturaSegmentoDTOBySegmento(Integer idSegmento) throws Exception {
+		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = this.getBySegmento(idSegmento);
+		List<FacturaSegmentoDTO> facturaDtoList = new ArrayList<FacturaSegmentoDTO>();
+		for(SegmentoCreditoDetalle segmentoCreditoDetalle : segmentoCreditoDetalleList) {
+			FacturaSegmentoDTO facturaDto = this.convertirCreditoDetalleAFactura(segmentoCreditoDetalle);
+			facturaDtoList.add(facturaDto);
+		}
+		return facturaDtoList;
+	}
+
+	@Override
+	public List<FacturaSegmentoDTO> getFacturaSegmentoDTOByFecha(String fechaDesde, String fechaHasta)
+			throws Exception {
+		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = this.getByFechaEmision(fechaDesde+" 00:00:00", fechaHasta+" 00:00:00");
+		List<FacturaSegmentoDTO> facturaDtoList = new ArrayList<FacturaSegmentoDTO>();
+		for(SegmentoCreditoDetalle segmentoCreditoDetalle : segmentoCreditoDetalleList) {
+			FacturaSegmentoDTO facturaDto = this.convertirCreditoDetalleAFactura(segmentoCreditoDetalle);
+			facturaDtoList.add(facturaDto);
+		}
+		return facturaDtoList;
+	}
+	
+	public FacturaSegmentoDTO convertirCreditoDetalleAFactura(SegmentoCreditoDetalle segmentoCreditoDetalle) throws Exception {
+		FacturaSegmentoDTO facturaDto = new FacturaSegmentoDTO();
+		facturaDto.setFacturaNumero(segmentoCreditoDetalle.getFacturaNumero());
+		facturaDto.setIdSegmentoCreditoDetalle(segmentoCreditoDetalle.getIdSegmentoCreditoDetalle());
+		facturaDto.setFecha(segmentoCreditoDetalle.getFechaHoraEmision().toLocalDate().toString());
+		facturaDto.setPlaca(segmentoCreditoDetalle.getServicio().getPlaca().getNumero());
+		facturaDto.setSegmento(segmentoCreditoDetalle.getSegmentoCredito().getSegmento().getNombre());
+		facturaDto.setTotal(segmentoCreditoDetalle.getTotalFacturado());
+		List<SegmentoPago> segmentoPagoList = segmentoPagoService.getBySegmentoCreditoDetalle(segmentoCreditoDetalle.getIdSegmentoCreditoDetalle());
+		if(!segmentoPagoList.isEmpty()) {
+			facturaDto.setFechaPago(segmentoPagoList.get(0).getFechaHoraPago().toLocalDate().toString());
+			facturaDto.setTipoPago(segmentoPagoList.get(0).getPagoTipo().getNombre());
+			facturaDto.setPagada(true);
+		} else {
+			facturaDto.setFechaPago("");
+			facturaDto.setTipoPago("");
+			facturaDto.setPagada(false);
+		}
+		return facturaDto;
 	}
 }

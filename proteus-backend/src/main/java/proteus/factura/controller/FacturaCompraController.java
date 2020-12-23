@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class FacturaCompraController {
 	 * @return Listado de facturas de compra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllCompra')")
 	@GetMapping
 	public ResponseEntity<List<FacturaCompra>> getAll() throws Exception {
 		List<FacturaCompra> facturaCompraList = facturaCompraService.getAll();
@@ -46,6 +48,7 @@ public class FacturaCompraController {
 	 * @return Listado de facturas de compra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamCompra')")
 	@GetMapping("/not-in-credito-proveedor")
 	public ResponseEntity<List<FacturaCompra>> getNotInCreditoProveedorDetalle() throws Exception {
 		List<FacturaCompra> facturaCompraList = facturaCompraService.getNotInCreditoProveedorDetalle();
@@ -61,6 +64,7 @@ public class FacturaCompraController {
 	 * @return Listado de facturas de compra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamCompra')")
 	@GetMapping("/proveedor/{idProveedor}")
 	public ResponseEntity<List<FacturaCompra>> getByProveedor(@PathVariable("idProveedor") Integer idProveedor) throws Exception {
 		List<FacturaCompra> facturaCompraList = facturaCompraService.getByProveedor(idProveedor);
@@ -76,6 +80,7 @@ public class FacturaCompraController {
 	 * @return Listado de facturas de compra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamCompra')")
 	@GetMapping("/repuesto/{idRepuesto}")
 	public ResponseEntity<List<FacturaCompra>> getByRepuesto(@PathVariable("idRepuesto") Integer idRepuesto) throws Exception {
 		List<FacturaCompra> facturaCompraList = facturaCompraService.getByRepuesto(idRepuesto);
@@ -91,6 +96,7 @@ public class FacturaCompraController {
 	 * @return Factura de compra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdCompra')")
 	@GetMapping("/{id}")
 	public ResponseEntity<FacturaCompra> getById(@PathVariable("id") Integer id) throws Exception {
 		FacturaCompra facturaCompra = facturaCompraService.getById(id);
@@ -107,6 +113,7 @@ public class FacturaCompraController {
 	 * @return Factura de compra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamCompra')")
 	@GetMapping("/proveedor/{idProveedor}/codigo/{codigo}")
 	public ResponseEntity<FacturaCompra> getById(@PathVariable("idProveedor") Integer idProveedor, 
 			@PathVariable("codigo") String codigo) throws Exception {
@@ -124,6 +131,7 @@ public class FacturaCompraController {
 	 * @return Lista de facturas de compra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamCompra')")
 	@GetMapping("/fecha/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<FacturaCompra>> getByFecha(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -140,6 +148,7 @@ public class FacturaCompraController {
 	 * @return Lista de facturas de compra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamCompra')")
 	@GetMapping("/vencimiento/{vencida}")
 	public ResponseEntity<List<FacturaCompra>> getByVencimiento(@PathVariable("vencida") Boolean vencida) throws Exception {
 		List<FacturaCompra> facturaCompraList = facturaCompraService.getByVencimiento(vencida);
@@ -157,6 +166,7 @@ public class FacturaCompraController {
 	 * @return Lista de facturas de compra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamCompra')")
 	@GetMapping("/pagada/{pagada}")
 	public ResponseEntity<List<FacturaCompra>> getByPagada(@PathVariable("pagada") Boolean pagada) throws Exception {
 		List<FacturaCompra> facturaCompraList = facturaCompraService.getByPagada(pagada);
@@ -174,6 +184,7 @@ public class FacturaCompraController {
 	 * @param facturaCompraNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createCompra')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody FacturaCompra facturaCompraNew) throws Exception {
 		FacturaCompra facturaCompra = facturaCompraService.create(facturaCompraNew);
@@ -190,9 +201,13 @@ public class FacturaCompraController {
 	 * @return Factura de compra actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateCompra')")
 	@PutMapping
 	public ResponseEntity<FacturaCompra> update(@Valid @RequestBody FacturaCompra facturaCompraUp) throws Exception {
 		FacturaCompra facturaCompra = facturaCompraService.update(facturaCompraUp);
+		if(facturaCompra==null) {
+			throw new Exception("No fue posible actualizar la factura");
+		}
 		return new ResponseEntity<FacturaCompra>(facturaCompra, HttpStatus.CREATED);
 	}
 	
@@ -201,6 +216,7 @@ public class FacturaCompraController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteCompra')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		FacturaCompra facturaCompra = facturaCompraService.getById(id);

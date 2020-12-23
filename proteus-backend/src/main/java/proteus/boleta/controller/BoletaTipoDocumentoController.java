@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class BoletaTipoDocumentoController {
 	 * @return Listado de tipos de documentos de boleta
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<BoletaTipoDocumento>> getAll() throws Exception {
 		List<BoletaTipoDocumento> boletaTipoDocumentoList = boletaTipoDocumentoService.getAll();
@@ -47,6 +49,7 @@ public class BoletaTipoDocumentoController {
 	 * @return BoletaTipoDocumento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<BoletaTipoDocumento> getById(@PathVariable("id") Integer id) throws Exception {
 		BoletaTipoDocumento boletaTipoDocumento = boletaTipoDocumentoService.getById(id);
@@ -62,6 +65,7 @@ public class BoletaTipoDocumentoController {
 	 * @param boletaTipoDocumentoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody BoletaTipoDocumento boletaTipoDocumentoNew) throws Exception {
 		BoletaTipoDocumento boletaTipoDocumento = boletaTipoDocumentoService.create(boletaTipoDocumentoNew);
@@ -78,6 +82,7 @@ public class BoletaTipoDocumentoController {
 	 * @return Tipo de documento de boleta actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<BoletaTipoDocumento> update(@Valid @RequestBody BoletaTipoDocumento boletaTipoDocumentoUp) throws Exception {
 		BoletaTipoDocumento boletaTipoDocumento = boletaTipoDocumentoService.update(boletaTipoDocumentoUp);
@@ -89,6 +94,7 @@ public class BoletaTipoDocumentoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		BoletaTipoDocumento boletaTipoDocumento = boletaTipoDocumentoService.getById(id);

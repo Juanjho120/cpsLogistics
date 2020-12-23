@@ -1,15 +1,24 @@
 package proteus.usuario.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.User;
 
 import proteus.generico.repository.IGenericRepository;
 import proteus.generico.service.CRUDImpl;
 import proteus.usuario.model.Usuario;
 import proteus.usuario.repository.IUsuarioRepository;
-import proteus.usuario.service.IUsuarioService;
 
 /**
  * Services for Usuario Model (Implementation)
@@ -17,17 +26,19 @@ import proteus.usuario.service.IUsuarioService;
  * @author Juan Tzun
  */
 @Service
-public class UsuarioServiceImpl extends CRUDImpl<Usuario, Integer> implements IUsuarioService {
+public class UsuarioServiceImpl extends CRUDImpl<Usuario, Integer> implements UserDetailsService {
 
 	@Autowired
 	private IUsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
 
 	@Override
 	protected IGenericRepository<Usuario, Integer> getRepository() {
 		return usuarioRepository;
 	}
 
-	@Override
 	public String createUsername(String nombre, String apellido) throws Exception {
 		String username = "";
 		Integer cont = 0;
@@ -54,7 +65,6 @@ public class UsuarioServiceImpl extends CRUDImpl<Usuario, Integer> implements IU
 		return username;
 	}
 
-	@Override
 	public Usuario getByUsername(String username) throws Exception {
 		return usuarioRepository.findByUsername(username);
 	}
@@ -67,30 +77,48 @@ public class UsuarioServiceImpl extends CRUDImpl<Usuario, Integer> implements IU
 			if(usuarioAux==null) {
 				String username = this.createUsername(usuario.getNombre(), usuario.getApellido());
 				usuario.setUsername(username);
+				usuario.setPassword(bcrypt.encode(usuario.getPassword()));
+				usuario.setEnable(true);
 				return usuarioRepository.save(usuario);
 			}
 		}
 		return null;
 	}
-
+	
 	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		Usuario usuario = usuarioRepository.findOneByUsername(username);
+		
+		if(usuario == null) {
+			throw new UsernameNotFoundException(String.format("Usuario no existe", username));
+		}
+		
+		List<GrantedAuthority> roles = new ArrayList<>();
+		
+		usuario.getRoles().forEach(rol -> {
+			roles.add(new SimpleGrantedAuthority(rol.getNombre()));
+		});
+		
+		UserDetails ud = new User(usuario.getUsername(), usuario.getPassword(), roles);
+		
+		return ud;
+	}
+
 	public Usuario getByEmail(String email) throws Exception {
 		return usuarioRepository.findByEmail(email);
 	}
 
-	@Override
 	public Usuario getByTelefono(String telefono) throws Exception {
 		return usuarioRepository.findByTelefono(telefono);
 	}
 
 	@Transactional
-	@Override
 	public void deleteByUsername(String username) throws Exception {
 		usuarioRepository.deleteByUsername(username);
 	}
 
 	@Transactional
-	@Override
 	public void deleteByEmail(String email) throws Exception {
 		usuarioRepository.deleteByEmail(email);
 	}

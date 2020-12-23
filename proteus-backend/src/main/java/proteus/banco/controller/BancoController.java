@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class BancoController {
 	 * @return Listado de bancos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<Banco>> getAll() throws Exception {
 		List<Banco> bancoList = bancoService.getAll();
@@ -47,6 +49,7 @@ public class BancoController {
 	 * @return Banco
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Banco> getById(@PathVariable("id") Integer id) throws Exception {
 		Banco banco = bancoService.getById(id);
@@ -62,6 +65,7 @@ public class BancoController {
 	 * @param bancoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Banco bancoNew) throws Exception {
 		Banco banco = bancoService.create(bancoNew);
@@ -78,6 +82,7 @@ public class BancoController {
 	 * @return Banco actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<Banco> update(@Valid @RequestBody Banco bancoUp) throws Exception {
 		Banco banco = bancoService.update(bancoUp);
@@ -89,6 +94,7 @@ public class BancoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Banco banco = bancoService.getById(id);

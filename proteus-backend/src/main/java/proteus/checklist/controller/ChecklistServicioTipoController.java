@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ChecklistServicioTipoController {
 	 * @return Listado de tipos de servicio de checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<ChecklistServicioTipo>> getAll() throws Exception {
 		List<ChecklistServicioTipo> checklistServicioTipoList = checklistServicioTipoService.getAll();
@@ -47,6 +49,7 @@ public class ChecklistServicioTipoController {
 	 * @return Tipo de servicio de checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<ChecklistServicioTipo> getById(@PathVariable("id") Integer id) throws Exception {
 		ChecklistServicioTipo checklistServicioTipo = checklistServicioTipoService.getById(id);
@@ -62,6 +65,7 @@ public class ChecklistServicioTipoController {
 	 * @param checklistServicioTipoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createServicio')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody ChecklistServicioTipo checklistServicioTipoNew) throws Exception {
 		ChecklistServicioTipo checklistServicioTipo = checklistServicioTipoService.create(checklistServicioTipoNew);
@@ -78,6 +82,7 @@ public class ChecklistServicioTipoController {
 	 * @return Tipo de servicio del checklist actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping
 	public ResponseEntity<ChecklistServicioTipo> update(@Valid @RequestBody ChecklistServicioTipo checklistServicioTipoUp) throws Exception {
 		ChecklistServicioTipo checklistServicioTipo = checklistServicioTipoService.update(checklistServicioTipoUp);
@@ -89,6 +94,7 @@ public class ChecklistServicioTipoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteServicio')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		ChecklistServicioTipo checklistServicioTipo = checklistServicioTipoService.getById(id);

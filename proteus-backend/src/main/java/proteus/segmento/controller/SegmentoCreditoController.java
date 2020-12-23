@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ public class SegmentoCreditoController {
 	 * @return Listado de creditos de segmentos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<SegmentoCredito>> getAll() throws Exception {
 		List<SegmentoCredito> segmentoCreditoList = segmentoCreditoService.getAll();
@@ -52,6 +54,7 @@ public class SegmentoCreditoController {
 	 * @return Credito de segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<SegmentoCredito> getById(@PathVariable("id") Integer id) throws Exception {
 		SegmentoCredito segmentoCredito = segmentoCreditoService.getById(id);
@@ -67,6 +70,7 @@ public class SegmentoCreditoController {
 	 * @return Credito de segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/segmento/{idSegmento}")
 	public ResponseEntity<SegmentoCredito> getBySegmento(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
 		SegmentoCredito segmentoCredito = segmentoCreditoService.getBySegmento(idSegmento);
@@ -82,6 +86,7 @@ public class SegmentoCreditoController {
 	 * @param segmentoCreditoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody SegmentoCredito segmentoCreditoNew) throws Exception {
 		SegmentoCredito segmentoCredito = segmentoCreditoService.create(segmentoCreditoNew);
@@ -98,6 +103,7 @@ public class SegmentoCreditoController {
 	 * @return Credito de segmento actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<SegmentoCredito> update(@Valid @RequestBody SegmentoCredito segmentoCreditoUp) throws Exception {
 		SegmentoCredito segmentoCredito = segmentoCreditoService.update(segmentoCreditoUp);
@@ -109,6 +115,7 @@ public class SegmentoCreditoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		SegmentoCredito segmentoCredito = segmentoCreditoService.getById(id);
@@ -124,6 +131,7 @@ public class SegmentoCreditoController {
 	 * @param idSegmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/segmento/{idSegmento}")
 	public ResponseEntity<Void> deleteBySegmento(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
 		Segmento segmento = segmentoService.getById(idSegmento);

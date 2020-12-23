@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class ChecklistController {
 	 * @return Listado de checklists
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<Checklist>> getAll() throws Exception {
 		List<Checklist> checklistList = checklistService.getAll();
@@ -47,6 +49,7 @@ public class ChecklistController {
 	 * @return Listado de checklists
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/not-finalizado")
 	public ResponseEntity<List<Checklist>> getAllNotFinalizado() throws Exception {
 		List<Checklist> checklistList = checklistService.getAllNotFinalizado();
@@ -62,6 +65,7 @@ public class ChecklistController {
 	 * @return Checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Checklist> getById(@PathVariable("id") Integer id) throws Exception {
 		Checklist checklist = checklistService.getById(id);
@@ -77,6 +81,7 @@ public class ChecklistController {
 	 * @return Checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/servicio/{idServicio}")
 	public ResponseEntity<Checklist> getByServicio(@PathVariable("idServicio") Integer idServicio) throws Exception {
 		Checklist checklist = checklistService.getByServicio(idServicio);
@@ -92,6 +97,7 @@ public class ChecklistController {
 	 * @return Checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/servicio/finalizado/{idServicio}")
 	public ResponseEntity<Checklist> getByServicioFinalizado(@PathVariable("idServicio") Integer idServicio) throws Exception {
 		Checklist checklist = checklistService.getByServicioFinalizado(idServicio);
@@ -108,6 +114,7 @@ public class ChecklistController {
 	 * @return Checklist List
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/placa/{idPlaca}/finalizado/{finalizado}")
 	public ResponseEntity<List<Checklist>> getByPlacaAndServicioFinalizado(@PathVariable("idPlaca") Integer idPlaca, 
 			@PathVariable("finalizado") Boolean finalizado) throws Exception {
@@ -124,6 +131,7 @@ public class ChecklistController {
 	 * @return Checklist List
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/placa/{idPlaca}")
 	public ResponseEntity<List<Checklist>> getByPlaca(@PathVariable("idPlaca") Integer idPlaca) throws Exception {
 		List<Checklist> checklistList = checklistService.getByPlaca(idPlaca);
@@ -139,6 +147,7 @@ public class ChecklistController {
 	 * @return Checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/no-orden-trabajo/{noOrdenTrabajo}")
 	public ResponseEntity<Checklist> getByNoOrdenTrabajo(@PathVariable("noOrdenTrabajo") String noOrdenTrabajo) throws Exception {
 		Checklist checklist = checklistService.getByNoOrdenTrabajo(noOrdenTrabajo);
@@ -155,6 +164,7 @@ public class ChecklistController {
 	 * @return Lista de checklists
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/fecha-ingreso/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Checklist>> getByFechaHoraIngreso(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaDesde") String fechaHasta) throws Exception {
@@ -172,6 +182,7 @@ public class ChecklistController {
 	 * @return Lista de checklists
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/fecha-revision/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Checklist>> getByFechaRevision(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaDesde") String fechaHasta) throws Exception {
@@ -188,6 +199,7 @@ public class ChecklistController {
 	 * @return Listado de checklists
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/mecanico/{idPersonal}")
 	public ResponseEntity<List<Checklist>> getByMecanico(@PathVariable("idPersonal") Integer idPersonal) throws Exception {
 		List<Checklist> checklistList = checklistService.getByMecanico(idPersonal);
@@ -203,6 +215,7 @@ public class ChecklistController {
 	 * @return Listado de checklists
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/supervisor/{idPersonal}")
 	public ResponseEntity<List<Checklist>> getBySupervisor(@PathVariable("idPersonal") Integer idPersonal) throws Exception {
 		List<Checklist> checklistList = checklistService.getBySupervisor(idPersonal);
@@ -218,6 +231,7 @@ public class ChecklistController {
 	 * @return Listado de checklists
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/usuario/{idUsuario}")
 	public ResponseEntity<List<Checklist>> getByUsuarioIngreso(@PathVariable("idUsuario") Integer idUsuario) throws Exception {
 		List<Checklist> checklistList = checklistService.getByUsuarioIngreso(idUsuario);
@@ -233,6 +247,7 @@ public class ChecklistController {
 	 * @return Listado de checklists
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/checklist-servicio-tipo/{idChecklistServicioTipo}")
 	public ResponseEntity<List<Checklist>> getByChecklistServicioTipo(@PathVariable("idChecklistServicioTipo") Integer idChecklistServicioTipo) throws Exception {
 		List<Checklist> checklistList = checklistService.getByChecklistServicioTipo(idChecklistServicioTipo);
@@ -248,6 +263,7 @@ public class ChecklistController {
 	 * @param checklistNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createServicio')")
 	@PostMapping("/dto")
 	public ResponseEntity<Void> createDTO(@Valid @RequestBody ChecklistChecklistEvaluacionDTO checklistNew) throws Exception {
 		Checklist checklist = checklistService.createDTO(checklistNew);
@@ -264,6 +280,7 @@ public class ChecklistController {
 	 * @param checklistNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createServicio')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Checklist checklistNew) throws Exception {
 		Checklist checklist = checklistService.create(checklistNew);
@@ -280,6 +297,7 @@ public class ChecklistController {
 	 * @return Checklist actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping("/dto")
 	public ResponseEntity<Checklist> updateDTO(@Valid @RequestBody ChecklistChecklistEvaluacionDTO checklistUp) throws Exception {
 		Checklist checklist = checklistService.updateDTO(checklistUp);
@@ -292,6 +310,7 @@ public class ChecklistController {
 	 * @return Checklist actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping
 	public ResponseEntity<Checklist> update(@Valid @RequestBody Checklist checklistUp) throws Exception {
 		Checklist checklist = checklistService.update(checklistUp);
@@ -303,6 +322,7 @@ public class ChecklistController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteServicio')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Checklist checklist = checklistService.getById(id);

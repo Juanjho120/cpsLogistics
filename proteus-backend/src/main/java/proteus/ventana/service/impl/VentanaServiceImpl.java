@@ -1,5 +1,7 @@
 package proteus.ventana.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,11 @@ public class VentanaServiceImpl extends CRUDImpl<Ventana, Integer> implements IV
 	@Override
 	protected IGenericRepository<Ventana, Integer> getRepository() {
 		return ventanaRepository;
+	}
+
+	@Override
+	public List<Ventana> getByUsername(String username) throws Exception {
+		return ventanaRepository.findByUsername(username);
 	}
 	
 }

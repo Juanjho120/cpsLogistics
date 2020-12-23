@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class PersonalController {
 	 * @return Listado de personal
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllAdmin')")
 	@GetMapping
 	public ResponseEntity<List<Personal>> getAll() throws Exception {
 		List<Personal> personalList = personalService.getAll();
@@ -47,6 +49,7 @@ public class PersonalController {
 	 * @return Listado de personal
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamAdmin')")
 	@GetMapping("/puesto/{idPersonalPuesto}")
 	public ResponseEntity<List<Personal>> getByPersonalPuesto(@PathVariable("idPersonalPuesto") Integer idPersonalPuesto) throws Exception {
 		List<Personal> personalList = personalService.getByPersonalPuesto(idPersonalPuesto);
@@ -62,6 +65,7 @@ public class PersonalController {
 	 * @return Personal
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdAdmin')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Personal> getById(@PathVariable("id") Integer id) throws Exception {
 		Personal personal = personalService.getById(id);
@@ -77,6 +81,7 @@ public class PersonalController {
 	 * @param personalNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Personal personalNew) throws Exception {
 		Personal personal = personalService.create(personalNew);
@@ -93,6 +98,7 @@ public class PersonalController {
 	 * @return Personal actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<Personal> update(@Valid @RequestBody Personal personalUp) throws Exception {
 		Personal personal = personalService.update(personalUp);
@@ -104,6 +110,7 @@ public class PersonalController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Personal personal = personalService.getById(id);

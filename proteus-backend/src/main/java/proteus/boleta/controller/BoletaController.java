@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class BoletaController {
 	 * @return Listado de boletas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<Boleta>> getAll() throws Exception {
 		List<Boleta> boletaList = boletaService.getAll();
@@ -48,6 +50,7 @@ public class BoletaController {
 	 * @return Listado de boletas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/fecha/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Boleta>> getByFecha(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -64,6 +67,7 @@ public class BoletaController {
 	 * @return Listado de boletas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/banco/{idBanco}")
 	public ResponseEntity<List<Boleta>> getByBanco(@PathVariable("idBanco") Integer idBanco) throws Exception {
 		List<Boleta> boletaList = boletaService.getByBanco(idBanco);
@@ -79,6 +83,7 @@ public class BoletaController {
 	 * @return Listado de boletas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/cheque/{idCheque}")
 	public ResponseEntity<List<Boleta>> getByCheque(@PathVariable("idCheque") Integer idCheque) throws Exception {
 		List<Boleta> boletaList = boletaService.getByCheque(idCheque);
@@ -94,6 +99,7 @@ public class BoletaController {
 	 * @return Listado de boletas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/numero/{numero}")
 	public ResponseEntity<List<Boleta>> getByNumero(@PathVariable("numero") String numero) throws Exception {
 		List<Boleta> boletaList = boletaService.getByNumero(numero);
@@ -109,6 +115,7 @@ public class BoletaController {
 	 * @return Listado de boletas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/boleta-tipo-documento/{idBoletaTipoDocumento}")
 	public ResponseEntity<List<Boleta>> getByBoletaTipoDocumento(@PathVariable("idBoletaTipoDocumento") Integer idBoletaTipoDocumento) throws Exception {
 		List<Boleta> boletaList = boletaService.getByBoletaTipoDocumento(idBoletaTipoDocumento);
@@ -124,6 +131,7 @@ public class BoletaController {
 	 * @return Listado de boletas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/cuenta-bancaria/{idCuentaBancaria}")
 	public ResponseEntity<List<Boleta>> getByCuentaBancaria(@PathVariable("idCuentaBancaria") Integer idCuentaBancaria) throws Exception {
 		List<Boleta> boletaList = boletaService.getByCuentaBancaria(idCuentaBancaria);
@@ -139,6 +147,7 @@ public class BoletaController {
 	 * @return Boleta
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Boleta> getById(@PathVariable("id") Integer id) throws Exception {
 		Boleta boleta = boletaService.getById(id);
@@ -154,6 +163,7 @@ public class BoletaController {
 	 * @param boletaNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Boleta boletaNew) throws Exception {
 		Boleta boleta = boletaService.create(boletaNew);
@@ -170,6 +180,7 @@ public class BoletaController {
 	 * @return Boleta actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<Boleta> update(@Valid @RequestBody Boleta boletaUp) throws Exception {
 		Boleta boleta = boletaService.update(boletaUp);
@@ -181,6 +192,7 @@ public class BoletaController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Boleta boleta = boletaService.getById(id);

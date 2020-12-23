@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class PagoProveedorController {
 	 * @return Listado de pagos a proveedores
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<PagoProveedor>> getAll() throws Exception {
 		List<PagoProveedor> pagoProveedorList = pagoProveedorService.getAll();
@@ -47,6 +49,7 @@ public class PagoProveedorController {
 	 * @return Listado de pagos a proveedores
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/proveedor/{idProveedor}")
 	public ResponseEntity<List<PagoProveedor>> getByProveedor(@PathVariable("idProveedor") Integer idProveedor) throws Exception {
 		List<PagoProveedor> pagoProveedorList = pagoProveedorService.getByProveedor(idProveedor);
@@ -62,6 +65,7 @@ public class PagoProveedorController {
 	 * @return Listado de pagos a proveedores
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/credito-proveedor/{idCreditoProveedor}")
 	public ResponseEntity<List<PagoProveedor>> getByCreditoProveedor(@PathVariable("idCreditoProveedor") Integer idCreditoProveedor) throws Exception {
 		List<PagoProveedor> pagoProveedorList = pagoProveedorService.getByCreditoProveedor(idCreditoProveedor);
@@ -78,6 +82,7 @@ public class PagoProveedorController {
 	 * @return Listado de pagos a proveedores
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/fecha-pago/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<PagoProveedor>> getByFechaPago(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -94,6 +99,7 @@ public class PagoProveedorController {
 	 * @return Pago a proveedor
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<PagoProveedor> getById(@PathVariable("id") Integer id) throws Exception {
 		PagoProveedor pagoProveedor = pagoProveedorService.getById(id);
@@ -109,6 +115,7 @@ public class PagoProveedorController {
 	 * @param pagoProveedorDtoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping("/dto")
 	public ResponseEntity<Void> createDTO(@Valid @RequestBody PagoProveedorTransaccionChequeDTO pagoProveedorDtoNew) throws Exception {
 		pagoProveedorService.createDTO(pagoProveedorDtoNew);
@@ -120,6 +127,7 @@ public class PagoProveedorController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		PagoProveedor pagoProveedor = pagoProveedorService.getById(id);

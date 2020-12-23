@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllServicio')")
 	@GetMapping
 	public ResponseEntity<List<Servicio>> getAll() throws Exception {
 		List<Servicio> servicioList = servicioService.getAll();
@@ -46,6 +48,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/not-in-checklist")
 	public ResponseEntity<List<Servicio>> getNotInChecklist() throws Exception {
 		List<Servicio> servicioList = servicioService.getNotInChecklist();
@@ -61,6 +64,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/placa/{idPlaca}")
 	public ResponseEntity<List<Servicio>> getByPlaca(@PathVariable("idPlaca") Integer idPlaca) throws Exception {
 		List<Servicio> servicioList = servicioService.getByPlaca(idPlaca);
@@ -76,6 +80,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/finalizado/{finalizado}")
 	public ResponseEntity<List<Servicio>> getByFinalizado(@PathVariable("finalizado") Boolean finalizado) throws Exception {
 		List<Servicio> servicioList = servicioService.getByFinalizado(finalizado);
@@ -92,6 +97,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/finalizado/{finalizado}/facturado/{facturado}")
 	public ResponseEntity<List<Servicio>> getByFinalizadoAndFacturado(@PathVariable("finalizado") Boolean finalizado, 
 			@PathVariable("facturado") Boolean facturado) throws Exception {
@@ -108,6 +114,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/facturado/{facturado}")
 	public ResponseEntity<List<Servicio>> getByFacturado(@PathVariable("facturado") Boolean facturado) throws Exception {
 		List<Servicio> servicioList = servicioService.getByFacturado(facturado);
@@ -123,6 +130,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/segmento/{idSegmento}")
 	public ResponseEntity<List<Servicio>> getBySegmento(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
 		List<Servicio> servicioList = servicioService.getBySegmento(idSegmento);
@@ -138,6 +146,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/servicio-tipo/{idServicioTipo}")
 	public ResponseEntity<List<Servicio>> getByServicioTipo(@PathVariable("idServicioTipo") Integer idServicioTipo) throws Exception {
 		List<Servicio> servicioList = servicioService.getByServicioTipo(idServicioTipo);
@@ -155,6 +164,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/servicio-tipo/{idServicioTipo}/finalizado/{finalizado}/facturado/{facturado}")
 	public ResponseEntity<List<Servicio>> getByServicioTipoAndFinalizadoAndFacturado(@PathVariable("idServicioTipo") Integer idServicioTipo, 
 			@PathVariable("finalizado") Boolean finalizado, @PathVariable("facturado") Boolean facturado) throws Exception {
@@ -171,6 +181,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/cotizacion/{idCotizacion}")
 	public ResponseEntity<List<Servicio>> getByCotizacion(@PathVariable("idCotizacion") Integer idCotizacion) throws Exception {
 		List<Servicio> servicioList = servicioService.getByCotizacion(idCotizacion);
@@ -186,6 +197,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/fecha/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Servicio>> getByFechaRango(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -206,6 +218,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/fecha/{fechaDesde}/{fechaHasta}/finalizado/{finalizado}/facturado/{facturado}")
 	public ResponseEntity<List<Servicio>> getByFechaAndFinalizadoAndFacturado(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta, @PathVariable("finalizado") Boolean finalizado, 
@@ -224,6 +237,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/placa/{idPlaca}/finalizado/{finalizado}")
 	public ResponseEntity<List<Servicio>> getByPlacaAndFinalizado(@PathVariable("idPlaca") Integer idPlaca, 
 			@PathVariable("finalizado") Boolean finalizado) throws Exception {
@@ -241,6 +255,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/placa/{idPlaca}/facturado/{facturado}")
 	public ResponseEntity<List<Servicio>> getByPlacaAndFacturado(@PathVariable("idPlaca") Integer idPlaca, 
 			@PathVariable("facturado") Boolean facturado) throws Exception {
@@ -258,6 +273,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/placa/{idPlaca}/finalizado/{finalizado}/facturado/{facturado}")
 	public ResponseEntity<List<Servicio>> getByPlacaAndFinalizadoAndFacturado(@PathVariable("idPlaca") Integer idPlaca, 
 			@PathVariable("finalizado") Boolean finalizado, @PathVariable("facturado") Boolean facturado) throws Exception {
@@ -275,6 +291,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/segmento/{idSegmento}/finalizado/{finalizado}")
 	public ResponseEntity<List<Servicio>> getBySegmentoAndFinalizado(@PathVariable("idSegmento") Integer idSegmento, 
 			@PathVariable("finalizado") Boolean finalizado) throws Exception {
@@ -292,6 +309,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/segmento/{idSegmento}/facturado/{facturado}")
 	public ResponseEntity<List<Servicio>> getBySegmentoAndFacturado(@PathVariable("idSegmento") Integer idSegmento, 
 			@PathVariable("facturado") Boolean facturado) throws Exception {
@@ -309,6 +327,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/segmento/{idSegmento}/finalizado/{finalizado}/facturado/{facturado}")
 	public ResponseEntity<List<Servicio>> getBySegmentoAndFinalizadoAndFacturado(@PathVariable("idSegmento") Integer idSegmento, 
 			@PathVariable("finalizado") Boolean finalizado, @PathVariable("facturado") Boolean facturado) throws Exception {
@@ -326,6 +345,7 @@ public class ServicioController {
 	 * @return Listado de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/segmento/{idSegmento}/placa/{idPlaca}")
 	public ResponseEntity<List<Servicio>> getBySegmentoAndPlaca(@PathVariable("idSegmento") Integer idSegmento, 
 			@PathVariable("idPlaca") Integer idPlaca) throws Exception {
@@ -343,6 +363,7 @@ public class ServicioController {
 	 * @return Servicio
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdServicio')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Servicio> getById(@PathVariable("id") Integer id) throws Exception {
 		Servicio servicio = servicioService.getById(id);
@@ -359,6 +380,7 @@ public class ServicioController {
 	 * @param servicioNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createServicio')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Servicio servicioNew) throws Exception {
 		Servicio servicio = servicioService.create(servicioNew);
@@ -376,6 +398,7 @@ public class ServicioController {
 	 * @return Servicio actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping
 	public ResponseEntity<Servicio> update(@Valid @RequestBody Servicio servicioUp) throws Exception {
 		Servicio servicio = servicioService.update(servicioUp);
@@ -391,6 +414,7 @@ public class ServicioController {
 	 * @return Mensaje de finalizacion
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping("/finalizado")
 	public ResponseEntity<Void> updateFinalizado(@RequestBody Servicio servicio) throws Exception {
 		servicioService.updateFinalizado(servicio.getIdServicio(), servicio.getFinalizado());
@@ -409,6 +433,7 @@ public class ServicioController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteServicio')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Servicio servicio = servicioService.getById(id);

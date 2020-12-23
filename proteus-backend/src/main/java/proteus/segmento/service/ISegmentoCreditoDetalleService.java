@@ -3,6 +3,7 @@ package proteus.segmento.service;
 import java.util.List;
 
 import proteus.generico.service.ICRUD;
+import proteus.segmento.dto.FacturaSegmentoDTO;
 import proteus.segmento.dto.SegmentoCreditoDetalleDTO;
 import proteus.segmento.model.SegmentoCreditoDetalle;
 
@@ -23,5 +24,7 @@ public interface ISegmentoCreditoDetalleService extends ICRUD<SegmentoCreditoDet
 	Double sumTotalRestante(List<SegmentoCreditoDetalle> segmentoCreditoDetalleList) throws Exception;
 	List<SegmentoCreditoDetalle> getSaldoPendiente() throws Exception;
 	List<SegmentoCreditoDetalle> getPagadas() throws Exception;
+	List<FacturaSegmentoDTO> getFacturaSegmentoDTOBySegmento(Integer idSegmento) throws Exception;
+	List<FacturaSegmentoDTO> getFacturaSegmentoDTOByFecha(String fechaDesde, String fechaHasta) throws Exception;
 	
 }

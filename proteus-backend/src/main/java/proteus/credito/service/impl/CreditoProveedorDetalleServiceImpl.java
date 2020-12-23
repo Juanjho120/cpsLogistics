@@ -2,11 +2,14 @@ package proteus.credito.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import proteus.credito.dto.FacturaProveedorDTO;
 import proteus.credito.model.CreditoProveedor;
 import proteus.credito.model.CreditoProveedorDetalle;
 import proteus.credito.repository.ICreditoProveedorDetalleRepository;
@@ -16,6 +19,8 @@ import proteus.factura.model.FacturaCompra;
 import proteus.factura.service.IFacturaCompraService;
 import proteus.generico.repository.IGenericRepository;
 import proteus.generico.service.CRUDImpl;
+import proteus.pago.model.PagoProveedor;
+import proteus.pago.service.IPagoProveedorService;
 
 /**
  * Services for CreditoProveedorDetalle Model (Implementation)
@@ -33,6 +38,9 @@ public class CreditoProveedorDetalleServiceImpl extends CRUDImpl<CreditoProveedo
 	
 	@Autowired
 	private IFacturaCompraService facturaCompraService;
+	
+	@Autowired
+	private IPagoProveedorService pagoProveedorService;
 	
 	@Override
 	protected IGenericRepository<CreditoProveedorDetalle, Integer> getRepository() {
@@ -113,12 +121,24 @@ public class CreditoProveedorDetalleServiceImpl extends CRUDImpl<CreditoProveedo
 				creditoProveedorDetalle.setVencida(false);
 			} else if(facturaFecha.isEqual(hoy.minusDays(1))){
 				creditoProveedorDetalle.setVencida(false);
+			} else if(creditoProveedorDetalle.getPagada()){
+				creditoProveedorDetalle.setVencida(false);
 			} else {
 				creditoProveedorDetalle.setVencida(true);
 			}
 			
 			creditoProveedorDetalleRepository.save(creditoProveedorDetalle);
 		}
+	}
+	
+	private Boolean isVencida(LocalDate facturaFecha) {
+		LocalDate hoy = LocalDateTime.now().toLocalDate();
+		if(facturaFecha.isEqual(hoy)) {
+			return false;
+		} else if(facturaFecha.isEqual(hoy.minusDays(1))){
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -130,6 +150,56 @@ public class CreditoProveedorDetalleServiceImpl extends CRUDImpl<CreditoProveedo
 	public List<CreditoProveedorDetalle> getByCreditoProveedorAndPagada(Integer idCreditoProveedor, Boolean pagada)
 			throws Exception {
 		return creditoProveedorDetalleRepository.findByCreditoProveedorAndPagada(idCreditoProveedor, pagada);
+	}
+
+	@Override
+	public List<FacturaProveedorDTO> getFacturaByProveedor(Integer idProveedor) throws Exception {
+		List<CreditoProveedorDetalle> creditoProveedorDetalleList = creditoProveedorDetalleRepository.findByProveedor(idProveedor);
+		List<FacturaProveedorDTO> facturaDtoList = new ArrayList<FacturaProveedorDTO>();
+		for(CreditoProveedorDetalle creditoProveedorDetalle : creditoProveedorDetalleList) {
+			FacturaProveedorDTO facturaDto = this.convertirCreditoProveedorAFactura(creditoProveedorDetalle);
+			facturaDtoList.add(facturaDto);
+		}
+		return facturaDtoList;
+	}
+
+	@Override
+	public List<FacturaProveedorDTO> getFacturaByFecha(String fechaDesde, String fechaHasta) throws Exception {
+		//Convirtiendo cadena de texto a tipo de fecha LocalDateTime
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		LocalDate fechaDesdeParse = LocalDate.parse(fechaDesde, formatter);
+		LocalDate fechaHastaParse = LocalDate.parse(fechaHasta, formatter);
+		
+		List<CreditoProveedorDetalle> creditoProveedorDetalleList = creditoProveedorDetalleRepository.getByFechaFactura(fechaDesdeParse, fechaHastaParse);
+		List<FacturaProveedorDTO> facturaDtoList = new ArrayList<FacturaProveedorDTO>();
+		for(CreditoProveedorDetalle creditoProveedorDetalle : creditoProveedorDetalleList) {
+			FacturaProveedorDTO facturaDto = this.convertirCreditoProveedorAFactura(creditoProveedorDetalle);
+			facturaDtoList.add(facturaDto);
+		}
+		return facturaDtoList;
+	}
+	
+	public FacturaProveedorDTO convertirCreditoProveedorAFactura(CreditoProveedorDetalle creditoProveedorDetalle) throws Exception {
+		FacturaProveedorDTO facturaDto = new FacturaProveedorDTO();
+		facturaDto.setIdFacturaCompra(creditoProveedorDetalle.getFacturaCompra().getIdFacturaCompra());
+		facturaDto.setFacturaNumero(creditoProveedorDetalle.getFacturaCompra().getCodigo());
+		facturaDto.setProveedor(creditoProveedorDetalle.getCreditoProveedor().getProveedor().getNombre());
+		facturaDto.setFecha(creditoProveedorDetalle.getFacturaCompra().getFecha().toString());
+		facturaDto.setTotal(creditoProveedorDetalle.getFacturaCompra().getTotal());
+		List<PagoProveedor> pagoProveedorList = pagoProveedorService.getByCreditoProveedor(creditoProveedorDetalle.getCreditoProveedor().getIdCreditoProveedor());
+		if(!pagoProveedorList.isEmpty()) {
+			facturaDto.setFechaPago(pagoProveedorList.get(0).getFechaHoraPago().toLocalDate().toString());
+			facturaDto.setTipoPago(pagoProveedorList.get(0).getPagoTipo().getNombre());
+			facturaDto.setVencida(false);
+			facturaDto.setPagada(true);
+		} else {
+			facturaDto.setFechaPago("");
+			facturaDto.setTipoPago("");
+			facturaDto.setPagada(false);
+			facturaDto.setVencida(this.isVencida(creditoProveedorDetalle.getFacturaCompra().getFecha()));
+		}
+		return facturaDto;
 	}
 	
 }

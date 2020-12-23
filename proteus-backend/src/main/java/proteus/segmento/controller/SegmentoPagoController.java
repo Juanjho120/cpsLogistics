@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class SegmentoPagoController {
 	 * @return Listado de pagos de segmentos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<SegmentoPago>> getAll() throws Exception {
 		List<SegmentoPago> segmentoPagoList = segmentoPagoService.getAll();
@@ -47,6 +49,7 @@ public class SegmentoPagoController {
 	 * @return Listado de pagos de segmentos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/segmento/{idSegmento}")
 	public ResponseEntity<List<SegmentoPago>> getBySegmento(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
 		List<SegmentoPago> segmentoPagoList = segmentoPagoService.getBySegmento(idSegmento);
@@ -62,6 +65,7 @@ public class SegmentoPagoController {
 	 * @return Listado de pagos de segmentos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/factura-numero/{facturaNumero}")
 	public ResponseEntity<List<SegmentoPago>> getByFacturaNumeroEfectivo(@PathVariable("facturaNumero") String facturaNumero) throws Exception {
 		List<SegmentoPago> segmentoPagoList = segmentoPagoService.getByFacturaNumeroEfectivo(facturaNumero);
@@ -78,6 +82,7 @@ public class SegmentoPagoController {
 	 * @return Listado de pagos de segmentos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/fecha-pago/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<SegmentoPago>> getByFechaPago(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -94,6 +99,7 @@ public class SegmentoPagoController {
 	 * @return Pago de segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<SegmentoPago> getById(@PathVariable("id") Integer id) throws Exception {
 		SegmentoPago segmentoPago = segmentoPagoService.getById(id);
@@ -109,6 +115,7 @@ public class SegmentoPagoController {
 	 * @param segmentoPagoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody SegmentoPago segmentoPagoNew) throws Exception {
 		SegmentoPago segmentoPago = segmentoPagoService.create(segmentoPagoNew);
@@ -125,6 +132,7 @@ public class SegmentoPagoController {
 	 * @param segmentoPagoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PostMapping("/dto")
 	public ResponseEntity<Void> createDTO(@Valid @RequestBody SegmentoPagoTransaccionChequeDTO segmentoPagoDtoNew) throws Exception {
 		segmentoPagoService.createDTO(segmentoPagoDtoNew);
@@ -136,6 +144,7 @@ public class SegmentoPagoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		SegmentoPago segmentoPago = segmentoPagoService.getById(id);

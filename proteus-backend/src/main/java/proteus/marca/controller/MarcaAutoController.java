@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class MarcaAutoController {
 	 * @return Listado de marcas de autos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<MarcaAuto>> getAll() throws Exception {
 		List<MarcaAuto> marcaAutoList = marcaAutoService.getAll();
@@ -47,6 +49,7 @@ public class MarcaAutoController {
 	 * @return Marca de auto
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<MarcaAuto> getById(@PathVariable("id") Integer id) throws Exception {
 		MarcaAuto marcaAuto = marcaAutoService.getById(id);
@@ -62,6 +65,7 @@ public class MarcaAutoController {
 	 * @param marcaAutoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody MarcaAuto marcaAutoNew) throws Exception {
 		MarcaAuto marcaAuto = marcaAutoService.create(marcaAutoNew);
@@ -78,6 +82,7 @@ public class MarcaAutoController {
 	 * @return Marca de auto actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<MarcaAuto> update(@Valid @RequestBody MarcaAuto marcaAutoUp) throws Exception {
 		MarcaAuto marcaAuto = marcaAutoService.update(marcaAutoUp);
@@ -89,6 +94,7 @@ public class MarcaAutoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		MarcaAuto marcaAuto = marcaAutoService.getById(id);

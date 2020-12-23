@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class CajaChicaController {
 	 * @return Listado de cajas chicas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<CajaChica>> getAll() throws Exception {
 		List<CajaChica> cajaChicaList = cajaChicaService.getAll();
@@ -48,6 +50,7 @@ public class CajaChicaController {
 	 * @return Listado de cajas chicas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/fecha-ingreso/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<CajaChica>> getByFechaIngreso(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -64,6 +67,7 @@ public class CajaChicaController {
 	 * @return Listado de cajas chicas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/servicio/{idServicio}")
 	public ResponseEntity<List<CajaChica>> getByServicio(@PathVariable("idServicio") Integer idServicio) throws Exception {
 		List<CajaChica> cajaChicaList = cajaChicaService.getByServicio(idServicio);
@@ -79,6 +83,7 @@ public class CajaChicaController {
 	 * @return Listado de cajas chicas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/placa/{idPlaca}")
 	public ResponseEntity<List<CajaChica>> getByPlaca(@PathVariable("idPlaca") Integer idPlaca) throws Exception {
 		List<CajaChica> cajaChicaList = cajaChicaService.getByPlaca(idPlaca);
@@ -94,6 +99,7 @@ public class CajaChicaController {
 	 * @return Caja chica
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<CajaChica> getById(@PathVariable("id") Integer id) throws Exception {
 		CajaChica cajaChica = cajaChicaService.getById(id);
@@ -109,6 +115,7 @@ public class CajaChicaController {
 	 * @param cajaChicaNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody CajaChica cajaChicaNew) throws Exception {
 		CajaChica cajaChica = cajaChicaService.create(cajaChicaNew);
@@ -125,6 +132,7 @@ public class CajaChicaController {
 	 * @return Caja chica actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<CajaChica> update(@Valid @RequestBody CajaChica cajaChicaUp) throws Exception {
 		CajaChica cajaChica = cajaChicaService.update(cajaChicaUp);
@@ -136,6 +144,7 @@ public class CajaChicaController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		CajaChica cajaChica = cajaChicaService.getById(id);

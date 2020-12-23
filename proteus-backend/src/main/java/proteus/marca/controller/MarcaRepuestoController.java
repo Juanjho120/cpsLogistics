@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class MarcaRepuestoController {
 	 * @return Listado de marcas de repuestos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<MarcaRepuesto>> getAll() throws Exception {
 		List<MarcaRepuesto> marcaRepuestoList = marcaRepuestoService.getAll();
@@ -47,6 +49,7 @@ public class MarcaRepuestoController {
 	 * @return Marca de repuesto
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<MarcaRepuesto> getById(@PathVariable("id") Integer id) throws Exception {
 		MarcaRepuesto marcaRepuesto = marcaRepuestoService.getById(id);
@@ -62,6 +65,7 @@ public class MarcaRepuestoController {
 	 * @param marcaRepuestoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody MarcaRepuesto marcaRepuestoNew) throws Exception {
 		MarcaRepuesto marcaRepuesto = marcaRepuestoService.create(marcaRepuestoNew);
@@ -78,6 +82,7 @@ public class MarcaRepuestoController {
 	 * @return Marca de repuesto actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<MarcaRepuesto> update(@Valid @RequestBody MarcaRepuesto marcaRepuestoUp) throws Exception {
 		MarcaRepuesto marcaRepuesto = marcaRepuestoService.update(marcaRepuestoUp);
@@ -89,6 +94,7 @@ public class MarcaRepuestoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		MarcaRepuesto marcaRepuesto = marcaRepuestoService.getById(id);

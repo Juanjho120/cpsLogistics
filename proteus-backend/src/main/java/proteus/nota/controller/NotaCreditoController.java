@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class NotaCreditoController {
 	 * @return Listado de notas de credito
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<NotaCredito>> getAll() throws Exception {
 		List<NotaCredito> notaCreditoList = notaCreditoService.getAll();
@@ -47,6 +49,7 @@ public class NotaCreditoController {
 	 * @return Listado de notas de credito
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/factura-compra/{idFacturaCompra}")
 	public ResponseEntity<List<NotaCredito>> getByFacturaCompra(@PathVariable("idFacturaCompra") Integer idFacturaCompra) throws Exception {
 		List<NotaCredito> notaCreditoList = notaCreditoService.getByFacturaCompra(idFacturaCompra);
@@ -63,6 +66,7 @@ public class NotaCreditoController {
 	 * @return Listado de notas de credito
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/fecha-ingreso/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<NotaCredito>> getByFechaIngreso(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -79,6 +83,7 @@ public class NotaCreditoController {
 	 * @return NotaCredito
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<NotaCredito> getById(@PathVariable("id") Integer id) throws Exception {
 		NotaCredito notaCredito = notaCreditoService.getById(id);
@@ -94,6 +99,7 @@ public class NotaCreditoController {
 	 * @param notaCreditoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody NotaCredito notaCreditoNew) throws Exception {
 		NotaCredito notaCredito = notaCreditoService.create(notaCreditoNew);
@@ -110,6 +116,7 @@ public class NotaCreditoController {
 	 * @return Nota de credito actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<NotaCredito> update(@Valid @RequestBody NotaCredito notaCreditoUp) throws Exception {
 		NotaCredito notaCredito = notaCreditoService.update(notaCreditoUp);
@@ -121,6 +128,7 @@ public class NotaCreditoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		NotaCredito notaCredito = notaCreditoService.getById(id);

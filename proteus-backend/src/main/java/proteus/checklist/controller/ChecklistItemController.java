@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ChecklistItemController {
 	 * @return Listado de items de checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<ChecklistItem>> getAll() throws Exception {
 		List<ChecklistItem> checklistList = checklistItemService.getAll();
@@ -47,6 +49,7 @@ public class ChecklistItemController {
 	 * @return Item de checklist
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<ChecklistItem> getById(@PathVariable("id") Integer id) throws Exception {
 		ChecklistItem checklistItem = checklistItemService.getById(id);
@@ -62,6 +65,7 @@ public class ChecklistItemController {
 	 * @param checklistItemNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createServicio')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody ChecklistItem checklistItemNew) throws Exception {
 		ChecklistItem checklistItem = checklistItemService.create(checklistItemNew);
@@ -78,6 +82,7 @@ public class ChecklistItemController {
 	 * @return Item del checklist actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping
 	public ResponseEntity<ChecklistItem> update(@Valid @RequestBody ChecklistItem checklistItemUp) throws Exception {
 		ChecklistItem checklistItem = checklistItemService.update(checklistItemUp);
@@ -89,6 +94,7 @@ public class ChecklistItemController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteServicio')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		ChecklistItem checklistItem = checklistItemService.getById(id);

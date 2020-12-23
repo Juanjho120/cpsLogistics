@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class CuentaBancariaController {
 	 * @return Listado de cuentas bancarias
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<CuentaBancaria>> getAll() throws Exception {
 		List<CuentaBancaria> cuentaBancariaList = cuentaBancariaService.getAll();
@@ -47,6 +49,7 @@ public class CuentaBancariaController {
 	 * @return Listado de cuentas bancarias
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/categoria/{idCategoria}")
 	public ResponseEntity<List<CuentaBancaria>> getByCategoria(@PathVariable("idCategoria") Integer idCategoria) throws Exception {
 		List<CuentaBancaria> cuentaBancariaList = cuentaBancariaService.getByCategoria(idCategoria);
@@ -62,6 +65,7 @@ public class CuentaBancariaController {
 	 * @return Listado de cuentas bancarias
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/banco/{idBanco}")
 	public ResponseEntity<List<CuentaBancaria>> getByBanco(@PathVariable("idBanco") Integer idBanco) throws Exception {
 		List<CuentaBancaria> cuentaBancariaList = cuentaBancariaService.getByBanco(idBanco);
@@ -77,6 +81,7 @@ public class CuentaBancariaController {
 	 * @return Listado de cuentas bancarias
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/moneda/{idMoneda}")
 	public ResponseEntity<List<CuentaBancaria>> getByMoneda(@PathVariable("idMoneda") Integer idMoneda) throws Exception {
 		List<CuentaBancaria> cuentaBancariaList = cuentaBancariaService.getByMoneda(idMoneda);
@@ -92,6 +97,7 @@ public class CuentaBancariaController {
 	 * @return Listado de cuentas bancarias
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<List<CuentaBancaria>> getByNombre(@PathVariable("nombre") String nombre) throws Exception {
 		List<CuentaBancaria> cuentaBancariaList = cuentaBancariaService.getByNombreLike(nombre);
@@ -107,6 +113,7 @@ public class CuentaBancariaController {
 	 * @return Cuenta bancaria
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<CuentaBancaria> getById(@PathVariable("id") Integer id) throws Exception {
 		CuentaBancaria cuentaBancaria = cuentaBancariaService.getById(id);
@@ -123,6 +130,7 @@ public class CuentaBancariaController {
 	 * @return Listado de cuentas bancarias
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/categoria/{idCategoria}/item/{idItem}")
 	public ResponseEntity<List<CuentaBancaria>> getByCategoriaAndItem(@PathVariable("idCategoria") Integer idCategoria, 
 			@PathVariable("idItem") Integer idItem) throws Exception {
@@ -140,6 +148,7 @@ public class CuentaBancariaController {
 	 * @return Listado de cuentas bancarias
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/tipo/{idCuentaBancariaTipo}")
 	public ResponseEntity<List<CuentaBancaria>> getByCuentaBancariaTipo(@PathVariable("idCuentaBancariaTipo")
 				Integer idCuentaBancariaTipo) throws Exception {
@@ -156,6 +165,7 @@ public class CuentaBancariaController {
 	 * @param cuentaBancariaNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody CuentaBancaria cuentaBancariaNew) throws Exception {
 		CuentaBancaria cuentaBancaria = cuentaBancariaService.create(cuentaBancariaNew);
@@ -172,6 +182,7 @@ public class CuentaBancariaController {
 	 * @return Cuenta bancaria actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<CuentaBancaria> update(@Valid @RequestBody CuentaBancaria cuentaBancariaUp) throws Exception {
 		CuentaBancaria cuentaBancaria = cuentaBancariaService.update(cuentaBancariaUp);
@@ -183,6 +194,7 @@ public class CuentaBancariaController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		CuentaBancaria cuentaBancaria = cuentaBancariaService.getById(id);
@@ -199,6 +211,7 @@ public class CuentaBancariaController {
 	 * @param idItem
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/categoria/{idCategoria}/item/{idItem}")
 	public ResponseEntity<Void> deleteByCategoriaAndItem(@PathVariable("idCategoria") Integer idCategoria, 
 			@PathVariable("idItem") Integer idItem) throws Exception {

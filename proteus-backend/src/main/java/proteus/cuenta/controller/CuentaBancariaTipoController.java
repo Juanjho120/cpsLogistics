@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class CuentaBancariaTipoController {
 	 * @return Listado de tipos de cuentas bancarias
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<CuentaBancariaTipo>> getAll() throws Exception {
 		List<CuentaBancariaTipo> cuentaBancariaTipoList = cuentaBancariaTipoService.getAll();
@@ -47,6 +49,7 @@ public class CuentaBancariaTipoController {
 	 * @return Tipo de cuenta bancaria
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<CuentaBancariaTipo> getById(@PathVariable("id") Integer id) throws Exception {
 		CuentaBancariaTipo cuentaBancariaTipo = cuentaBancariaTipoService.getById(id);
@@ -62,6 +65,7 @@ public class CuentaBancariaTipoController {
 	 * @param cuentaBancariaTipoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody CuentaBancariaTipo cuentaBancariaTipoNew) throws Exception {
 		CuentaBancariaTipo cuentaBancariaTipo = cuentaBancariaTipoService.create(cuentaBancariaTipoNew);
@@ -78,6 +82,7 @@ public class CuentaBancariaTipoController {
 	 * @return Tipo de cuenta bancaria actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<CuentaBancariaTipo> update(@Valid @RequestBody CuentaBancariaTipo cuentaBancariaTipoUp) throws Exception {
 		CuentaBancariaTipo cuentaBancariaTipo = cuentaBancariaTipoService.update(cuentaBancariaTipoUp);
@@ -89,6 +94,7 @@ public class CuentaBancariaTipoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		CuentaBancariaTipo cuentaBancariaTipo = cuentaBancariaTipoService.getById(id);

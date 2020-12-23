@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class TransaccionEstadoController {
 	 * @return Listado de estados de transaccion
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<TransaccionEstado>> getAll() throws Exception {
 		List<TransaccionEstado> transaccionEstadoList = transaccionEstadoService.getAll();
@@ -47,6 +49,7 @@ public class TransaccionEstadoController {
 	 * @return TransaccionEstado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<TransaccionEstado> getById(@PathVariable("id") Integer id) throws Exception {
 		TransaccionEstado transaccionEstado = transaccionEstadoService.getById(id);
@@ -62,6 +65,7 @@ public class TransaccionEstadoController {
 	 * @param transaccionEstadoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody TransaccionEstado transaccionEstadoNew) throws Exception {
 		TransaccionEstado transaccionEstado = transaccionEstadoService.create(transaccionEstadoNew);
@@ -78,6 +82,7 @@ public class TransaccionEstadoController {
 	 * @return TransaccionEstado actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<TransaccionEstado> update(@Valid @RequestBody TransaccionEstado transaccionEstadoUp) throws Exception {
 		TransaccionEstado transaccionEstado = transaccionEstadoService.update(transaccionEstadoUp);
@@ -89,6 +94,7 @@ public class TransaccionEstadoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		TransaccionEstado transaccionEstado = transaccionEstadoService.getById(id);

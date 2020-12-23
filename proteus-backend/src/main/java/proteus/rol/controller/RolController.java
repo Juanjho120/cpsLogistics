@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class RolController {
 	 * @return Listado de roles
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllAdmin')")
 	@GetMapping
 	public ResponseEntity<List<Rol>> getAll() throws Exception {
 		List<Rol> rolList = rolService.getAll();
@@ -47,6 +49,7 @@ public class RolController {
 	 * @return Rol
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdAdmin')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Rol> getById(@PathVariable("id") Integer id) throws Exception {
 		Rol rol = rolService.getById(id);
@@ -62,6 +65,7 @@ public class RolController {
 	 * @param rolNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Rol rolNew) throws Exception {
 		Rol rol = rolService.create(rolNew);
@@ -78,6 +82,7 @@ public class RolController {
 	 * @return Rol actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<Rol> update(@Valid @RequestBody Rol rolUp) throws Exception {
 		Rol rol = rolService.update(rolUp);
@@ -89,6 +94,7 @@ public class RolController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Rol rol = rolService.getById(id);

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class CotizacionController {
 	 * @return Listado de cotizaciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllServicio')")
 	@GetMapping
 	public ResponseEntity<List<Cotizacion>> getAll() throws Exception {
 		List<Cotizacion> cotizacionList = cotizacionService.getAll();
@@ -47,6 +49,7 @@ public class CotizacionController {
 	 * @return Listado de cotizaciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/segmento/{idSegmento}")
 	public ResponseEntity<List<Cotizacion>> getBySegmento(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
 		List<Cotizacion> cotizacionList = cotizacionService.getBySegmento(idSegmento);
@@ -62,6 +65,7 @@ public class CotizacionController {
 	 * @return Listado de cotizaciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/usuario/{idUsuario}")
 	public ResponseEntity<List<Cotizacion>> getByUsuario(@PathVariable("idUsuario") Integer idUsuario) throws Exception {
 		List<Cotizacion> cotizacionList = cotizacionService.getByUsuario(idUsuario);
@@ -78,6 +82,7 @@ public class CotizacionController {
 	 * @return Listado de cotizaciones
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamServicio')")
 	@GetMapping("/fecha/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<Cotizacion>> getByUsuario(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -94,6 +99,7 @@ public class CotizacionController {
 	 * @return Cotizacion
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdServicio')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Cotizacion> getById(@PathVariable("id") Integer id) throws Exception {
 		Cotizacion cotizacion = cotizacionService.getById(id);
@@ -108,6 +114,7 @@ public class CotizacionController {
 	 * @param cotizacionNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createServicio')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Cotizacion cotizacionNew) throws Exception {
 		Cotizacion cotizacion = cotizacionService.create(cotizacionNew);
@@ -124,6 +131,7 @@ public class CotizacionController {
 	 * @return Cotizacion actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateServicio')")
 	@PutMapping
 	public ResponseEntity<Cotizacion> update(@Valid @RequestBody Cotizacion cotizacionUp) throws Exception {
 		Cotizacion cotizacion = cotizacionService.update(cotizacionUp);
@@ -135,6 +143,7 @@ public class CotizacionController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteServicio')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Cotizacion cotizacion = cotizacionService.getById(id);

@@ -1,5 +1,7 @@
 package proteus.usuario.repository;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,4 +29,11 @@ public interface IUsuarioRepository extends IGenericRepository<Usuario, Integer>
 	@Query("DELETE FROM Usuario WHERE email = :email")
 	void deleteByEmail(String email);
 	
+	//select * from usuario where username = ?
+	Usuario findOneByUsername(String username);
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE Usuario us SET us.password =:clave WHERE us.username =:nombre")
+	void cambiarClave(String clave, String nombre);
 }

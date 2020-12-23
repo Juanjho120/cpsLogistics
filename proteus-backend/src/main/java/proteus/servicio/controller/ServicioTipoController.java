@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ServicioTipoController {
 	 * @return Listado de tipos de servicios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<ServicioTipo>> getAll() throws Exception {
 		List<ServicioTipo> servicioTipoList = servicioTipoService.getAll();
@@ -47,6 +49,7 @@ public class ServicioTipoController {
 	 * @return Tipo de servicio
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<ServicioTipo> getById(@PathVariable("id") Integer id) throws Exception {
 		ServicioTipo servicioTipo = servicioTipoService.getById(id);
@@ -62,6 +65,7 @@ public class ServicioTipoController {
 	 * @param servicioTipoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody ServicioTipo servicioTipoNew) throws Exception {
 		ServicioTipo servicioTipo = servicioTipoService.create(servicioTipoNew);
@@ -78,6 +82,7 @@ public class ServicioTipoController {
 	 * @return Tipo de servicio actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<ServicioTipo> update(@Valid @RequestBody ServicioTipo servicioTipoUp) throws Exception {
 		ServicioTipo servicioTipo = servicioTipoService.update(servicioTipoUp);
@@ -89,6 +94,7 @@ public class ServicioTipoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		ServicioTipo servicioTipo = servicioTipoService.getById(id);

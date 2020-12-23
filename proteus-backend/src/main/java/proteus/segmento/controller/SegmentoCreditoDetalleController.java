@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import proteus.exception.ModelNotFoundException;
+import proteus.segmento.dto.FacturaSegmentoDTO;
 import proteus.segmento.dto.SegmentoCreditoDetalleDTO;
 import proteus.segmento.model.SegmentoCreditoDetalle;
 import proteus.segmento.service.ISegmentoCreditoDetalleService;
@@ -33,6 +35,7 @@ public class SegmentoCreditoDetalleController {
 	 * @return Listado de detalles de credito de un segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<SegmentoCreditoDetalle>> getAll() throws Exception {
 		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getAll();
@@ -47,6 +50,7 @@ public class SegmentoCreditoDetalleController {
 	 * @return Listado de detalles de credito de un segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/saldo-pendiente")
 	public ResponseEntity<List<SegmentoCreditoDetalle>> getSaldoPendiente() throws Exception {
 		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getSaldoPendiente();
@@ -61,6 +65,7 @@ public class SegmentoCreditoDetalleController {
 	 * @return Listado de detalles de credito de un segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/pagadas")
 	public ResponseEntity<List<SegmentoCreditoDetalle>> getPagadas() throws Exception {
 		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getPagadas();
@@ -76,6 +81,7 @@ public class SegmentoCreditoDetalleController {
 	 * @return Detalle de credito de un segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<SegmentoCreditoDetalle> getById(@PathVariable("id") Integer id) throws Exception {
 		SegmentoCreditoDetalle segmentoCreditoDetalle = segmentoCreditoDetalleService.getById(id);
@@ -91,6 +97,7 @@ public class SegmentoCreditoDetalleController {
 	 * @return Detalle de credito de un segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/servicio/{idServicio}")
 	public ResponseEntity<SegmentoCreditoDetalle> getByServicio(@PathVariable("idServicio") Integer idServicio) throws Exception {
 		SegmentoCreditoDetalle segmentoCreditoDetalle = segmentoCreditoDetalleService.getByServicio(idServicio);
@@ -106,6 +113,7 @@ public class SegmentoCreditoDetalleController {
 	 * @return Lista detalles de credito de un segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/segmento/{idSegmento}")
 	public ResponseEntity<List<SegmentoCreditoDetalle>> getBySegmento(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
 		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getBySegmento(idSegmento);
@@ -116,11 +124,28 @@ public class SegmentoCreditoDetalleController {
 	}
 	
 	/**
+	 * Busca un detalle de credito como factura de un segmento por segmento
+	 * @param idSegmento
+	 * @return Lista detalles de credito como factura de un segmento
+	 * @throws Exception
+	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
+	@GetMapping("/factura/segmento/{idSegmento}")
+	public ResponseEntity<List<FacturaSegmentoDTO>> getFacturaSegmentoDTOBySegmento(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
+		List<FacturaSegmentoDTO> facturaDtoList = segmentoCreditoDetalleService.getFacturaSegmentoDTOBySegmento(idSegmento);
+		if(facturaDtoList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran facturas");
+		}
+		return new ResponseEntity<List<FacturaSegmentoDTO>>(facturaDtoList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Busca un detalle de credito de un segmento por segmento con saldo pendiente
 	 * @param idSegmento
 	 * @return Lista detalles de credito de un segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/saldo-pendiente/segmento/{idSegmento}")
 	public ResponseEntity<List<SegmentoCreditoDetalle>> getBySegmentoSinPagar(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
 		List<SegmentoCreditoDetalle> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getBySegmentoSinPagar(idSegmento);
@@ -136,6 +161,7 @@ public class SegmentoCreditoDetalleController {
 	 * @return Lista detalles de credito de un segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/dto/segmento/{idSegmento}")
 	public ResponseEntity<List<SegmentoCreditoDetalleDTO>> getDTOBySegmento(@PathVariable("idSegmento") Integer idSegmento) throws Exception {
 		List<SegmentoCreditoDetalleDTO> segmentoCreditoDetalleList = segmentoCreditoDetalleService.getDTOBySegmento(idSegmento);
@@ -152,6 +178,7 @@ public class SegmentoCreditoDetalleController {
 	 * @return Lista detalles de credito de un segmento
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/fecha-emision/{fechaDesde}/{fechaHasta}")
 	public ResponseEntity<List<SegmentoCreditoDetalle>> getByFechaEmision(@PathVariable("fechaDesde") String fechaDesde, 
 			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
@@ -164,11 +191,30 @@ public class SegmentoCreditoDetalleController {
 	}
 	
 	/**
+	 * Busca un detalle de credito como factura de un segmento por fechas
+	 * @param fechaDesde
+	 * @param fechaHasta
+	 * @return Lista detalles de credito como factura de un segmento
+	 * @throws Exception
+	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
+	@GetMapping("/factura/fecha-emision/{fechaDesde}/{fechaHasta}")
+	public ResponseEntity<List<FacturaSegmentoDTO>> getFacturaSegmentoDTOByFecha(@PathVariable("fechaDesde") String fechaDesde, 
+			@PathVariable("fechaHasta") String fechaHasta) throws Exception {
+		List<FacturaSegmentoDTO> facturaDtoList = segmentoCreditoDetalleService.getFacturaSegmentoDTOByFecha(fechaDesde, fechaHasta);
+		if(facturaDtoList.isEmpty()) {
+			throw new ModelNotFoundException("No se encuentran facturas");
+		}
+		return new ResponseEntity<List<FacturaSegmentoDTO>>(facturaDtoList, HttpStatus.OK);
+	}
+	
+	/**
 	 * Guarda un nuevo detalle de credito de un segmento
 	 * No lo guarda cuando encuentra otro detalle de credito con el mismo servicio
 	 * @param segmentoCreditoDetalleNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody SegmentoCreditoDetalle segmentoCreditoDetalleNew) throws Exception {
 		SegmentoCreditoDetalle segmentoCreditoDetalle = segmentoCreditoDetalleService.create(segmentoCreditoDetalleNew);
@@ -185,6 +231,7 @@ public class SegmentoCreditoDetalleController {
 	 * @return Detalle de credito del segmento actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<SegmentoCreditoDetalle> update(@Valid @RequestBody SegmentoCreditoDetalle segmentoCreditoDetalleUp) throws Exception {
 		SegmentoCreditoDetalle segmentoCreditoDetalle = segmentoCreditoDetalleService.update(segmentoCreditoDetalleUp);
@@ -197,6 +244,7 @@ public class SegmentoCreditoDetalleController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		SegmentoCreditoDetalle segmentoCreditoDetalle = segmentoCreditoDetalleService.getById(id);

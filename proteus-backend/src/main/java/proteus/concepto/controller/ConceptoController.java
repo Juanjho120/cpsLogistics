@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ConceptoController {
 	 * @return Listado de conceptos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<Concepto>> getAll() throws Exception {
 		List<Concepto> conceptoList = conceptoService.getAll();
@@ -47,6 +49,7 @@ public class ConceptoController {
 	 * @return Concepto
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Concepto> getById(@PathVariable("id") Integer id) throws Exception {
 		Concepto concepto = conceptoService.getById(id);
@@ -62,6 +65,7 @@ public class ConceptoController {
 	 * @param conceptoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Concepto conceptoNew) throws Exception {
 		Concepto concepto = conceptoService.create(conceptoNew);
@@ -78,6 +82,7 @@ public class ConceptoController {
 	 * @return Concepto actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<Concepto> update(@Valid @RequestBody Concepto conceptoUp) throws Exception {
 		Concepto concepto = conceptoService.update(conceptoUp);
@@ -89,6 +94,7 @@ public class ConceptoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Concepto concepto = conceptoService.getById(id);

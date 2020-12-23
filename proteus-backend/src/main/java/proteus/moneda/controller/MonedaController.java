@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class MonedaController {
 	 * @return Listado de monedas
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<Moneda>> getAll() throws Exception {
 		List<Moneda> monedaList = monedaService.getAll();
@@ -47,6 +49,7 @@ public class MonedaController {
 	 * @return Moneda
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Moneda> getById(@PathVariable("id") Integer id) throws Exception {
 		Moneda moneda = monedaService.getById(id);
@@ -62,6 +65,7 @@ public class MonedaController {
 	 * @param monedaNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Moneda monedaNew) throws Exception {
 		Moneda moneda = monedaService.create(monedaNew);
@@ -78,6 +82,7 @@ public class MonedaController {
 	 * @return Moneda actualizada
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<Moneda> update(@Valid @RequestBody Moneda monedaUp) throws Exception {
 		Moneda moneda = monedaService.update(monedaUp);
@@ -89,6 +94,7 @@ public class MonedaController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Moneda moneda = monedaService.getById(id);

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,20 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import proteus.exception.ModelNotFoundException;
 import proteus.usuario.model.Usuario;
-import proteus.usuario.service.IUsuarioService;
+import proteus.usuario.service.impl.UsuarioServiceImpl;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
 	@Autowired
-	private IUsuarioService usuarioService;
+	private UsuarioServiceImpl usuarioService;
 	
 	/**
 	 * Obtiene todos los usuarios de la base de datos
 	 * @return Listado de usuarios
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllAdmin')")
 	@GetMapping
 	public ResponseEntity<List<Usuario>> getAll() throws Exception {
 		List<Usuario> usuarioList = usuarioService.getAll();
@@ -47,6 +49,7 @@ public class UsuarioController {
 	 * @return Usuario
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> getById(@PathVariable("id") Integer id) throws Exception {
 		Usuario usuario = usuarioService.getById(id);
@@ -62,6 +65,7 @@ public class UsuarioController {
 	 * @return Usuario
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/username/{username}")
 	public ResponseEntity<Usuario> getByUsername(@PathVariable("username") String username) throws Exception {
 		Usuario usuario = usuarioService.getByUsername(username);
@@ -77,6 +81,7 @@ public class UsuarioController {
 	 * @return Usuario
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/email/{email}")
 	public ResponseEntity<Usuario> getByEmail(@PathVariable("email") String email) throws Exception {
 		Usuario usuario = usuarioService.getByEmail(email);
@@ -92,6 +97,7 @@ public class UsuarioController {
 	 * @param usuarioNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Usuario usuarioNew) throws Exception {
 		Usuario usuario = usuarioService.create(usuarioNew);
@@ -109,6 +115,7 @@ public class UsuarioController {
 	 * @return Usuario actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<Usuario> update(@Valid @RequestBody Usuario usuarioUp) throws Exception {
 		Usuario usuario = usuarioService.getByEmail(usuarioUp.getEmail());
@@ -125,10 +132,29 @@ public class UsuarioController {
 	}
 	
 	/**
+	 * Actualiza el password del usuario
+	 * @param password
+	 * @param id
+	 * @throws Exception
+	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAll')")
+	@PutMapping("id/{id}/password/{password}")
+	public ResponseEntity<Void> updatePassword(@PathVariable("id") Integer id, @PathVariable("password") String password) throws Exception {
+		Usuario usuario = usuarioService.getById(id);
+		if(usuario!=null) {
+			usuario.setPassword(password);
+			usuarioService.update(usuario);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		}
+		throw new Exception("Usuario inválido");
+	}
+	
+	/**
 	 * Elimina un usuario de la base de datos por su id
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Usuario usuario = usuarioService.getById(id);
@@ -144,6 +170,7 @@ public class UsuarioController {
 	 * @param username
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/username/{username}")
 	public ResponseEntity<Void> deleteByUsername(@PathVariable("username") String username) throws Exception {
 		Usuario usuario = usuarioService.getByUsername(username);
@@ -159,6 +186,7 @@ public class UsuarioController {
 	 * @param email
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/email/{email}")
 	public ResponseEntity<Void> deleteByEmail(@PathVariable("email") String email) throws Exception {
 		Usuario usuario = usuarioService.getByEmail(email);

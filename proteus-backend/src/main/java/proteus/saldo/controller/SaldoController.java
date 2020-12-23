@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class SaldoController {
 	 * @return Listado de saldos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<Saldo>> getAll() throws Exception {
 		List<Saldo> saldoList = saldoService.getAll();
@@ -47,6 +49,7 @@ public class SaldoController {
 	 * @return Saldo
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Saldo> getById(@PathVariable("id") Integer id) throws Exception {
 		Saldo saldo = saldoService.getById(id);
@@ -62,6 +65,7 @@ public class SaldoController {
 	 * @return Saldo
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/nombre/{nombre}")
 	public ResponseEntity<Saldo> getByNombre(@PathVariable("nombre") String nombre) throws Exception {
 		Saldo saldo = saldoService.getByNombre(nombre);
@@ -77,6 +81,7 @@ public class SaldoController {
 	 * @param saldoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Saldo saldoNew) throws Exception {
 		Saldo saldo = saldoService.create(saldoNew);
@@ -93,6 +98,7 @@ public class SaldoController {
 	 * @return Saldo actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<Saldo> update(@Valid @RequestBody Saldo saldoUp) throws Exception {
 		Saldo saldo = saldoService.update(saldoUp);
@@ -104,6 +110,7 @@ public class SaldoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteProgramador')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Saldo saldo = saldoService.getById(id);

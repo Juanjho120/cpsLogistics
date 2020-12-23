@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class CategoriaController {
 	 * @return Listado de categorias
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<Categoria>> getAll() throws Exception {
 		List<Categoria> categoriaList = categoriaService.getAll();
@@ -47,6 +49,7 @@ public class CategoriaController {
 	 * @return Categoria
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Categoria> getById(@PathVariable("id") Integer id) throws Exception {
 		Categoria categoria = categoriaService.getById(id);
@@ -62,6 +65,7 @@ public class CategoriaController {
 	 * @param categoriaNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createAdmin')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Categoria categoriaNew) throws Exception {
 		Categoria categoria = categoriaService.create(categoriaNew);
@@ -78,6 +82,7 @@ public class CategoriaController {
 	 * @return Categoria actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateAdmin')")
 	@PutMapping
 	public ResponseEntity<Categoria> update(@Valid @RequestBody Categoria categoriaUp) throws Exception {
 		Categoria categoria = categoriaService.update(categoriaUp);
@@ -89,6 +94,7 @@ public class CategoriaController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Categoria categoria = categoriaService.getById(id);

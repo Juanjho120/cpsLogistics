@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class ComprobanteTipoController {
 	 * @return Listado de tipos de comprobante
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<ComprobanteTipo>> getAll() throws Exception {
 		List<ComprobanteTipo> comprobanteTipoList = comprobanteTipoService.getAll();
@@ -47,6 +49,7 @@ public class ComprobanteTipoController {
 	 * @return ComprobanteTipo
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<ComprobanteTipo> getById(@PathVariable("id") Integer id) throws Exception {
 		ComprobanteTipo comprobanteTipo = comprobanteTipoService.getById(id);
@@ -62,6 +65,7 @@ public class ComprobanteTipoController {
 	 * @param comprobanteTipoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody ComprobanteTipo comprobanteTipoNew) throws Exception {
 		ComprobanteTipo comprobanteTipo = comprobanteTipoService.create(comprobanteTipoNew);
@@ -78,6 +82,7 @@ public class ComprobanteTipoController {
 	 * @return Tipo de comprobante actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<ComprobanteTipo> update(@Valid @RequestBody ComprobanteTipo comprobanteTipoUp) throws Exception {
 		ComprobanteTipo comprobanteTipo = comprobanteTipoService.update(comprobanteTipoUp);
@@ -89,6 +94,7 @@ public class ComprobanteTipoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		ComprobanteTipo comprobanteTipo = comprobanteTipoService.getById(id);

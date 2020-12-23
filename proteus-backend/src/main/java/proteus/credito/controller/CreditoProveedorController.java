@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ public class CreditoProveedorController {
 	 * @return Listado de creditos a proveedores
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<CreditoProveedor>> getAll() throws Exception {
 		List<CreditoProveedor> creditoProveedorList = creditoProveedorService.getAll();
@@ -45,6 +47,7 @@ public class CreditoProveedorController {
 	 * @return Credito a proveedor
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<CreditoProveedor> getById(@PathVariable("id") Integer id) throws Exception {
 		CreditoProveedor creditoProveedor = creditoProveedorService.getById(id);
@@ -60,6 +63,7 @@ public class CreditoProveedorController {
 	 * @return Credito a proveedor
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParamContable')")
 	@GetMapping("/proveedor/{idProveedor}")
 	public ResponseEntity<CreditoProveedor> getByProveedor(@PathVariable("idProveedor") Integer idProveedor) throws Exception {
 		CreditoProveedor creditoProveedor = creditoProveedorService.getByProveedor(idProveedor);
@@ -75,6 +79,7 @@ public class CreditoProveedorController {
 	 * @param creditoProveedorNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody CreditoProveedor creditoProveedorNew) throws Exception {
 		CreditoProveedor creditoProveedor = creditoProveedorService.create(creditoProveedorNew);

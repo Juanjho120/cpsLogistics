@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class PagoTipoController {
 	 * @return Listado de tipos de pagos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAllContable')")
 	@GetMapping
 	public ResponseEntity<List<PagoTipo>> getAll() throws Exception {
 		List<PagoTipo> pagoTipoList = pagoTipoService.getAll();
@@ -47,6 +49,7 @@ public class PagoTipoController {
 	 * @return PagoTipo
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByIdContable')")
 	@GetMapping("/{id}")
 	public ResponseEntity<PagoTipo> getById(@PathVariable("id") Integer id) throws Exception {
 		PagoTipo pagoTipo = pagoTipoService.getById(id);
@@ -62,6 +65,7 @@ public class PagoTipoController {
 	 * @param pagoTipoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createContable')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody PagoTipo pagoTipoNew) throws Exception {
 		PagoTipo pagoTipo = pagoTipoService.create(pagoTipoNew);
@@ -78,6 +82,7 @@ public class PagoTipoController {
 	 * @return Tipo de pago actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateContable')")
 	@PutMapping
 	public ResponseEntity<PagoTipo> update(@Valid @RequestBody PagoTipo pagoTipoUp) throws Exception {
 		PagoTipo pagoTipo = pagoTipoService.update(pagoTipoUp);
@@ -89,6 +94,7 @@ public class PagoTipoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteContable')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		PagoTipo pagoTipo = pagoTipoService.getById(id);

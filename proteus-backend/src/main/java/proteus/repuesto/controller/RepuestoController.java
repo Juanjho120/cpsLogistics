@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class RepuestoController {
 	 * @return Listado de repuestos
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getAll')")
 	@GetMapping
 	public ResponseEntity<List<Repuesto>> getAll() throws Exception {
 		List<Repuesto> repuestoList = repuestoService.getAll();
@@ -47,6 +49,7 @@ public class RepuestoController {
 	 * @return Repuesto
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getById')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Repuesto> getById(@PathVariable("id") Integer id) throws Exception {
 		Repuesto repuesto = repuestoService.getById(id);
@@ -62,6 +65,7 @@ public class RepuestoController {
 	 * @return Repuesto
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/codigo/{codigo}")
 	public ResponseEntity<List<Repuesto>> getByCodigo(@PathVariable("codigo") String codigo) throws Exception {
 		List<Repuesto> repuestoList = repuestoService.getByCodigo(codigo);
@@ -77,6 +81,7 @@ public class RepuestoController {
 	 * @return Repuesto
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('getByParam')")
 	@GetMapping("/codigo-barra/{codigoBarra}")
 	public ResponseEntity<List<Repuesto>> getByCodigoBarra(@PathVariable("codigoBarra") String codigoBarra) throws Exception {
 		List<Repuesto> repuestoList = repuestoService.getByCodigoBarra(codigoBarra);
@@ -92,6 +97,7 @@ public class RepuestoController {
 	 * @param repuestoNew
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('createBodega')")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody Repuesto repuestoNew) throws Exception {
 		Repuesto repuesto = repuestoService.create(repuestoNew);
@@ -109,6 +115,7 @@ public class RepuestoController {
 	 * @return Repuesto actualizado
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('updateBodega')")
 	@PutMapping
 	public ResponseEntity<Repuesto> update(@Valid @RequestBody Repuesto repuestoUp) throws Exception {
 		Repuesto repuesto = repuestoService.update(repuestoUp);
@@ -123,6 +130,7 @@ public class RepuestoController {
 	 * @param id
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		Repuesto repuesto = repuestoService.getById(id);
@@ -138,6 +146,7 @@ public class RepuestoController {
 	 * @param codigo
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("codigo/{codigo}")
 	public ResponseEntity<Void> deleteByCodigo(@PathVariable("codigo") String codigo) throws Exception {
 		List<Repuesto> repuestoList = repuestoService.getByCodigo(codigo);
@@ -153,6 +162,7 @@ public class RepuestoController {
 	 * @param codigoBarra
 	 * @throws Exception
 	 */
+	@PreAuthorize("@authServiceImpl.tieneAcceso('deleteAdmin')")
 	@DeleteMapping("codigo-barra/{codigoBarra}")
 	public ResponseEntity<Void> deleteByCodigoBarra(@PathVariable("codigoBarra") String codigoBarra) throws Exception {
 		List<Repuesto> repuestoList = repuestoService.getByCodigoBarra(codigoBarra);
