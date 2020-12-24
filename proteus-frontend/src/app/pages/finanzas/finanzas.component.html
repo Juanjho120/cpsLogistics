@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mat-elevation-z8">
     <h1 style="margin: 15px;">Finanzas</h1>
     <mat-tab-group dynamicHeight>
         <mat-tab label="Créditos y pagos">
@@ -26,6 +26,13 @@
             <div class="cheques-boletas-container" dynamicHeight>
                 <div class="cheques-boletas-card-container" dynamicHeight>
                     <app-cheque-boleta></app-cheque-boleta>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Facturas">
+            <div class="facturas-container" dynamicHeight>
+                <div class="facturas-card-container" dynamicHeight>
+                    <app-facturas></app-facturas>
                 </div>
             </div>
         </mat-tab>

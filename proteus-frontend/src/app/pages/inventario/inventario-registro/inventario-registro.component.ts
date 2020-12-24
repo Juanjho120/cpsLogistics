@@ -1,3 +1,5 @@
+import { UsuarioService } from './../../../_service/usuario.service';
+import { DataService } from './../../../_service/data.service';
 import { Usuario } from './../../../_model/usuario';
 import { Concepto } from './../../../_model/concepto';
 import { InventarioService } from './../../../_service/inventario.service';
@@ -33,9 +35,17 @@ export class InventarioRegistroComponent implements OnInit {
 
   inventarioCompleto : boolean = false;
 
+  idInventario : number = 0;
+
+  conceptoControl : boolean = false;
+
+  usuarioLogueado : Usuario;
+
   constructor(
     private repuestoService : RepuestoService,
     private inventarioService : InventarioService,
+    private dataService : DataService,
+    private usuarioService : UsuarioService,
     private snackBar : MatSnackBar
   ) { }
 
@@ -53,9 +63,29 @@ export class InventarioRegistroComponent implements OnInit {
       this.repuestos = data;
     });
 
-    this.repuestosFiltrados$ = this.myControlRepuesto.valueChanges.pipe(map(val => this.filtrarRepuestos(val)))
+    this.repuestosFiltrados$ = this.myControlRepuesto.valueChanges.pipe(map(val => this.filtrarRepuestos(val)));
+
+    this.dataService.getInventarioCambio().subscribe(data => {
+      this.cargarCamposInventario(data);
+    });
+
+    this.usuarioService.getUsuarioByToken().subscribe(data => {
+      this.usuarioLogueado = data;
+    });
+
   }
 
+  cargarCamposInventario(inventario : Inventario) {
+    this.idInventario = inventario.idInventario;
+    this.formInventario.patchValue({
+      razon : inventario.razon
+    });
+    this.idConcepto = inventario.concepto.idConcepto;
+    this.inventarioDetalle = inventario.inventarioDetalle;
+    this.inventarioCompleto = true;
+    this.conceptoControl = true;
+  }
+  
   filtrarRepuestos(val : any) {
     if(val != null && val.idRepuesto > 0) {
       return this.repuestos.filter(el => 
@@ -128,24 +158,32 @@ export class InventarioRegistroComponent implements OnInit {
     this.inventarioDetalle = [];
     this.inventarioCompleto = false;
     this.idConcepto = 0;
+    this.conceptoControl = false;
   }
 
   guardarInventario() {
     if(this.idConcepto > 0) {
       let inventario = new Inventario();
-      inventario.usuario = new Usuario();
-      inventario.usuario.idUsuario = 1; //ESTO DEBE SER DINAMICO SEGUN EL USUARIO REGISTRADO-------
+      inventario.usuario = this.usuarioLogueado;
       inventario.concepto = new Concepto();
       inventario.razon = this.formInventario.value['razon'];
       inventario.concepto.idConcepto = this.idConcepto;
       inventario.inventarioDetalle = this.inventarioDetalle;
 
-      this.inventarioService.create(inventario).subscribe( () => {
-        let mensaje = 'Inventario Creado'
-        this.snackBar.open(mensaje, "AVISO", { duration : 2000});
-      })
-
-      this.limpiarControlGeneral();
+      if(this.idInventario>0) {
+        inventario.idInventario = this.idInventario;
+        this.inventarioService.update(inventario).subscribe( () => {
+          let mensaje = 'Inventario Actualizado'
+          this.snackBar.open(mensaje, "AVISO", { duration : 2000});
+          this.limpiarControlGeneral();
+        });  
+      } else {
+        this.inventarioService.create(inventario).subscribe( () => {
+          let mensaje = 'Inventario Creado'
+          this.snackBar.open(mensaje, "AVISO", { duration : 2000});
+          this.limpiarControlGeneral();
+        });
+      }
     } else {
       let mensaje = 'Identifique si es SALIDA o ENTRADA'
       this.snackBar.open(mensaje, "AVISO", { duration : 2000});

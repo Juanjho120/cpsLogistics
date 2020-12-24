@@ -1,3 +1,4 @@
+import { FacturaProveedorDTO } from './../_model/dto/facturaProveedorDTO';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { GenericService } from './generic.service';
@@ -27,6 +28,14 @@ export class CreditoProveedorDetalleService extends GenericService<CreditoProvee
 
   checkVencimiento() {
     return this.http.put(`${this.url}/check-vencimiento`, null);
+  }
+
+  getFacturaByProveedor(idProveedor : number) {
+    return this.http.get<FacturaProveedorDTO[]>(`${this.url}/factura/proveedor/${idProveedor}`);
+  }
+
+  getFacturaByFecha(fechaDesde : string, fechaHasta : string) {
+    return this.http.get<FacturaProveedorDTO[]>(`${this.url}/factura/fecha-factura/${fechaDesde}/${fechaHasta}`);
   }
   
 }

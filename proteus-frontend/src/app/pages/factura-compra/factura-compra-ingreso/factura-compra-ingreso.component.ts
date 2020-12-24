@@ -1,3 +1,4 @@
+import { DataService } from './../../../_service/data.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MarcaRepuestoService } from './../../../_service/marca-repuesto.service';
 import { MarcaRepuesto } from './../../../_model/marcaRepuesto';
@@ -48,11 +49,14 @@ export class FacturaCompraIngresoComponent implements OnInit {
 
   totalFactura : number = 0;
 
+  idFacturaCompra : number = 0;
+
   constructor(
     private facturaCompraService : FacturaCompraService,
     private repuestoService : RepuestoService,
     private marcaRepuestoService : MarcaRepuestoService,
     private proveedorService : ProveedorService,
+    private dataService : DataService,
     private snackBar : MatSnackBar
   ) { }
 
@@ -70,6 +74,26 @@ export class FacturaCompraIngresoComponent implements OnInit {
     this.marcas$ = this.marcaRepuestoService.getAll();
 
     this.repuestosFiltrados$ = this.myControlRepuesto.valueChanges.pipe(map(val => this.filtrarRepuestos(val)));
+
+    this.dataService.getFacturaCompraCambio().subscribe(data => {
+      if(data!=null) {
+        this.cargarCamposFacturaCompra(data);
+      }
+    });
+  }
+
+  cargarCamposFacturaCompra(facturaCompra : FacturaCompra) {
+    this.idFacturaCompra = facturaCompra.idFacturaCompra;
+    this.fechaFormato = facturaCompra.fecha;
+    this.formFacturaCompra.patchValue({
+      proveedor : facturaCompra.proveedor.idProveedor,
+      codigo : facturaCompra.codigo,
+      fecha : this.fechaFormato
+    });
+    this.idProveedor = facturaCompra.proveedor.idProveedor;
+    this.totalFactura = facturaCompra.total;
+    this.facturaCompraDetalle = facturaCompra.facturaCompraDetalle;
+    this.dataSourceFacturaCompraDetalle = new MatTableDataSource(this.facturaCompraDetalle);
   }
 
   initFormFacturaCompra() {
@@ -172,6 +196,8 @@ export class FacturaCompraIngresoComponent implements OnInit {
   limpiarControlGeneral() {
     this.limpiarControlDetalle();
     this.totalFactura = 0;
+    this.idFacturaCompra = 0;
+    this.fechaFormato = "";
     this.facturaCompraDetalle = [];
     this.dataSourceFacturaCompraDetalle = new MatTableDataSource(this.facturaCompraDetalle);
     this.idProveedor = 0;
@@ -187,12 +213,21 @@ export class FacturaCompraIngresoComponent implements OnInit {
     facturaCompra.proveedor.idProveedor = this.idProveedor;
     facturaCompra.facturaCompraDetalle = this.facturaCompraDetalle;
 
-    this.facturaCompraService.create(facturaCompra).subscribe(() => {
-      let mensaje = 'Factura de compra creada'
-      this.snackBar.open(mensaje, "AVISO", { duration : 2000});
-    });
-
-    this.limpiarControlGeneral();
+    if(this.idFacturaCompra>0) {
+      facturaCompra.idFacturaCompra = this.idFacturaCompra;
+      this.facturaCompraService.update(facturaCompra).subscribe(() => {
+        let mensaje = 'Factura de compra actualizada'
+        this.snackBar.open(mensaje, "AVISO", { duration : 2000});
+        this.limpiarControlGeneral();
+      });
+    } else {
+      this.facturaCompraService.create(facturaCompra).subscribe(() => {
+        let mensaje = 'Factura de compra creada'
+        this.snackBar.open(mensaje, "AVISO", { duration : 2000});
+        this.limpiarControlGeneral();
+      });
+    }
+    
   }
 
 }

@@ -81,6 +81,7 @@
                     <mat-grid-tile [colspan]="1" [rowspan]="1" class="mat-grid-tile-content">{{id.cantidad}}</mat-grid-tile>
                     <mat-grid-tile [colspan]="9" [rowspan]="1" class="mat-grid-tile-content">{{id.repuesto.descripcion}}</mat-grid-tile>
                 </mat-grid-list>
+                <button mat-flat-button color="primary" type="button" (click)="enviarInventarioEdicion(i)">Editar</button>
             </mat-expansion-panel>
         </section>
     </mat-card-content>

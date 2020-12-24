@@ -1,3 +1,4 @@
+import { ProductoEntradaSalidaDTO } from './../../../_model/dto/productoEntradaSalidaDTO';
 import { map } from 'rxjs/operators';
 import { RepuestoService } from './../../../_service/repuesto.service';
 import { Observable } from 'rxjs';
@@ -42,10 +43,12 @@ export class InventarioEntradaSalidaComponent implements OnInit {
   fechaFinProductoFormato : string;
 
   formatoFechaHora : string = 'YYYY-MM-DD 00:00:00';
+  formatoFecha : string = 'YYYY-MM-DD';
 
   displayedColumns = ['codigo', 'descripcion', 'entrada', 'salida', 'existencia'];
   displayedColumnsProducto = ['fecha', 'inventarios', 'entrada', 'salida', 'razon'];
   dataSource : MatTableDataSource<InventarioEntradaSalidaDTO>;
+  dataSourceProducto : MatTableDataSource<ProductoEntradaSalidaDTO>;
 
   inventarios : Inventario[] = [];
 
@@ -99,7 +102,17 @@ export class InventarioEntradaSalidaComponent implements OnInit {
     this.fechaFinProductoFormato = moment(this.fechaFinProductoSeleccionada).format(this.formatoFechaHora);
   }
 
-  buscarProducto() {}
+  buscarProducto() {
+    this.inventarioService.getProductoEntradaSalidaDTO(this.repuesto.idRepuesto, this.fechaInicioProductoFormato, this.fechaFinProductoFormato).subscribe(data => {
+      let productoDtos : ProductoEntradaSalidaDTO[] =[];
+      for(let productoDto of data) {
+        productoDto.fecha = moment(productoDto.fecha).format(this.formatoFecha);
+        productoDtos.push(productoDto);
+      }
+      this.dataSourceProducto = new MatTableDataSource(productoDtos);
+      this.botonReporteProductoDisabled = false;
+    });
+  }
 
   buscar() {
     this.inventarioService.getInventarioEntradaSalidaByFechaRango(this.fechaInicioFormato, this.fechaFinFormato).subscribe(data => {

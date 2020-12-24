@@ -11,7 +11,9 @@
 
 .mat-header-cell {
     font-size: 15px;
-    justify-content: center;
+    justify-content: center!important;
+    background-color: blue;
+    color: white;
 }
 
 .register-container {

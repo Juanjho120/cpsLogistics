@@ -5,6 +5,9 @@
 export const environment = {
   production: false,
   HOST : 'http://localhost:8090',
+  TOKEN_AUTH_USERNAME : 'proteusapp',
+  TOKEN_AUTH_PASSWORD : 'jhsmao5182proteus',
+  TOKEN_NAME : 'access_token',
   REINTENTOS : 2
 };
 

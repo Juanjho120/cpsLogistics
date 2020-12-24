@@ -1,3 +1,4 @@
+import { DataService } from './../../../_service/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FacturaCompraDialogoEliminarComponent } from './factura-compra-dialogo-eliminar/factura-compra-dialogo-eliminar.component';
 import { Proveedor } from './../../../_model/proveedor';
@@ -56,6 +57,7 @@ export class FacturaCompraBusquedaComponent implements OnInit {
     private proveedorService : ProveedorService,
     private facturaCompraService : FacturaCompraService,
     private repuestoService : RepuestoService,
+    private dataService : DataService,
     private snackBar : MatSnackBar,
     private dialog : MatDialog,
   ) { }
@@ -219,4 +221,7 @@ export class FacturaCompraBusquedaComponent implements OnInit {
     });
   }
 
+  enviarFacturaEdicion(facturaCompra : FacturaCompra) {
+    this.dataService.setFacturaCompraCambio(facturaCompra);
+  }
 }

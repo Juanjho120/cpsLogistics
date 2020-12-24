@@ -1,3 +1,4 @@
+import { ProductoEntradaSalidaDTO } from './../_model/dto/productoEntradaSalidaDTO';
 import { InventarioEntradaSalidaDTO } from './../_model/dto/inventarioEntradaSalidaDTO';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -60,6 +61,10 @@ export class InventarioService extends GenericService<Inventario>{
 
   getByRepuestoAndFechaRango(idRepuesto : number, fechaDesde : string, fechaHasta : string) {
     return this.http.get<Inventario[]>(`${this.url}/repuesto/${idRepuesto}/fecha-rango/${fechaDesde}/${fechaHasta}`);
+  }
+
+  getProductoEntradaSalidaDTO(idRepuesto : number, fechaDesde : string, fechaHasta : string) {
+    return this.http.get<ProductoEntradaSalidaDTO[]>(`${this.url}/entradas-salidas-producto/repuesto/${idRepuesto}/fecha-rango/${fechaDesde}/${fechaHasta}`);
   }
 
   getByRepuestoAndFechaAndUsuario(idRepuesto : number, fechaDesde : string, fechaHasta : string, idUsuario : number) {

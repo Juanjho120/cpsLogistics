@@ -1,3 +1,4 @@
+import { FacturaSegmentoDTO } from './../_model/dto/facturaSegmentoDTO';
 import { SegmentoCreditoDetalleDTO } from './../_model/dto/segmentoCreditoDetalleDTO';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -21,4 +22,13 @@ export class SegmentoCreditoDetalleService extends GenericService<SegmentoCredit
   getBySegmentoSinPagar(idSegmento : number) {
     return this.http.get<SegmentoCreditoDetalle[]>(`${this.url}/saldo-pendiente/segmento/${idSegmento}`);
   }
+
+  getFacturaBySegmento(idSegmento : number) {
+    return this.http.get<FacturaSegmentoDTO[]>(`${this.url}/factura/segmento/${idSegmento}`);
+  }
+
+  getFacturaByFechaEmision(fechaDesde : string, fechaHasta : string) {
+    return this.http.get<FacturaSegmentoDTO[]>(`${this.url}/factura/fecha-emision/${fechaDesde}/${fechaHasta}`);
+  }
+  
 }

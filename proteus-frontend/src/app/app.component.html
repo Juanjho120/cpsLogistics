@@ -1,5 +1,5 @@
 <div class="example-container">
-  <mat-toolbar color="primary" class="example-toolbar" >
+  <mat-toolbar color="primary" class="example-toolbar" *ngIf="loginService.estaLogueado()">
 
       <h1 class="example-app-name" style="font-size: 40px;">PROTEUS</h1>
 
@@ -14,7 +14,7 @@
               <mat-icon>account_box</mat-icon>
               <span>Mi Perfil</span>
           </button>
-          <button mat-menu-item (click)="sidenav.opened = false"  >
+          <button mat-menu-item (click)="sidenav.opened = opened"  (click)="loginService.cerrarSesion()">
               <mat-icon>exit_to_app</mat-icon>
               <span>Cerrar Sesión</span>
           </button>
@@ -25,7 +25,15 @@
       <mat-sidenav #sidenav style="width: 250px" mode="side" [(opened)]="opened">
           <img src="assets/corporacionDiaz.jpg" width="170" style="margin-left: 30px; margin-top: 10px">
     
-          <button mat-menu-item routerLink="/inicio" style="cursor: pointer">
+          <div *ngFor="let v of ventanas">
+            <button mat-menu-item routerLink="{{v.url}}" style="cursor: pointer">
+                <mat-icon>{{v.icono}}</mat-icon>
+                <span>{{v.nombre}}</span>
+            </button>
+            <mat-divider></mat-divider>
+          </div>
+
+          <!--<button mat-menu-item routerLink="/inicio" style="cursor: pointer">
               <mat-icon>home</mat-icon>
               <span>Inicio</span>
           </button>
@@ -103,10 +111,10 @@
           <button mat-menu-item routerLink="/reporte" style="cursor: pointer">
             <mat-icon>search</mat-icon>
             <span>Reportes</span>
-          </button>
+          </button>-->
       </mat-sidenav>
       
-      <mat-sidenav-content>
+      <mat-sidenav-content class="back-container">
           <router-outlet></router-outlet>
       </mat-sidenav-content>
 

@@ -88,5 +88,36 @@
             </form>
             
         </section>
+        <div class="card-table-producto-container">
+            <mat-table [dataSource]="dataSourceProducto" matSort>
+                <ng-container matColumnDef='fecha'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.fecha}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='inventarios'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Inventarios</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.inventarios}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='razon'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Razon</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.razon}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='entrada'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Entradas</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.entrada}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef='salida'>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Salidas</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.salida}}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsProducto"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsProducto;"></mat-row>
+            </mat-table>
+        </div>
     </mat-card-content>
 </mat-card>

@@ -53,21 +53,14 @@
 
     <ng-container matColumnDef='total'>
         <mat-header-cell *matHeaderCellDef mat-sort-header>Total</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.total}}</mat-cell>
+        <mat-cell *matCellDef="let row">Q. {{row.total.toFixed(2)}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef='usuario'>
         <mat-header-cell *matHeaderCellDef mat-sort-header>Hecho por</mat-header-cell>
         <mat-cell *matCellDef="let row">{{row.usuario.nombre}} {{row.usuario.apellido}}</mat-cell>
     </ng-container>
-
-    <ng-container matColumnDef='select'>
-        <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-            <mat-checkbox (change)="cerrar($event.checked, row)"></mat-checkbox>
-        </mat-cell>
-    </ng-container>
     
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky : true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="cerrar(row)"></mat-row>
 </mat-table>

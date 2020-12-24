@@ -13,7 +13,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>proteus-backend</name>
 	<description>Backend proyecto Corporacion Diaz</description>
-
+	<!-- <packaging>war</packaging> -->
+	
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -109,6 +110,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+		
+		<!-- INI para despliegue -->
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>  -->
+		<!-- FIN para despliegue -->
 	</dependencies>
 
 	<build>

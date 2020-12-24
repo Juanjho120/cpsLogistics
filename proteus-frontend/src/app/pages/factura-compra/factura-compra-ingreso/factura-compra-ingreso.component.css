@@ -35,10 +35,12 @@
 
 .mat-column-costoTotal {
     flex : 0 0 10%;
+    justify-content: flex-end;
 }
 
 .mat-column-costoUnitario {
     flex : 0 0 10%;
+    justify-content: flex-end
 }
 
 .mat-column-cantidad {
@@ -55,6 +57,14 @@
 
 .mat-header-cell {
     font-size: 13px;
+    background-color: blue;
+    justify-content: flex-start!important;
+    color: white;
+}
+
+.mat-cell {
+    font-size: 10px;
+    height: 20px;
 }
 
 .factura-header {

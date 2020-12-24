@@ -71,3 +71,19 @@
     font-size: 14px;
     display: inline;
 }
+
+.mat-column-fecha {
+    flex : 0 0 10%;
+}
+
+.mat-column-entrada {
+    flex : 0 0 7%;
+}
+
+.mat-column-salida {
+    flex : 0 0 7%;
+}
+
+.mat-column-inventarios {
+    flex : 0 0 30%;
+}

@@ -1,3 +1,4 @@
+import { DataService } from './../../../_service/data.service';
 import { Inventario } from './../../../_model/inventario';
 import { Usuario } from './../../../_model/usuario';
 import { UsuarioService } from './../../../_service/usuario.service';
@@ -53,6 +54,7 @@ export class InventarioBusquedaComponent implements OnInit {
     private repuestoService : RepuestoService,
     private usuarioService : UsuarioService,
     private inventarioService : InventarioService,
+    private dataService : DataService,
     private snackBar : MatSnackBar
   ) { }
 
@@ -381,4 +383,7 @@ export class InventarioBusquedaComponent implements OnInit {
     }
   } 
 
+  enviarInventarioEdicion(inventario : Inventario) {
+    this.dataService.setInventarioCambio(inventario);
+  }
 }

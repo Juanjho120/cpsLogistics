@@ -6,5 +6,5 @@ export class Usuario {
     username : string;
     email : string;
     telefono : string;
-    rol : Rol;
+    roles : Rol[];
 }

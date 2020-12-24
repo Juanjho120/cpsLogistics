@@ -11,5 +11,9 @@ export class VentanaService extends GenericService<Ventana> {
 
   constructor(protected http: HttpClient) {
     super(http, `${environment.HOST}/ventanas`);
-   }
+  }
+
+  getByUsername(username : string) {
+    return this.http.get<Ventana[]>(`${this.url}/username/${username}`);
+  }
 }

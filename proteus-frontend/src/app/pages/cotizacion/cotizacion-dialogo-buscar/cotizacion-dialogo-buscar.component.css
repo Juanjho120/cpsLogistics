@@ -26,6 +26,8 @@
 
 .mat-header-cell {
     font-size: 14px;
+    background-color: blue;
+    color: white;
 }
 
 .mat-form-field-segmento {
@@ -46,4 +48,9 @@
 .mat-form-field-usuario {
     margin-right: 25px;
     width: 200px;
+}
+
+.mat-row:hover {
+    background-color: aqua;
+    cursor: pointer;
 }

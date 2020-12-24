@@ -15,7 +15,7 @@
                     </mat-select>
                 </mat-form-field>
                 <div class=".total-factura-label">
-                    <p class="total-factura-label">Q. {{totalFactura}}</p>
+                    <p class="total-factura-label">Q. {{totalFactura.toFixed(2)}}</p>
                 </div>
             </div>
 
@@ -30,7 +30,7 @@
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
-            <button mat-flat-button color="primary" type="button" [disabled]="evaluarAgregarFactura()" (click)="agregarFacturaCompra()">Crear Factura</button>
+            <button mat-flat-button color="primary" type="button" [disabled]="evaluarAgregarFactura()" (click)="agregarFacturaCompra()">Guardar</button>
         </form>
         <mat-divider></mat-divider>
         <br>
@@ -87,12 +87,12 @@
 
             <ng-container matColumnDef='costoUnitario'>
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Costo</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.costoUnitario}}</mat-cell>
+                <mat-cell *matCellDef="let row">Q{{row.costoUnitario.toFixed(2)}}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef='costoTotal'>
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Subtotal</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.costoTotal}}</mat-cell>
+                <mat-cell *matCellDef="let row">Q{{row.costoTotal.toFixed(2)}}</mat-cell>
             </ng-container>
             
             <ng-container matColumnDef='accion'>

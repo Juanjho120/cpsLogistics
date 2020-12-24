@@ -31,17 +31,19 @@
                             </mat-select>
                         </mat-form-field>
         
-                        <mat-form-field appearance="fill" class="mat-form-field-placa">
-                            <mat-label>Placa</mat-label>
-                            <mat-select [(value)]="idPlacaInService" formControlName="placa">
-                                <mat-option *ngFor="let p of (placasInService$ | async)" [value]="p.idPlaca">
-                                    {{p.numero}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-        
-                        <button mat-flat-button color="primary" type="submit" [disabled]="frmCajaChica.invalid">Guardar</button>
-                        <button mat-flat-button color="primary" type="button" (click)="limpiarFormCajaChica()">Nuevo</button>
+                        <div>
+                            <mat-form-field appearance="fill" class="mat-form-field-placa">
+                                <mat-label>Placa</mat-label>
+                                <mat-select [(value)]="idPlacaInService" formControlName="placa">
+                                    <mat-option *ngFor="let p of (placasInService$ | async)" [value]="p.idPlaca">
+                                        {{p.numero}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+            
+                            <button mat-flat-button color="primary" type="submit" [disabled]="frmCajaChica.invalid">Guardar</button>
+                            <button mat-flat-button color="primary" type="button" (click)="limpiarFormCajaChica()">Nuevo</button>
+                        </div>
                     </div>
                     <div>
                         <p class="saldo-label">Q. {{saldoCajaChica.monto.toFixed(2)}}</p>

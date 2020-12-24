@@ -29,7 +29,7 @@ export class CotizacionDialogoBuscarComponent implements OnInit {
   idBusqueda : number = 0;
   dataSource : MatTableDataSource<Cotizacion>;
   cotizacionFormato : Cotizacion[] = [];
-  displayedColumns = ['segmento', 'fechaHora', 'total', 'usuario', 'select'];
+  displayedColumns = ['segmento', 'fechaHora', 'total', 'usuario'];
 
   formatoFechaHora : string = 'YYYY-MM-DD 00:00:00';
   formatoFechaHoraB : string = 'YYYY-MM-DD HH:mm:ss';
@@ -168,9 +168,7 @@ export class CotizacionDialogoBuscarComponent implements OnInit {
     }
   }
 
-  cerrar(checked : boolean, cotizacion : Cotizacion) {
-    if(checked) {
-      this.dialogRef.close(cotizacion);
-    }
+  cerrar(cotizacion : Cotizacion) {
+    this.dialogRef.close(cotizacion);
   }
 }

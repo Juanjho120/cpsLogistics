@@ -77,7 +77,7 @@ export class CotizacionComponent implements OnInit {
       this.snackBar.open(data, 'AVISO', {duration : 2000});
     });
 
-    this.usuarioService.getById(1).subscribe(data => {
+    this.usuarioService.getUsuarioByToken().subscribe(data => {
       this.usuario = data;
     });
 

@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { ServerErrorsInterceptor } from './shared/server-errors.interceptor';
 import { MaterialModule } from './material/material.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -83,6 +84,18 @@ import { BoletaDialogoEliminarComponent } from './pages/finanzas/cheque-boleta/b
 import { SegmentoCreditoDetalleDialogoComponent } from './pages/segmento/segmento-credito-pago/segmento-credito-detalle-dialogo/segmento-credito-detalle-dialogo.component';
 import { SegmentoPagoDetalleDialogoComponent } from './pages/segmento/segmento-credito-pago/segmento-pago-detalle-dialogo/segmento-pago-detalle-dialogo.component';
 import { ChecklistServicioDialogoComponent } from './pages/servicio/servicio-resumen/checklist-servicio-dialogo/checklist-servicio-dialogo.component';
+import { LoginComponent } from './pages/login/login.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { Not403Component } from './pages/not403/not403.component';
+import { Not404Component } from './pages/not404/not404.component';
+import { RecuperarComponent } from './pages/login/recuperar/recuperar.component';
+import { TokenComponent } from './pages/login/recuperar/token/token.component';
+import { FacturasComponent } from './pages/finanzas/facturas/facturas.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
+export function tokenGetter() {
+  return sessionStorage.getItem(environment.TOKEN_NAME);
+}
 
 @NgModule({
   declarations: [
@@ -160,7 +173,13 @@ import { ChecklistServicioDialogoComponent } from './pages/servicio/servicio-res
     BoletaDialogoEliminarComponent,
     SegmentoCreditoDetalleDialogoComponent,
     SegmentoPagoDetalleDialogoComponent,
-    ChecklistServicioDialogoComponent
+    ChecklistServicioDialogoComponent,
+    LoginComponent,
+    Not403Component,
+    Not404Component,
+    RecuperarComponent,
+    TokenComponent,
+    FacturasComponent
   ],
   imports: [
     BrowserModule,
@@ -170,14 +189,22 @@ import { ChecklistServicioDialogoComponent } from './pages/servicio/servicio-res
     FlexLayoutModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    JwtModule.forRoot({
+      config : {
+        tokenGetter: tokenGetter,
+        allowedDomains: [environment.HOST.substring(7)],
+        disallowedRoutes: [`http://${environment.HOST.substring(7)}/login/enviarCorreo`],
+      },
+    }),
   ],
   providers: [
     {
       provide : HTTP_INTERCEPTORS,
       useClass : ServerErrorsInterceptor,
       multi : true
-    }
+    },
+    { provide : LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })

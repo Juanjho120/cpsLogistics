@@ -1,3 +1,9 @@
+import { TokenComponent } from './pages/login/recuperar/token/token.component';
+import { RecuperarComponent } from './pages/login/recuperar/recuperar.component';
+import { Not404Component } from './pages/not404/not404.component';
+import { Not403Component } from './pages/not403/not403.component';
+import { GuardService } from './_service/guard.service';
+import { LoginComponent } from './pages/login/login.component';
 import { FinanzasComponent } from './pages/finanzas/finanzas.component';
 import { ChecklistComponent } from './pages/checklist/checklist.component';
 import { ServicioComponent } from './pages/servicio/servicio.component';
@@ -18,23 +24,33 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'inicio', component: InicioComponent},
-  { path: 'soporte', component: SoporteComponent},
-  { path: 'marcas-autos', component: MarcaAutoComponent},
-  { path: 'marcas-repuestos', component: MarcaRepuestoComponent},
-  { path: 'servicio-tipos', component: ServicioTipoComponent},
+  { path: 'inicio', component: InicioComponent, canActivate : [GuardService]},
+  { path: 'soporte', component: SoporteComponent, canActivate : [GuardService]},
+  { path: 'marcas-autos', component: MarcaAutoComponent, canActivate : [GuardService]},
+  { path: 'marcas-repuestos', component: MarcaRepuestoComponent, canActivate : [GuardService]},
+  { path: 'servicio-tipos', component: ServicioTipoComponent, canActivate : [GuardService]},
   { path: 'cardex', component: CardexComponent, children : [
     { path : 'nuevo', component : CardexNuevoComponent }
-  ]},
-  { path: 'inventario', component: InventarioComponent},
-  { path: 'segmento', component: SegmentoComponent},
-  { path: 'proveedor', component: ProveedorComponent},
-  { path: 'placa', component: PlacaComponent},
-  { path: 'factura-compra', component: FacturaCompraComponent},
-  { path: 'cotizacion', component: CotizacionComponent},
-  { path: 'servicio', component: ServicioComponent},
-  { path: 'checklist', component: ChecklistComponent},
-  { path: 'finanzas', component: FinanzasComponent}
+  ], canActivate : [GuardService]},
+  { path: 'inventario', component: InventarioComponent, canActivate : [GuardService]},
+  { path: 'segmento', component: SegmentoComponent, canActivate : [GuardService]},
+  { path: 'proveedor', component: ProveedorComponent, canActivate : [GuardService]},
+  { path: 'placa', component: PlacaComponent, canActivate : [GuardService]},
+  { path: 'factura-compra', component: FacturaCompraComponent, canActivate : [GuardService]},
+  { path: 'cotizacion', component: CotizacionComponent, canActivate : [GuardService]},
+  { path: 'servicio', component: ServicioComponent, canActivate : [GuardService]},
+  { path: 'checklist', component: ChecklistComponent, canActivate : [GuardService]},
+  { path: 'finanzas', component: FinanzasComponent, canActivate : [GuardService]},
+  { path: 'not-403', component: Not403Component},
+  { path: 'not-404', component: Not404Component},
+  {
+    path : 'recuperar', component: RecuperarComponent, children: [
+      { path: ':token', component: TokenComponent }
+    ]
+  },
+  { path: 'login', component: LoginComponent},
+  { path : '', redirectTo: 'login', pathMatch: 'full' },
+  { path : '**', redirectTo: 'not-404', pathMatch: 'full' },
 ];
 
 @NgModule({

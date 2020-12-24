@@ -7,7 +7,7 @@
 }
 
 .repuestos-tabla-card {
-    height: 700px;
+    height: 595px;
 }
 
 .mat-column-codigo {
@@ -38,7 +38,7 @@
 }
 
 .mat-table {
-    max-height: 540px;
+    max-height: 420px;
     overflow: auto;
 }
 
